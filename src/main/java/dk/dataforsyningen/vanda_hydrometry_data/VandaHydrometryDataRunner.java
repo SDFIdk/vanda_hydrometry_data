@@ -29,7 +29,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		if (config.getVandahDmpApiUrl() == null) {
-			log.warn("There was no API URL defined. Have you forgot to provide a certain configurat profile? (use dev, prod, test)");
+			log.warn("There was no API URL defined. Have you forgotten to choose a configurat profile? (use dev, prod, test)");
 			return;
 		}
 		
