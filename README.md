@@ -29,11 +29,11 @@ In order to tell the application what to do the following parameters should be u
 
 Retrieve all stations from DMP:
 
-	--stations
+	stations
 	
 Retrieve a single or a subset of stations from DMP depending on extra criteria that is provided as parameters:
 
-	--stations [--stationId=number] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
+	stations [--stationId=number] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
 	
 * **stationId** is a 8 digits number to identify a single station.
 * **operatorStationId** the id of the stations' operator
@@ -45,7 +45,7 @@ Retrieve a single or a subset of stations from DMP depending on extra criteria t
 
 Returns current results of water level (ExaminationType 25) measurements.
 
-	--waterLevels --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	waterLevels --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -58,7 +58,7 @@ Returns current results of water level (ExaminationType 25) measurements.
 
 Returns current results of water flow (ExaminationType 27) measurements.
 
-	--waterFlow --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	waterFlow --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -72,7 +72,7 @@ Returns current results of water flow (ExaminationType 27) measurements.
 
 Returns measurements with the current result.
 
-	--measurementsCurrentResult --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
+	measurementsCurrentResult --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -87,7 +87,7 @@ Returns measurements with the current result.
 
 Returns measurements with the first registered result.
 
-	--measurementsFirstResult --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
+	measurementsFirstResult --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -102,7 +102,7 @@ Returns measurements with the first registered result.
 
 Returns measurements with all results.
 
-	--measurementsAllResults --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
+	measurementsAllResults --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -117,7 +117,7 @@ Returns measurements with all results.
 
 Returns measurements with result that is valid and created/updated before the asOff parameter. This allows the retrival of data as it was stored in the system on a specific point in time.
 
-	--measurementsValidFromResults --stationId=number [--operatorStationId=string] --asOff=date [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
+	measurementsValidFromResults --stationId=number [--operatorStationId=string] --asOff=date [--measurementPointNumber=number] [--examinationTypeSc=number] [--parameterSc=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -133,14 +133,14 @@ Returns measurements with result that is valid and created/updated before the as
 
 Returns the examination types with mapping and constraints.
 
-	--examinationTypes
+	examinationTypes
 
 	
 ### Save to DB
 
 In order to save the retrieved data into the DB (using the config from properties file) use the parameter "saveDb". Example that saves all stations:
 
-	--stations --savedb
+	stations --savedb
 	
 The parameter is ignored for Examination Types.
 
@@ -148,5 +148,5 @@ The parameter is ignored for Examination Types.
 
 In order to display the data in the console (or redirect the output into a file) so the user can inspect it, use the parameter "verbose". Example that will display the examination types.
 
-	--stations --verbose
+	stations --verbose
 
