@@ -24,6 +24,9 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	
 	@Autowired
 	VandahDmpApiService vandahService;
+	
+	@Autowired
+	CommandLineArgsParser commandLineArgsParser;
 		
 	@Override
 	public void run(String... args) throws Exception {
@@ -35,14 +38,24 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		log.info("Using DMP API URL: " + config.getVandahDmpApiUrl() );
 		
-		DmpHydroApiResponsesStationResponse[] stations = vandahService.getAllStations(); 
+		commandLineArgsParser.parse(args);
 		
-		log.info("count stations: " + stations.length);
-		log.info("1st station: " + stations[0].toString());
-		
-		DmpHydroApiResponsesExaminationTypeResponse[] types = vandahService.getExaminationTypes();
-		log.info("count types: " + types.length);
-		log.info("1st type: " + types[0].toString());
+		if (commandLineArgsParser.containsParam("stations")) {
+			log.info("Execute command get stations");
+			
+			DmpHydroApiResponsesStationResponse[] stations = vandahService.getAllStations(); 
+			
+			log.info("count stations: " + stations.length);
+			log.info("1st station: " + stations[0].toString());	
+		} else if (commandLineArgsParser.containsParam("examinationtype")) {
+			log.info("Execute command get examination types");
+			
+			DmpHydroApiResponsesExaminationTypeResponse[] types = vandahService.getExaminationTypes();
+			log.info("count types: " + types.length);
+			log.info("1st type: " + types[0].toString());
+		} else {
+			log.info("Usage: ...");
+		}
 	}
-
+	
 }
