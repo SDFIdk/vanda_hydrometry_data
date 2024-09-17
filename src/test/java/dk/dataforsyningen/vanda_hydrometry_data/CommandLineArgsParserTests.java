@@ -38,17 +38,30 @@ public class CommandLineArgsParserTests {
 		assertEquals(9, commandLineArgsParser.getOptions().size());
 		assertEquals(2, commandLineArgsParser.getCommands().size());
 		assertTrue(commandLineArgsParser.containsParam("op1"));
+		assertTrue(commandLineArgsParser.hasOption("op1"));
 		assertTrue(commandLineArgsParser.containsParam("op2"));
+		assertTrue(commandLineArgsParser.hasOption("op2"));
 		assertTrue(commandLineArgsParser.containsParam("op3"));
+		assertTrue(commandLineArgsParser.hasCommand("op3"));
+		assertFalse(commandLineArgsParser.hasOption("op3"));
 		assertTrue(commandLineArgsParser.containsParam("op4"));
+		assertTrue(commandLineArgsParser.hasOption("op4"));
 		assertTrue(commandLineArgsParser.containsParam("op5"));
+		assertTrue(commandLineArgsParser.hasOption("op5"));
 		assertTrue(commandLineArgsParser.containsParam("op6"));
+		assertTrue(commandLineArgsParser.hasOption("op6"));
 		assertFalse(commandLineArgsParser.containsParam("op7"));
+		assertFalse(commandLineArgsParser.hasOption("op7=v2"));
 		assertTrue(commandLineArgsParser.containsParam("op7=v2"));
+		assertTrue(commandLineArgsParser.hasCommand("op7=v2"));
 		assertTrue(commandLineArgsParser.containsParam("op8"));
+		assertTrue(commandLineArgsParser.hasOption("op8"));
 		assertTrue(commandLineArgsParser.containsParam("op9"));
+		assertTrue(commandLineArgsParser.hasOption("op9"));
 		assertTrue(commandLineArgsParser.containsParam("op10"));
+		assertTrue(commandLineArgsParser.hasOption("op10"));
 		assertTrue(commandLineArgsParser.containsParam("op11"));
+		assertTrue(commandLineArgsParser.hasOption("op11"));
 	}
 	
 	/**
@@ -58,8 +71,8 @@ public class CommandLineArgsParserTests {
 	public void caseInsensitiveTest() {
 		assertTrue(commandLineArgsParser.containsParam("OP1"));
 		assertTrue(commandLineArgsParser.containsParam("op1"));
-		assertEquals("v1", commandLineArgsParser.getParameter("OP1"));
-		assertEquals("v1", commandLineArgsParser.getParameter("oP1"));
+		assertEquals("v1", commandLineArgsParser.getOption("OP1"));
+		assertEquals("v1", commandLineArgsParser.getOption("oP1"));
 		assertTrue(commandLineArgsParser.containsParam("OP3"));
 	}
 	
@@ -68,18 +81,18 @@ public class CommandLineArgsParserTests {
 	 */
 	@Test
 	public void valuesTest() {
-		assertEquals("v1", commandLineArgsParser.getParameter("op1"));
-		assertNull(commandLineArgsParser.getParameter("op2"));
-		assertNull(commandLineArgsParser.getParameter("op3"));
-		assertTrue(commandLineArgsParser.getParameter("op4").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameter("op5").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameter("op6").getClass().isArray());
-		assertNull(commandLineArgsParser.getParameter("op7"));
-		assertNull(commandLineArgsParser.getParameter("op7=v2"));
-		assertTrue(commandLineArgsParser.getParameter("op8").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameter("op9").getClass().isArray());
-		assertEquals("123", commandLineArgsParser.getParameter("op10"));
-		assertEquals("12.3", commandLineArgsParser.getParameter("op11"));
+		assertEquals("v1", commandLineArgsParser.getOption("op1"));
+		assertNull(commandLineArgsParser.getOption("op2"));
+		assertNull(commandLineArgsParser.getOption("op3"));
+		assertTrue(commandLineArgsParser.getOption("op4").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOption("op5").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOption("op6").getClass().isArray());
+		assertNull(commandLineArgsParser.getOption("op7"));
+		assertNull(commandLineArgsParser.getOption("op7=v2"));
+		assertTrue(commandLineArgsParser.getOption("op8").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOption("op9").getClass().isArray());
+		assertEquals("123", commandLineArgsParser.getOption("op10"));
+		assertEquals("12.3", commandLineArgsParser.getOption("op11"));
 	}
 	
 	/**
@@ -88,20 +101,20 @@ public class CommandLineArgsParserTests {
 	 */
 	@Test
 	public void conversionTest() {
-		assertNull(commandLineArgsParser.getIntegerParameter("op1"));
-		assertNull(commandLineArgsParser.getIntegerParameter("op4"));
-		assertEquals(123, commandLineArgsParser.getIntegerParameter("op10"));
-		assertNull(commandLineArgsParser.getIntegerParameter("op11"));
+		assertNull(commandLineArgsParser.getIntegerOption("op1"));
+		assertNull(commandLineArgsParser.getIntegerOption("op4"));
+		assertEquals(123, commandLineArgsParser.getIntegerOption("op10"));
+		assertNull(commandLineArgsParser.getIntegerOption("op11"));
 		
-		assertNull(commandLineArgsParser.getDoubleParameter("op1"));
-		assertNull(commandLineArgsParser.getDoubleParameter("op6"));
-		assertEquals(123.0, commandLineArgsParser.getDoubleParameter("op10"));
-		assertEquals(12.3, commandLineArgsParser.getDoubleParameter("op11"));
+		assertNull(commandLineArgsParser.getDoubleOption("op1"));
+		assertNull(commandLineArgsParser.getDoubleOption("op6"));
+		assertEquals(123.0, commandLineArgsParser.getDoubleOption("op10"));
+		assertEquals(12.3, commandLineArgsParser.getDoubleOption("op11"));
 		
-		assertEquals("v1", commandLineArgsParser.getStringParameter("op1"));
-		assertEquals("1.2,3.4,5.6", commandLineArgsParser.getStringParameter("op6"));
-		assertEquals("123", commandLineArgsParser.getStringParameter("op10"));
-		assertEquals("12.3", commandLineArgsParser.getStringParameter("op11"));
+		assertEquals("v1", commandLineArgsParser.getStringOption("op1"));
+		assertEquals("1.2,3.4,5.6", commandLineArgsParser.getStringOption("op6"));
+		assertEquals("123", commandLineArgsParser.getStringOption("op10"));
+		assertEquals("12.3", commandLineArgsParser.getStringOption("op11"));
 	}
 	
 	/**
@@ -109,23 +122,23 @@ public class CommandLineArgsParserTests {
 	 */
 	@Test
 	public void arraysTest() {
-		assertEquals("1;2;3", a2s(commandLineArgsParser.getParameterAsStringArray("op4")));
-		assertEquals("a;b;c", a2s(commandLineArgsParser.getParameterAsStringArray("op5")));
-		assertEquals("1.2;3.4;5.6", a2s(commandLineArgsParser.getParameterAsStringArray("op6")));
-		assertEquals("1;2.5;3", a2s(commandLineArgsParser.getParameterAsStringArray("op8")));
-		assertEquals("1.2;3;5.6", a2s(commandLineArgsParser.getParameterAsStringArray("op9")));
+		assertEquals("1;2;3", a2s(commandLineArgsParser.getOptionAsStringArray("op4")));
+		assertEquals("a;b;c", a2s(commandLineArgsParser.getOptionAsStringArray("op5")));
+		assertEquals("1.2;3.4;5.6", a2s(commandLineArgsParser.getOptionAsStringArray("op6")));
+		assertEquals("1;2.5;3", a2s(commandLineArgsParser.getOptionAsStringArray("op8")));
+		assertEquals("1.2;3;5.6", a2s(commandLineArgsParser.getOptionAsStringArray("op9")));
 		
-		assertEquals("1;2;3", a2s(commandLineArgsParser.getParameterAsIntArray("op4")));
-		assertTrue(commandLineArgsParser.getParameterAsIntArray("op5").length == 0);
-		assertTrue(commandLineArgsParser.getParameterAsIntArray("op6").length == 0);
-		assertEquals("1;3", a2s(commandLineArgsParser.getParameterAsIntArray("op8")));
-		assertEquals("3", a2s(commandLineArgsParser.getParameterAsIntArray("op9")));
+		assertEquals("1;2;3", a2s(commandLineArgsParser.getOptionAsIntArray("op4")));
+		assertTrue(commandLineArgsParser.getOptionAsIntArray("op5").length == 0);
+		assertTrue(commandLineArgsParser.getOptionAsIntArray("op6").length == 0);
+		assertEquals("1;3", a2s(commandLineArgsParser.getOptionAsIntArray("op8")));
+		assertEquals("3", a2s(commandLineArgsParser.getOptionAsIntArray("op9")));
 		
-		assertEquals("1.0;2.0;3.0", a2s(commandLineArgsParser.getParameterAsDoubleArray("op4")));
-		assertTrue(commandLineArgsParser.getParameterAsDoubleArray("op5").length == 0);
-		assertEquals("1.2;3.4;5.6", a2s(commandLineArgsParser.getParameterAsDoubleArray("op6")));
-		assertEquals("1.0;2.5;3.0", a2s(commandLineArgsParser.getParameterAsDoubleArray("op8")));
-		assertEquals("1.2;3.0;5.6", a2s(commandLineArgsParser.getParameterAsDoubleArray("op9")));
+		assertEquals("1.0;2.0;3.0", a2s(commandLineArgsParser.getOptionAsDoubleArray("op4")));
+		assertTrue(commandLineArgsParser.getOptionAsDoubleArray("op5").length == 0);
+		assertEquals("1.2;3.4;5.6", a2s(commandLineArgsParser.getOptionAsDoubleArray("op6")));
+		assertEquals("1.0;2.5;3.0", a2s(commandLineArgsParser.getOptionAsDoubleArray("op8")));
+		assertEquals("1.2;3.0;5.6", a2s(commandLineArgsParser.getOptionAsDoubleArray("op9")));
 	}
 	
 	/**
@@ -133,17 +146,17 @@ public class CommandLineArgsParserTests {
 	 */
 	@Test
 	public void single2ArrayTest() {
-		assertTrue(commandLineArgsParser.getParameterAsStringArray("op1").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameterAsStringArray("op1").length == 1);
-		assertEquals("v1", commandLineArgsParser.getParameterAsStringArray("op1")[0]);
+		assertTrue(commandLineArgsParser.getOptionAsStringArray("op1").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOptionAsStringArray("op1").length == 1);
+		assertEquals("v1", commandLineArgsParser.getOptionAsStringArray("op1")[0]);
 		
-		assertTrue(commandLineArgsParser.getParameterAsIntArray("op10").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameterAsIntArray("op10").length == 1);
-		assertEquals(123, commandLineArgsParser.getParameterAsIntArray("op10")[0]);
+		assertTrue(commandLineArgsParser.getOptionAsIntArray("op10").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOptionAsIntArray("op10").length == 1);
+		assertEquals(123, commandLineArgsParser.getOptionAsIntArray("op10")[0]);
 		
-		assertTrue(commandLineArgsParser.getParameterAsDoubleArray("op11").getClass().isArray());
-		assertTrue(commandLineArgsParser.getParameterAsDoubleArray("op11").length == 1);
-		assertEquals(12.3, commandLineArgsParser.getParameterAsDoubleArray("op11")[0]);		
+		assertTrue(commandLineArgsParser.getOptionAsDoubleArray("op11").getClass().isArray());
+		assertTrue(commandLineArgsParser.getOptionAsDoubleArray("op11").length == 1);
+		assertEquals(12.3, commandLineArgsParser.getOptionAsDoubleArray("op11")[0]);		
 	}
 	
 	private String a2s(Object a) {

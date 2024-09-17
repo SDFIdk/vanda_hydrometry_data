@@ -31,8 +31,4 @@ public class VandaHydrometryDataApplication {
 		return RestClient.create();
 	}
 
-	@Bean
-	public CommandLineArgsParser commandLineArgsParser() {
-		return new CommandLineArgsParser();
-	}
 }

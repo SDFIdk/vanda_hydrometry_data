@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data.repositories;
+package dk.dataforsyningen.vanda_hydrometry_data.repository;
 
 import org.springframework.stereotype.Repository;
 

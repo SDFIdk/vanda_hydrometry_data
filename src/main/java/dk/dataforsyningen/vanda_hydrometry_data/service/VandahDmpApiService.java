@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data.services;
+package dk.dataforsyningen.vanda_hydrometry_data.service;
 
 import java.time.OffsetDateTime;
 

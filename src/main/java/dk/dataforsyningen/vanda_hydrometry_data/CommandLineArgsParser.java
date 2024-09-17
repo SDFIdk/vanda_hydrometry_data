@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CommandLineArgsParser {
 
 	private HashMap<String,Object> options;
@@ -52,19 +55,38 @@ public class CommandLineArgsParser {
 		return commands;
 	}
 	
-	public boolean hasParameter(String name) {
-		return options.containsKey(name.toLowerCase()) || commands.contains(name.toLowerCase());
+	/**
+	 * Only checks that a command with the given name exists
+	 * @param name
+	 * @return
+	 */
+	public boolean hasCommand(String name) {
+		return commands.contains(name.toLowerCase());
 	}
 	
-	public Object getParameter(String name) {
-		return options.containsKey(name.toLowerCase()) ? options.get(name.toLowerCase()) : null;
+	/**
+	 * Only checks that an option with the given name exists
+	 * @param name
+	 * @return
+	 */
+	public boolean hasOption(String name) {
+		return options.containsKey(name.toLowerCase());
 	}
 	
+	/**
+	 * Check if an option or command with the given name exists
+	 * @param name
+	 * @return
+	 */
 	public boolean containsParam(String name) {
 		return options.containsKey(name.toLowerCase()) || commands.contains(name.toLowerCase());
 	}
+	
+	public Object getOption(String name) {
+		return options.containsKey(name.toLowerCase()) ? options.get(name.toLowerCase()) : null;
+	}
 		
-	public String getStringParameter(String name) {
+	public String getStringOption(String name) {
 		name = name.toLowerCase();
 		return options.containsKey(name) && options.get(name) != null ? 
 				(options.get(name).getClass().isArray() ?
@@ -73,7 +95,7 @@ public class CommandLineArgsParser {
 				: null;
 	}
 	
-	public Integer getIntegerParameter(String name) {
+	public Integer getIntegerOption(String name) {
 		name = name.toLowerCase();
 		if (options.containsKey(name) && options.get(name) != null && !options.get(name).getClass().isArray()) {
 			try {
@@ -85,7 +107,7 @@ public class CommandLineArgsParser {
 		return null;
 	}
 	
-	public Double getDoubleParameter(String name) {
+	public Double getDoubleOption(String name) {
 		name = name.toLowerCase();
 		if (options.containsKey(name) && options.get(name) != null && !options.get(name).getClass().isArray()) {
 			try {
@@ -97,7 +119,7 @@ public class CommandLineArgsParser {
 		return null;
 	}
 	
-	public String[] getParameterAsStringArray(String name) {
+	public String[] getOptionAsStringArray(String name) {
 		name = name.toLowerCase();
 		if (options.containsKey(name) && options.get(name) != null) {
 			return options.get(name).getClass().isArray() ?
@@ -107,18 +129,18 @@ public class CommandLineArgsParser {
 		return null;
 	}
 	
-	public Integer[] getParameterAsIntArray(String name) {
+	public Integer[] getOptionAsIntArray(String name) {
 		name = name.toLowerCase();
 		if (options.containsKey(name) && options.get(name) != null) {
-			return Arrays.stream(getParameterAsStringArray(name)).filter(value -> isInteger(value)).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
+			return Arrays.stream(getOptionAsStringArray(name)).filter(value -> isInteger(value)).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
 		}
 		return null;
 	}
 	
-	public Double[] getParameterAsDoubleArray(String name) {
+	public Double[] getOptionAsDoubleArray(String name) {
 		name = name.toLowerCase();
 		if (options.containsKey(name) && options.get(name) != null) {
-			return Arrays.stream(getParameterAsStringArray(name)).filter(value -> isDouble(value) || isInteger(value)).mapToDouble(Double::parseDouble).boxed().toArray(Double[]::new);
+			return Arrays.stream(getOptionAsStringArray(name)).filter(value -> isDouble(value) || isInteger(value)).mapToDouble(Double::parseDouble).boxed().toArray(Double[]::new);
 		}
 		return null;
 	}

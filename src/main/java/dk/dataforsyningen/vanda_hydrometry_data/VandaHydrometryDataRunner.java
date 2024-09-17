@@ -7,7 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import dk.dataforsyningen.vanda_hydrometry_data.services.VandahDmpApiService;
+import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
@@ -40,14 +40,14 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		commandLineArgsParser.parse(args);
 		
-		if (commandLineArgsParser.containsParam("stations")) {
+		if (commandLineArgsParser.hasCommand("stations")) {
 			log.info("Execute command get stations");
 			
 			DmpHydroApiResponsesStationResponse[] stations = vandahService.getAllStations(); 
 			
 			log.info("count stations: " + stations.length);
 			log.info("1st station: " + stations[0].toString());	
-		} else if (commandLineArgsParser.containsParam("examinationtype")) {
+		} else if (commandLineArgsParser.hasCommand("examinationtype")) {
 			log.info("Execute command get examination types");
 			
 			DmpHydroApiResponsesExaminationTypeResponse[] types = vandahService.getExaminationTypes();
