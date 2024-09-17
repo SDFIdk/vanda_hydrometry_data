@@ -1,4 +1,6 @@
 CREATE EXTENSION postgis;
+CREATE SCHEMA hydrometry;
+SET search_path TO hydrometry, public;
 
 CREATE TABLE station
 (
@@ -69,6 +71,13 @@ CREATE INDEX FK_1_M ON measurement
 CREATE INDEX FK_2_M ON measurement
 (
  station_uid
+);
+CREATE UNIQUE INDEX measurement_station_IDX ON measurement
+(
+  station_uid,
+  measurement_type_id,
+  is_current,
+  measurement_date_time
 );
 
 COMMENT ON TABLE measurement IS 'Contains the measurements of the stations';
