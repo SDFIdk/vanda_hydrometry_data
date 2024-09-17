@@ -4,10 +4,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * Parse the command line parameters into a list of options (and values) and a list of commands.
+ * Commands are simple strings.
+ * Options starts with "--" and have a value (given after the equal "=" sign. Ex --option=value
+ * 
+ * @author Radu Dudici
+ */
 @Component
 public class CommandLineArgsParser {
+	
+	private static final Logger log = LoggerFactory.getLogger(CommandLineArgsParser.class);
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	private HashMap<String,Object> options;
 	private ArrayList<String> commands;
@@ -27,13 +43,24 @@ public class CommandLineArgsParser {
 				int pos = arg.indexOf("=");
 				String key = arg.substring(2, pos);
 				Object val = parseValues(arg.substring(pos+1));
-				if (key != null && key.length() > 0) options.put(key.toLowerCase(), val);
+				if (key != null && key.length() > 0) {
+					options.put(key.toLowerCase(), val);
+					log.debug("Added option '" + key.toLowerCase() + "' with value: " + val);
+				}
 			} else if (arg.startsWith("--")) {
 				String key = arg.substring(2);
 				String val = null;
-				if (key != null && key.length() > 0) options.put(key.toLowerCase(), val);
+				if (key != null && key.length() > 0) {
+					options.put(key.toLowerCase(), val);
+					log.debug("Added option '" + key.toLowerCase() + "' with value null ");
+				}
 			} else if (arg != null && arg.length() > 0){
-				commands.add(arg.toLowerCase());
+				
+				//do not consider application's startup class as a command.
+				if (!arg.toLowerCase().equals(VandaHydrometryDataApplication.class.getCanonicalName().toLowerCase())) {
+					commands.add(arg.toLowerCase());
+					log.debug("Added command '" + arg.toLowerCase() + "'");
+				}
 			}
 		}
 	}

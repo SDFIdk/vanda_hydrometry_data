@@ -13,6 +13,11 @@ import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
+/**
+ * Service class providing API access to DMP's VandaH.
+ * 
+ * @author Radu Dudici
+ */
 @Service
 public class VandahDmpApiService {
 	

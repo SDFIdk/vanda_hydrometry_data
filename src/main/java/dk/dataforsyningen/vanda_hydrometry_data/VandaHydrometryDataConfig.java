@@ -3,6 +3,12 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class.
+ * Reads and provides the config from properties file.
+ * 
+ * @author Radu Dudici
+ */
 @Configuration
 public class VandaHydrometryDataConfig {
 
@@ -11,6 +17,5 @@ public class VandaHydrometryDataConfig {
 	
 	public String getVandahDmpApiUrl() {
 		return vandahDmpApiUrl;
-	}
-	
+	}	
 }

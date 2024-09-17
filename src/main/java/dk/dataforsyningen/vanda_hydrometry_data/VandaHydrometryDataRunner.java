@@ -1,5 +1,7 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +9,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-
+/**
+ * Command line runner class that handles the input commands and delegates the execution.
+ * 
+ * @author Radu Dudici
+ */
 @Component
 public class VandaHydrometryDataRunner implements CommandLineRunner {
 
@@ -23,10 +26,10 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	VandaHydrometryDataConfig config;
 	
 	@Autowired
-	VandahDmpApiService vandahService;
+	CommandLineArgsParser commandLineArgsParser;
 	
 	@Autowired
-	CommandLineArgsParser commandLineArgsParser;
+	CommandController commandController;
 		
 	@Override
 	public void run(String... args) throws Exception {
@@ -40,22 +43,16 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		commandLineArgsParser.parse(args);
 		
-		if (commandLineArgsParser.hasCommand("stations")) {
-			log.info("Execute command get stations");
-			
-			DmpHydroApiResponsesStationResponse[] stations = vandahService.getAllStations(); 
-			
-			log.info("count stations: " + stations.length);
-			log.info("1st station: " + stations[0].toString());	
-		} else if (commandLineArgsParser.hasCommand("examinationtype")) {
-			log.info("Execute command get examination types");
-			
-			DmpHydroApiResponsesExaminationTypeResponse[] types = vandahService.getExaminationTypes();
-			log.info("count types: " + types.length);
-			log.info("1st type: " + types[0].toString());
-		} else {
+		ArrayList<String> cmds = commandLineArgsParser.getCommands();
+		
+		if (cmds.size() == 0) {
 			log.info("Usage: ...");
+		} else if (cmds.size() > 1) {
+			log.warn("Too many commands requested");
+		}  else { //only one command
+			commandController.execute(cmds.get(0));
 		}
+		
 	}
 	
 }

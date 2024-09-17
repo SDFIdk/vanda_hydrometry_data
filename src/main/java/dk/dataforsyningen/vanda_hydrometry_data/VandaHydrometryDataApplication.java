@@ -2,6 +2,7 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,11 +18,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
+/**
+ * The main startup class of the application.
+ * 
+ * @author Radu Dudici
+ */
 @SpringBootApplication
 public class VandaHydrometryDataApplication {
 	
 	private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataApplication.class);
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(VandaHydrometryDataApplication.class, args);
 	}
