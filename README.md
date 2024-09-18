@@ -97,11 +97,11 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 ```
 	<plugin>
 		<groupId>io.swagger.codegen.v3</groupId>
-	    <artifactId>swagger-codegen-maven-plugin</artifactId>
-       <version>3.0.61</version>
-			<configuration>
-        		<skip>false</skip>
-    		</configuration>
-    ...
+		<artifactId>swagger-codegen-maven-plugin</artifactId>
+		<version>3.0.61</version>
+		<configuration>
+			<skip>false</skip>
+		</configuration>
+	...
 ```
 
