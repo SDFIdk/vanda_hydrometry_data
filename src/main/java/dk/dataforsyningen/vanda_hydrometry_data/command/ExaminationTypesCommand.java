@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 
@@ -39,5 +40,22 @@ public class ExaminationTypesCommand  implements CommandInterface {
 	public void saveData() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void displayData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showShortHelp() {
+		System.out.println(VandaHUtility.BOLD_ON + "examinationTypes" + VandaHUtility.FORMAT_OFF + " : retrieves the examination types with mapping and constraints.");
+		
+	}
+
+	@Override
+	public void showHelp() {
+		showShortHelp();
 	}
 }

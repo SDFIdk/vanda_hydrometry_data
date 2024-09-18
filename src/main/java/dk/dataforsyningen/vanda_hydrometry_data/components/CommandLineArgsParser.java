@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data;
+package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,14 +6,14 @@ import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataApplication;
+
 /**
- * Parse the command line parameters into a list of options (and values) and a list of commands.
+ * Parse the command line parameters and extract a list of commands.
  * Commands are simple strings.
- * Options starts with "--" and have a value (given after the equal "=" sign. Ex --option=value
+ * Options starts with "--" and are disconsidered - they are parsed by the @Configuration component.
  * 
  * @author Radu Dudici
  */
@@ -22,10 +22,6 @@ public class CommandLineArgsParser {
 	
 	private static final Logger log = LoggerFactory.getLogger(CommandLineArgsParser.class);
 	
-	@Autowired
-	private ApplicationContext applicationContext;
-
-	private HashMap<String,Object> options;
 	private ArrayList<String> commands;
 	
 	public CommandLineArgsParser() {
@@ -33,29 +29,12 @@ public class CommandLineArgsParser {
 	}
 	
 	public void clear() {
-		options = new HashMap<>();
 		commands = new ArrayList<>();
 	}
 	
 	public void parse(String... args) {
 		for(String arg : args) {
-			if (arg.startsWith("--") && arg.contains("=")) {
-				int pos = arg.indexOf("=");
-				String key = arg.substring(2, pos);
-				Object val = parseValues(arg.substring(pos+1));
-				if (key != null && key.length() > 0) {
-					options.put(key.toLowerCase(), val);
-					log.debug("Added option '" + key.toLowerCase() + "' with value: " + val);
-				}
-			} else if (arg.startsWith("--")) {
-				String key = arg.substring(2);
-				String val = null;
-				if (key != null && key.length() > 0) {
-					options.put(key.toLowerCase(), val);
-					log.debug("Added option '" + key.toLowerCase() + "' with value null ");
-				}
-			} else if (arg != null && arg.length() > 0){
-				
+			if (arg != null && arg.length() > 0 && !arg.startsWith("--")) {
 				//do not consider application's startup class as a command.
 				if (!arg.toLowerCase().equals(VandaHydrometryDataApplication.class.getCanonicalName().toLowerCase())) {
 					commands.add(arg.toLowerCase());
@@ -64,20 +43,7 @@ public class CommandLineArgsParser {
 			}
 		}
 	}
-	
-	private Object parseValues(String value) {
-		if (value == null) return null;
 		
-		if (value.contains(",")) {
-			return Arrays.stream(value.split(",")).filter(v -> (v != null && v.length() > 0)).toArray();
-		} 
-		return value;
-	}
-	
-	public HashMap<String,Object> getOptions() {
-		return options;
-	}
-	
 	public ArrayList<String> getCommands() {
 		return commands;
 	}
@@ -91,26 +57,14 @@ public class CommandLineArgsParser {
 		return commands.contains(name.toLowerCase());
 	}
 	
-	/**
-	 * Only checks that an option with the given name exists
-	 * @param name
-	 * @return
-	 */
-	public boolean hasOption(String name) {
-		return options.containsKey(name.toLowerCase());
-	}
-	
-	/**
-	 * Check if an option or command with the given name exists
-	 * @param name
-	 * @return
-	 */
-	public boolean containsParam(String name) {
-		return options.containsKey(name.toLowerCase()) || commands.contains(name.toLowerCase());
-	}
-	
-	public Object getOption(String name) {
-		return options.containsKey(name.toLowerCase()) ? options.get(name.toLowerCase()) : null;
+/*
+	private Object parseValues(String value) {
+		if (value == null) return null;
+		
+		if (value.contains(",")) {
+			return Arrays.stream(value.split(",")).filter(v -> (v != null && v.length() > 0)).toArray();
+		} 
+		return value;
 	}
 		
 	public String getStringOption(String name) {
@@ -189,4 +143,5 @@ public class CommandLineArgsParser {
 			return false;
 		}
 	}
+*/	
 }

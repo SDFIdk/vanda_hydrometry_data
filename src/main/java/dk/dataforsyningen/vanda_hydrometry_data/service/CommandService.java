@@ -1,5 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -25,7 +26,6 @@ public class CommandService implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        System.out.println("ID=" + this.applicationContext.getId());
     }
 
     /**
@@ -67,8 +67,33 @@ public class CommandService implements ApplicationContextAware {
                 }).findFirst().get().getValue();
         } catch (NoSuchElementException ex) {
         	return null;
+        }       
+    }
+    
+    /**
+     * Finds the first command that has a registered bean and returns it.
+     * 
+     * @param commands
+     * @return CommandInterface bean
+     */
+    public CommandInterface getFirstDefinedCommandBean(ArrayList<String> commands) {
+    	// Get all beans of type CommandInterface from the context
+        Map<String, CommandInterface> allCommands = applicationContext.getBeansOfType(CommandInterface.class);
+
+        // find the first registered bean
+        for(String command : commands) {
+	        try {
+	        	return allCommands.entrySet().stream()
+	                .filter(entry -> {
+	                	CommandQualifier annotation = applicationContext.findAnnotationOnBean(entry.getKey(), CommandQualifier.class);
+	                	return annotation != null && command != null && command.equals(annotation.command());
+	                }).findFirst().get().getValue();
+	        } catch (NoSuchElementException ex) {
+	        	//do nothing
+	        }   
         }
-                
+        
+        return null;
     }
     
 }
