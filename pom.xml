@@ -150,7 +150,9 @@
 	                        <generateApiDocumentation>false</generateApiDocumentation>
 	                        <modelPackage>dk.miljoeportal.vandah.model</modelPackage>
                         	<apiPackage>dk.miljoeportal.vandah.api</apiPackage>
-	                        <output>${project.build.directory}/generated-sources/swagger</output>
+	                        <!-- Use this output path instead if you want the sources generated under the target folder not in the main src folder
+								<output>${project.build.directory}/generated-sources/swagger</output>-->
+	                        <output>${basedir}</output>
 	                        <typeMappings>
 	                        	<typeMapping>OffsetDateTime=OffsetDateTime</typeMapping>
 	                        </typeMappings>
