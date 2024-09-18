@@ -23,7 +23,7 @@ This section shows the operations and parameters that can be used with the appli
 	
 The available profiles are PROD, DEV, TEST and they determine which endpoint and maybe DB the application connects to.
 
-In order to tell the application what to do the following parameters should be used further (added to the command line):
+In order to tell the application what to do the following parameters should be used further (added to the command line). Parameters may be commands,or options that starts with "--" and may have or not a value after the "=" sign.
 
 ### Read stations
 
