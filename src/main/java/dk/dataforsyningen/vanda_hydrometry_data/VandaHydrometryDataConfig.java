@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +22,8 @@ import lombok.Getter;
  */
 @Configuration
 public class VandaHydrometryDataConfig {
+	
+	private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataConfig.class);
 	
 	private DateTimeFormatter datePattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -119,7 +122,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return new int[] {Integer.parseInt(examinationTypeSc)};
 		} catch (NumberFormatException e) {
-			//do nothing
+			log.warn("Invalid number found in 'examinationTypeSc' parameter.");
 		}
 		return null;
 	}
@@ -149,6 +152,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return LocalDateTime.parse(parseDate(withResultsAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
+			log.warn("Invalid date format found in 'withResultsAfter' parameter.");
 			return null;
 		}
 	}
@@ -158,6 +162,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return LocalDateTime.parse(parseDate(withResultsCreatedAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
+			log.warn("Invalid date format found in 'withResultsCreatedAfter' parameter.");
 			return null;
 		}
 	}
@@ -167,6 +172,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return LocalDateTime.parse(parseDate(from), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
+			log.warn("Invalid date format found in 'from' parameter.");
 			return null;
 		}
 	}
@@ -176,6 +182,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return LocalDateTime.parse(parseDate(to), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
+			log.warn("Invalid date format found in 'to' parameter.");
 			return null;
 		}
 	}
@@ -185,6 +192,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return LocalDateTime.parse(parseDate(createdAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
+			log.warn("Invalid date format found in 'createdAfter' parameter.");
 			return null;
 		}
 	}
