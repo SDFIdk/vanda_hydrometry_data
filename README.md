@@ -27,7 +27,7 @@ Retrieve all stations from DMP:
 	
 Retrieve a single or a subset of stations from DMP depending on extra criteria that is provided as parameters:
 
-	stations [--stationId=number] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
+	stations [--stationId=string] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
 	
 * **stationId** is a 8 digits number to identify a single station.
 * **operatorStationId** the id of the stations' operator
@@ -39,7 +39,7 @@ Retrieve a single or a subset of stations from DMP depending on extra criteria t
 
 Returns current results of water level (ExaminationType 25) measurements.
 
-	waterLevels --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	waterLevels --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -52,7 +52,7 @@ Returns current results of water level (ExaminationType 25) measurements.
 
 Returns current results of water flow (ExaminationType 27) measurements.
 
-	waterFlow --stationId=number [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	waterFlow --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
