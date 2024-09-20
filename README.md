@@ -73,13 +73,19 @@ Returns the examination types with mapping and constraints.
 
 In order to save the retrieved data into the DB (using the config from properties file) use the parameter "saveDb". Example that saves all stations:
 
-	stations --savedb
+	stations --saveDb
 	
 The parameter is ignored for Examination Types.
 
 ### Inspect data
 
-In order to display the data in the console (or redirect the output into a file) so the user can inspect it, use the parameter "verbose". Example that will display the examination types.
+In order to display the data in the console (or redirect the output into a file) so the user can inspect it, use the parameter "displayData". Example that will display all the stations.
+
+	stations --displayData
+	
+### More output
+
+In order to display more details about the execution of the program or warnings in the console use the parameter "verbose". 
 
 	stations --verbose
 
@@ -105,3 +111,8 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 	...
 ```
 
+<!--TODO:
+	Implement Model
+	Implement Repository
+	Error handling and logging
+-->
