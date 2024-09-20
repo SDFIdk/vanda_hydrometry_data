@@ -39,7 +39,7 @@ public class CommandControllerTest {
 		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(true);
 		when(config.isSaveDb()).thenReturn(false);
-		when(config.isVerbose()).thenReturn(false);
+		when(config.isDisplayData()).thenReturn(false);
 		
 		commandController.execute(command);
 		
@@ -59,7 +59,7 @@ public class CommandControllerTest {
 		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(false);
-		when(config.isVerbose()).thenReturn(false);
+		when(config.isDisplayData()).thenReturn(false);
 		
 		commandController.execute(command);
 		
@@ -77,7 +77,7 @@ public class CommandControllerTest {
 		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(false);
-		when(config.isVerbose()).thenReturn(true);
+		when(config.isDisplayData()).thenReturn(true);
 		
 		commandController.execute(command);
 		
@@ -95,7 +95,7 @@ public class CommandControllerTest {
 		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(true);
-		when(config.isVerbose()).thenReturn(false);
+		when(config.isDisplayData()).thenReturn(false);
 		
 		commandController.execute(command);
 		

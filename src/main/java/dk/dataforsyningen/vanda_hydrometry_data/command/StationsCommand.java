@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
 /**
@@ -20,33 +22,43 @@ public class StationsCommand implements CommandInterface {
 
 	private static final Logger log = LoggerFactory.getLogger(StationsCommand.class);
 	
+	private DmpHydroApiResponsesStationResponse[] data;
+	
 	@Autowired
 	VandahDmpApiService vandahService;
 	
+	@Autowired
+	private VandaHydrometryDataConfig config;
+	
 	@Override
-	public void getData() {
-		DmpHydroApiResponsesStationResponse[] stations = vandahService.getAllStations(); 
-		
-		log.info("count stations: " + stations.length);
-		log.info("1st station: " + stations[0].toString());
+	public int getData() {
+		data = vandahService.getAllStations(); 
+		return data != null ? data.length : 0;
 	}
 
 	@Override
 	public void mapData() {
+		if (data != null) {
 		// TODO Auto-generated method stub
-
+		}
 	}
 
 	@Override
-	public void saveData() {
-		// TODO Auto-generated method stub
-
+	public int saveData() {
+		if (data != null) {
+			// TODO Auto-generated method stub
+		}
+		return data != null ? data.length : 0;
 	}
 
 	@Override
 	public void displayData() {
-		// TODO Auto-generated method stub
-		
+		if (data != null) {
+			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
+			for(DmpHydroApiResponsesStationResponse item : data) {
+				System.out.println(item);
+			}
+		}
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class CommandController {
 	 * @param command
 	 */
     public void execute(String command) {
-    	log.info("Execute command: " + command);
+    	VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Execute command: " + command);
     	
     	CommandInterface commandBean = commandService.getCommandBean(command);
     	if (commandBean != null) {
@@ -41,20 +42,22 @@ public class CommandController {
     		if (config.isHelp()) {
     			showHelp(commandBean, false);
     		} else {
-	    		commandBean.getData();
+	    		int nr = commandBean.getData();
+	    		VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Read (" + nr + ") items.");
 	    		
 	    		commandBean.mapData();
 	    		
-	    		if (config.isVerbose()) {
+	    		if (config.isDisplayData()) {
 	    			commandBean.displayData();
 	    		}
 	    		
 	    		if (config.isSaveDb()) {
-	    			commandBean.saveData();
+	    			nr = commandBean.saveData();
+	    			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Save (" + nr + ") items to DB.");
 	    		}
     		}
     	} else {
-    		log.error("No execution bean was regsitered for the given command: " + command);
+    		VandaHUtility.logAndPrint(log, Level.ERROR, true, "No execution bean was regsitered for the given command: " + command);
     	}
     }
     

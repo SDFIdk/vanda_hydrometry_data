@@ -11,15 +11,15 @@ import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 
 /**
- * Command to retrieve the water levels.
+ * Command to retrieve the water flows.
  * 
  * @author Radu Dudici
  */
 @Component
-@CommandQualifier(command = "waterlevels")
-public class WaterLevelsCommand implements CommandInterface {
+@CommandQualifier(command = "waterflows")
+public class WaterFlowsCommand implements CommandInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(WaterLevelsCommand.class);
+	private static final Logger log = LoggerFactory.getLogger(WaterFlowsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
 	
@@ -31,7 +31,7 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	@Override
 	public int getData() {
-		data = vandahService.getWaterLevels(config.getStationId(),
+		data = vandahService.getWaterFlows(config.getStationId(),
 				config.getOperatorStationId(),
 				config.getMeasurementPointNumber(),
 				config.getFrom(),
@@ -69,7 +69,7 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	@Override
 	public void showShortHelp() {
-		System.out.println(VandaHUtility.BOLD_ON + "waterLevels" + VandaHUtility.FORMAT_OFF + " : Retrieves current results of water level (ExaminationType 25) measurements.");
+		System.out.println(VandaHUtility.BOLD_ON + "waterFlows" + VandaHUtility.FORMAT_OFF + " : Retrieves current results of water flows (ExaminationType 27) measurements.");
 	}
 
 	@Override

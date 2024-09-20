@@ -1,8 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,91 +55,4 @@ public class CommandLineArgsParser {
 		return commands.contains(name.toLowerCase());
 	}
 	
-/*
-	private Object parseValues(String value) {
-		if (value == null) return null;
-		
-		if (value.contains(",")) {
-			return Arrays.stream(value.split(",")).filter(v -> (v != null && v.length() > 0)).toArray();
-		} 
-		return value;
-	}
-		
-	public String getStringOption(String name) {
-		name = name.toLowerCase();
-		return options.containsKey(name) && options.get(name) != null ? 
-				(options.get(name).getClass().isArray() ?
-						String.join(",", Arrays.stream((Object[])options.get(name)).toArray(String[]::new)) :
-						options.get(name).toString()) 
-				: null;
-	}
-	
-	public Integer getIntegerOption(String name) {
-		name = name.toLowerCase();
-		if (options.containsKey(name) && options.get(name) != null && !options.get(name).getClass().isArray()) {
-			try {
-				return Integer.parseInt(options.get(name).toString());
-			} catch (NumberFormatException e) {
-				// do nothing
-			}
-		}
-		return null;
-	}
-	
-	public Double getDoubleOption(String name) {
-		name = name.toLowerCase();
-		if (options.containsKey(name) && options.get(name) != null && !options.get(name).getClass().isArray()) {
-			try {
-				return Double.parseDouble(options.get(name).toString());
-			} catch (NumberFormatException e) {
-				// do nothing
-			}
-		}
-		return null;
-	}
-	
-	public String[] getOptionAsStringArray(String name) {
-		name = name.toLowerCase();
-		if (options.containsKey(name) && options.get(name) != null) {
-			return options.get(name).getClass().isArray() ?
-					Arrays.stream((Object[])options.get(name)).toArray(String[]::new) :
- 					new String[] { options.get(name).toString() };
-		}
-		return null;
-	}
-	
-	public Integer[] getOptionAsIntArray(String name) {
-		name = name.toLowerCase();
-		if (options.containsKey(name) && options.get(name) != null) {
-			return Arrays.stream(getOptionAsStringArray(name)).filter(value -> isInteger(value)).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-		}
-		return null;
-	}
-	
-	public Double[] getOptionAsDoubleArray(String name) {
-		name = name.toLowerCase();
-		if (options.containsKey(name) && options.get(name) != null) {
-			return Arrays.stream(getOptionAsStringArray(name)).filter(value -> isDouble(value) || isInteger(value)).mapToDouble(Double::parseDouble).boxed().toArray(Double[]::new);
-		}
-		return null;
-	}
-	
-	private boolean isDouble(String val) {
-		try {
-			Double.parseDouble(val);
-			return val.contains(".");
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	private boolean isInteger(String val) {
-		try {
-			Integer.parseInt(val);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-*/	
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -41,7 +42,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		if (config.getVandahDmpApiUrl() == null) {
-			log.warn("There was no API URL defined. Have you forgotten to choose a configurat profile? (use dev, prod, test)");
+			VandaHUtility.logAndPrint(log, Level.WARN, true, "There is no API URL defined in the properties file.");
 			return;
 		}
 		
@@ -52,6 +53,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		ArrayList<String> cmds = commandLineArgsParser.getCommands();
 		
+		// No command => display help
 		if (cmds.size() == 0) {
 			VandaHUtility.logAndPrint(null, null, true, "Vanda Hydrometry Data\n=====================\nUsage parameters: COMMAND [--options[=value]]");
 			VandaHUtility.logAndPrint(null, null, true, "Commands:\n");
@@ -67,11 +69,17 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 			VandaHUtility.logAndPrint(null, null, true, "Use the option --verbose to display the results in the console.");
 			VandaHUtility.logAndPrint(null, null, true, "Use the option --saveDb to save the results in the defined database.");
 		
+		// Too many commands
 		} else if (cmds.size() > 1) {
-			log.warn("Too many commands requested.");
+			VandaHUtility.logAndPrint(log, Level.WARN, true, "Too many commands requested.");
 		
 		}  else { //only one command
-			commandController.execute(cmds.get(0));
+			String cmd = cmds.get(0);
+			try {
+				commandController.execute(cmd);
+			} catch (Exception ex) {
+				VandaHUtility.logAndPrint(log, Level.ERROR, true, "Error executing command '" + cmd + "'", ex);
+			}
 		}
 		
 	}

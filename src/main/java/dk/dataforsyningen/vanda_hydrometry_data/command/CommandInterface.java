@@ -10,8 +10,9 @@ public interface CommandInterface {
 
 	/**
 	 * Read data from API
+	 * @return number of read items
 	 */
-	public void getData();
+	public int getData();
 	
 	/**
 	 * Map data to local model
@@ -19,9 +20,10 @@ public interface CommandInterface {
 	public void mapData();
 	
 	/**
-	 * Save data to DB
+	 * Save data to DB.
+	 * @return number of saved items
 	 */
-	public void saveData();
+	public int saveData();
 	
 	/**
 	 * Display data on the console

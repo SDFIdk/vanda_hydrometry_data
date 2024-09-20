@@ -2,9 +2,11 @@ package dk.dataforsyningen.vanda_hydrometry_data.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
@@ -20,32 +22,39 @@ public class ExaminationTypesCommand  implements CommandInterface {
 	
 	private static final Logger log = LoggerFactory.getLogger(ExaminationTypesCommand.class);
 	
+	private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
+	
 	@Autowired
 	VandahDmpApiService vandahService;
 	
+	@Autowired
+	private VandaHydrometryDataConfig config;
+	
 	@Override
-	public void getData() {
-		DmpHydroApiResponsesExaminationTypeResponse[] types = vandahService.getExaminationTypes();
-		log.info("count types: " + types.length);
-		log.info("1st type: " + types[0].toString());
+	public int getData() {
+		data = vandahService.getExaminationTypes();
+		return data != null ? data.length : 0;
 	}
 
 	@Override
 	public void mapData() {
-		// TODO Auto-generated method stub
-
+		//nothing to map
 	}
 
 	@Override
-	public void saveData() {
-		// TODO Auto-generated method stub
-
+	public int saveData() {
+		VandaHUtility.logAndPrint(log, Level.WARN, config.isVerbose(), "Save to DB is not relevant for this data");
+		return 0;
 	}
 
 	@Override
 	public void displayData() {
-		// TODO Auto-generated method stub
-		
+		if (data != null) {
+			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
+			for(DmpHydroApiResponsesExaminationTypeResponse item : data) {
+				System.out.println(item);
+			}
+		}
 	}
 
 	@Override
