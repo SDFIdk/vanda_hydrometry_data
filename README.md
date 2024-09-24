@@ -111,8 +111,3 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 	...
 ```
 
-<!--TODO:
-	Implement Model
-	Implement Repository
-	Error handling and logging
--->
