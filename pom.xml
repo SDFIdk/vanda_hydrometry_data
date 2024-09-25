@@ -148,12 +148,17 @@
 	                        <!-- Use this output path instead if you want the sources generated under the target folder not in the main src folder
 								<output>${project.build.directory}/generated-sources/swagger</output>-->
 	                        <output>${basedir}</output>
+	                        <!-- Use the following mapping, 
+	                        	if the genearated code uses a different OffsetDateTime object then java.time.OffsetDateTime.
+	                        	However not necessary if the generated code uses Date object -->
+	                        <!--
 	                        <typeMappings>
 	                        	<typeMapping>OffsetDateTime=OffsetDateTime</typeMapping>
 	                        </typeMappings>
 							<importMappings>
 								<importMapping>org.threeten.bp.OffsetDateTime=java.time.OffsetDateTime</importMapping>
 							</importMappings>
+							-->
 	                    </configuration>
 	                </execution>
 	            </executions>

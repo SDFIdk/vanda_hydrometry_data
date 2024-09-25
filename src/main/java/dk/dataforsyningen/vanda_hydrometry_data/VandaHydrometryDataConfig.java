@@ -160,7 +160,7 @@ public class VandaHydrometryDataConfig {
 		
 		if (withResultsAfter == null) return null;
 		try {
-			return LocalDateTime.parse(parseDate(withResultsAfter), datePattern);
+			return LocalDateTime.parse(VandaHUtility.normalizeDate(withResultsAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsAfter' parameter.");
 			return null;
@@ -170,7 +170,7 @@ public class VandaHydrometryDataConfig {
 	public LocalDateTime getWithResultsCreatedAfter() {
 		if (withResultsCreatedAfter == null) return null;
 		try {
-			return LocalDateTime.parse(parseDate(withResultsCreatedAfter), datePattern);
+			return LocalDateTime.parse(VandaHUtility.normalizeDate(withResultsCreatedAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsCreatedAfter' parameter.");
 			return null;
@@ -180,7 +180,7 @@ public class VandaHydrometryDataConfig {
 	public LocalDateTime getFrom() {
 		if (from == null) return null;
 		try {
-			return LocalDateTime.parse(parseDate(from), datePattern);
+			return LocalDateTime.parse(VandaHUtility.normalizeDate(from), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'from' parameter.");
 			return null;
@@ -190,7 +190,7 @@ public class VandaHydrometryDataConfig {
 	public LocalDateTime getTo() {
 		if (to == null) return null;
 		try {
-			return LocalDateTime.parse(parseDate(to), datePattern);
+			return LocalDateTime.parse(VandaHUtility.normalizeDate(to), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'to' parameter.");
 			return null;
@@ -200,30 +200,14 @@ public class VandaHydrometryDataConfig {
 	public LocalDateTime getCreatedAfter() {
 		if (createdAfter == null) return null;
 		try {
-			return LocalDateTime.parse(parseDate(createdAfter), datePattern);
+			return LocalDateTime.parse(VandaHUtility.normalizeDate(createdAfter), datePattern);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'createdAfter' parameter.");
 			return null;
 		}
 	}
 	
-	private String parseDate(String dateStr) {
-        String regex = "(\\d{4})-(\\d{1,2})-(\\d{1,2})(?:[T\\s](\\d{1,2}):(\\d{1,2})(?::(\\d{1,2}))?)?Z?";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(dateStr);
-
-        if (matcher.matches()) {
-        	String year = matcher.group(1);
-            String month = String.format("%02d", Integer.parseInt(matcher.group(2)));
-            String day = String.format("%02d", Integer.parseInt(matcher.group(3)));
-            String hour = String.format("%02d", matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : 0);
-            String minute = String.format("%02d", matcher.group(5) != null ? Integer.parseInt(matcher.group(5)) : 0);
-
-            return String.format("%s-%s-%s %s:%s", year, month, day, hour, minute);
-        } else {
-            return null;
-        }
-    }
+	
 		
 	@Override
 	public String toString() {

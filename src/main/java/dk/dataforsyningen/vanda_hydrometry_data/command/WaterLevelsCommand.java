@@ -1,5 +1,10 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
+import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +12,11 @@ import org.springframework.stereotype.Component;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
+import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
+import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
+import lombok.Getter;
 
 /**
  * Command to retrieve the water levels.
@@ -22,6 +30,10 @@ public class WaterLevelsCommand implements CommandInterface {
 	private static final Logger log = LoggerFactory.getLogger(WaterLevelsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
+	@Getter
+	private ArrayList<Measurement> measurements;
+	@Getter
+	private ArrayList<MeasurementType> measurementTypes;
 	
 	@Autowired
 	VandahDmpApiService vandahService;
@@ -45,7 +57,24 @@ public class WaterLevelsCommand implements CommandInterface {
 	@Override
 	public void mapData() {
 		if (data != null) {
-			// TODO Auto-generated method stub
+			measurementTypes = new ArrayList<>();
+			measurements = Stream.of(data) //make the array of responses into a Stream<DmpHydroApiResponsesMeasurementResultResponse>
+				.filter(response -> response != null && response.getResults() != null) //disconsider null elements if any
+				.map(
+					response -> response.getResults().stream() //make the results for each station into a Stream<DmpHydroApiResponsesResultResponse>
+								.map( result -> {
+									
+									//Create the Measurement Type too
+									MeasurementType mt = MeasurementType.from(result);
+									if (!measurementTypes.contains(mt)) {
+										measurementTypes.add(mt);
+									}
+									
+									return Measurement.from( result , response.getStationId()); 
+								}) //map the array of Results into Stream<Measurements>
+				) //map the response for each station into a Stream<Measurement>. the results is Stream<Stream<Measurements>> 
+				.flatMap(Function.identity()) //flatten the streams of streams into a single stream of measurements
+				.collect(Collectors.toCollection(ArrayList::new)); //collect all into a List<Measurements>
 		}
 	}
 

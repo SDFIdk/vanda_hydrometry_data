@@ -1,5 +1,10 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +12,10 @@ import org.springframework.stereotype.Component;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
+import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+import lombok.Getter;
 
 /**
  * Command to retrieve the stations.
@@ -22,6 +29,8 @@ public class StationsCommand implements CommandInterface {
 	private static final Logger log = LoggerFactory.getLogger(StationsCommand.class);
 	
 	private DmpHydroApiResponsesStationResponse[] data;
+	@Getter
+	private ArrayList<Station> stations = new ArrayList<>();
 	
 	@Autowired
 	VandahDmpApiService vandahService;
@@ -38,14 +47,16 @@ public class StationsCommand implements CommandInterface {
 	@Override
 	public void mapData() {
 		if (data != null) {
-		// TODO Auto-generated method stub
+			stations = Arrays.stream(data) //make the array of stations responses into a Stream<DmpHydroApiResponsesStationResponse>
+					.map(response -> Station.from(response)) //map the stream of stations into a Stream<Stations>
+					.collect(Collectors.toCollection(ArrayList::new)); //convert to List<Stations>
 		}
 	}
 
 	@Override
 	public int saveData() {
 		if (data != null) {
-			// TODO Auto-generated method stub
+			// TODO save stations
 		}
 		return data != null ? data.length : 0;
 	}

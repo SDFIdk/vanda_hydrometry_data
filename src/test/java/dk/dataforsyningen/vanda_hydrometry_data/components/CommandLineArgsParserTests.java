@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data;
+package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

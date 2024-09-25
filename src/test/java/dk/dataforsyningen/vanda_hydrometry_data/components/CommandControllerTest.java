@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data;
+package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.command.StationsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
