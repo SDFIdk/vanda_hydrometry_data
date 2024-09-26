@@ -46,7 +46,7 @@ public class CommandControllerTest {
 		
 		verify(stationsCommand, never()).getData();
 		verify(stationsCommand, never()).mapData();
-		verify(stationsCommand, never()).displayData();
+		verify(stationsCommand, never()).displayData(false);
 		verify(stationsCommand, never()).saveData();
 		
 		verify(stationsCommand, times(1)).showHelp();	
@@ -66,7 +66,7 @@ public class CommandControllerTest {
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
-		verify(stationsCommand, never()).displayData();
+		verify(stationsCommand, never()).displayData(false);
 		verify(stationsCommand, never()).saveData();
 	}
 	
@@ -84,7 +84,7 @@ public class CommandControllerTest {
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
-		verify(stationsCommand, times(1)).displayData();
+		verify(stationsCommand, times(1)).displayData(false);
 		verify(stationsCommand, never()).saveData();
 	}
 	
@@ -102,7 +102,7 @@ public class CommandControllerTest {
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
-		verify(stationsCommand, never()).displayData();
+		verify(stationsCommand, never()).displayData(false);
 		verify(stationsCommand, times(1)).saveData();
 	}	
 }

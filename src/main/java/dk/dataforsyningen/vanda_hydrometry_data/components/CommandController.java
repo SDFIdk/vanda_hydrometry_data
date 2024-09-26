@@ -47,8 +47,8 @@ public class CommandController {
 	    		
 	    		commandBean.mapData();
 	    		
-	    		if (config.isDisplayData()) {
-	    			commandBean.displayData();
+	    		if (config.isDisplayData() || config.isDisplayRawData()) {
+	    			commandBean.displayData(config.isDisplayRawData());
 	    		}
 	    		
 	    		if (config.isSaveDb()) {

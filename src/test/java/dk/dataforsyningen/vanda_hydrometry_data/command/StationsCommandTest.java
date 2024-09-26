@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesLocationResponse;
@@ -45,6 +46,9 @@ public class StationsCommandTest {
 	
 	@Mock
 	private VandahDmpApiService vandahService;
+	
+	@Mock
+	private VandaHydrometryDataConfig config;
 	
 	@InjectMocks
 	private StationsCommand cmd = new StationsCommand();
@@ -83,6 +87,13 @@ public class StationsCommandTest {
 		data[1] = station2;
 		
 		when(vandahService.getAllStations()).thenReturn(data);
+		
+		when(config.getStationId()).thenReturn(null);
+		when(config.getOperatorStationId()).thenReturn(null);
+		when(config.getParameterSc()).thenReturn(null);
+		when(config.getWithResultsAfter()).thenReturn(null);
+		when(config.getWithResultsCreatedAfter()).thenReturn(null);
+		when((config.getExaminationTypeSc())).thenReturn(null);
 	}
 	
 	@Test

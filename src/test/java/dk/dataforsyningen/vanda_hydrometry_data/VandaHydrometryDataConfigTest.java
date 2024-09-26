@@ -3,12 +3,8 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.format.DateTimeParseException;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -120,23 +116,62 @@ public class VandaHydrometryDataConfigTest {
 		private VandaHydrometryDataConfig config;
 	
 		@Test
-		public void testDates() {
+		public void testDates() { //TODO: this will not work in another time zone or without DTS
 			assertDoesNotThrow(() -> config.getWithResultsAfter());
-			assertEquals("2024-09-01T00:00", "" + config.getWithResultsAfter());
+			assertEquals("2024-08-31T22:00Z", "" + config.getWithResultsAfter());
 			
 			assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
-			assertEquals("2024-09-01T23:24", "" + config.getWithResultsCreatedAfter());
+			assertEquals("2024-09-01T23:24Z", "" + config.getWithResultsCreatedAfter());
 			
 			assertDoesNotThrow(() -> config.getFrom());
-			assertEquals("2024-09-01T23:24", "" + config.getFrom());
+			assertEquals("2024-09-01T21:24Z", "" + config.getFrom());
 			
 			assertDoesNotThrow(() -> config.getTo());
-			assertEquals("2024-09-01T23:24", "" + config.getTo());
+			assertEquals("2024-09-01T21:24Z", "" + config.getTo());
 			
 			assertDoesNotThrow(() -> config.getCreatedAfter());
-			assertEquals("2024-09-01T12:34", "" + config.getCreatedAfter());
+			assertEquals("2024-09-01T10:34Z", "" + config.getCreatedAfter());
 		}
 	}
+	
+	
+	/**
+	 * Test date parsing with different formats
+	 */
+	@Nested
+	@ContextConfiguration
+	@TestPropertySource(
+			properties = {"withResultsAfter=2024-09-01T23:24.00z", 
+					"withResultsCreatedAfter=2024-09-01T23:24:02.01Z",
+					"from=2024-09-01T23:24:30.45",
+					"to=2024-09-01 23:24:34.999",
+					"createdAfter=2024-09-01 12:34:56.123"
+					}
+			)
+	public class VandaHydrometryDataConfigTest5 {
+		
+		@Autowired
+		private VandaHydrometryDataConfig config;
+	
+		@Test
+		public void testDates() { //TODO: this will not work in another time zone or without DTS
+			assertDoesNotThrow(() -> config.getWithResultsAfter());
+			assertEquals("2024-09-01T23:24Z", "" + config.getWithResultsAfter());
+			
+			assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
+			assertEquals("2024-09-01T23:24Z", "" + config.getWithResultsCreatedAfter());
+			
+			assertDoesNotThrow(() -> config.getFrom());
+			assertEquals("2024-09-01T21:24Z", "" + config.getFrom()); 
+			
+			assertDoesNotThrow(() -> config.getTo());
+			assertEquals("2024-09-01T21:24Z", "" + config.getTo()); 
+			
+			assertDoesNotThrow(() -> config.getCreatedAfter());
+			assertEquals("2024-09-01T10:34Z", "" + config.getCreatedAfter());
+		}
+	}
+	
 	
 	/**
 	 * Test invalid date parsing
@@ -151,7 +186,7 @@ public class VandaHydrometryDataConfigTest {
 					"createdAfter=asdf"
 					}
 			)
-	public class VandaHydrometryDataConfigTest5 {
+	public class VandaHydrometryDataConfigTest6 {
 		
 		@Autowired
 		private VandaHydrometryDataConfig config;

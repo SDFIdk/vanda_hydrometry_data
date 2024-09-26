@@ -1,7 +1,7 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
 import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -67,8 +67,8 @@ public class VandahDmpApiService {
 			String operatorCvr,
 			Integer parameterSc,
 			Integer[] examinationTypeScArray,
-			LocalDateTime withResultsAfter,
-			LocalDateTime withResultsCreatedAfter,
+			OffsetDateTime withResultsAfter,
+			OffsetDateTime withResultsCreatedAfter,
 			String format
 			) {
 		
@@ -102,8 +102,8 @@ public class VandahDmpApiService {
 			String operatorCvr,
 			Integer parameterSc,
 			Integer examinationTypeSc,
-			LocalDateTime withResultsAfter,
-			LocalDateTime withResultsCreatedAfter,
+			OffsetDateTime withResultsAfter,
+			OffsetDateTime withResultsCreatedAfter,
 			String format
 			) {
 		
@@ -114,7 +114,7 @@ public class VandahDmpApiService {
 		if (!isEmpty(stationOwnerCvr)) { vandahApiUrl.append(del + "stationOwnerCvr=" + stationOwnerCvr); del = "&"; }
 		if (!isEmpty(operatorCvr)) { vandahApiUrl.append(del + "operatorCvr=" + operatorCvr); del = "&"; }
 		if (!isEmpty(parameterSc)) { vandahApiUrl.append(del + "parameterSc=" + parameterSc); del = "&"; }
-		if (!isEmpty(examinationTypeSc)) { vandahApiUrl.append(del + "createdAfter=" + examinationTypeSc); del = "&"; }
+		if (!isEmpty(examinationTypeSc)) { vandahApiUrl.append(del + "examinationTypeSc=" + examinationTypeSc); del = "&"; }
 		if (!isEmpty(withResultsAfter)) { vandahApiUrl.append(del + "withResultsAfter=" + withResultsAfter); del = "&"; }
 		if (!isEmpty(withResultsCreatedAfter)) { vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); del = "&"; }
 		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
@@ -157,9 +157,9 @@ public class VandahDmpApiService {
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
-			LocalDateTime from,
-			LocalDateTime to,
-			LocalDateTime createdAfter,
+			OffsetDateTime from,
+			OffsetDateTime to,
+			OffsetDateTime createdAfter,
 			String format
 			) {
 		
@@ -196,9 +196,9 @@ public class VandahDmpApiService {
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
-			LocalDateTime from,
-			LocalDateTime to,
-			LocalDateTime createdAfter,
+			OffsetDateTime from,
+			OffsetDateTime to,
+			OffsetDateTime createdAfter,
 			String format) {
 		
 		if (isEmpty(stationId) && isEmpty(operatorStationId)) {

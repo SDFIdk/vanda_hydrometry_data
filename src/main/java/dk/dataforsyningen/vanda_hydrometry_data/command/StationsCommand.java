@@ -1,5 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -40,7 +41,23 @@ public class StationsCommand implements CommandInterface {
 	
 	@Override
 	public int getData() {
-		data = vandahService.getAllStations(); 
+		boolean getAllStations = config.getStationId() == null 
+				&& config.getOperatorStationId() == null
+				&& config.getParameterSc() == null
+				&& config.getWithResultsAfter() == null
+				&& config.getWithResultsCreatedAfter() == null
+				&& (config.getExaminationTypeSc() == null || config.getExaminationTypeSc().length == 0);
+		
+		if (getAllStations) {
+			data = vandahService.getAllStations();
+		} else {
+			data = vandahService.getStations(config.getStationId(), 
+					config.getOperatorStationId(), 
+					null, null, config.getParameterSc(), 
+					config.getExaminationTypeSc(), 
+					config.getWithResultsAfter(), 
+					config.getWithResultsCreatedAfter(), null);
+		}
 		return data != null ? data.length : 0;
 	}
 
@@ -62,10 +79,16 @@ public class StationsCommand implements CommandInterface {
 	}
 
 	@Override
-	public void displayData() {
-		if (data != null) {
+	public void displayData(boolean raw) {
+		if (raw && data != null) {
 			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
 			for(DmpHydroApiResponsesStationResponse item : data) {
+				System.out.println(item);
+			}
+		}
+		if (!raw && stations != null) {
+			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of stations: " + stations.size());
+			for(Station item : stations) {
 				System.out.println(item);
 			}
 		}

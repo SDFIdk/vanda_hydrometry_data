@@ -87,10 +87,20 @@ public class WaterLevelsCommand implements CommandInterface {
 	}
 
 	@Override
-	public void displayData() {
-		if (data != null) {
+	public void displayData(boolean raw) {
+		if (raw && data != null) {
 			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
 			for(DmpHydroApiResponsesMeasurementResultResponse item : data) {
+				System.out.println(item);
+			}
+		}
+		if (!raw && measurements != null && measurementTypes != null) {
+			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of measurements: " + measurements.size());
+			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of measurementTypes: " + measurementTypes.size());
+			for(Measurement item : measurements) {
+				System.out.println(item);
+			}
+			for(MeasurementType item : measurementTypes) {
 				System.out.println(item);
 			}
 		}

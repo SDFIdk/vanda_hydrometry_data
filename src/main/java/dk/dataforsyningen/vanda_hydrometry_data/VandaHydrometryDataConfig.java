@@ -1,11 +1,8 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +23,6 @@ import lombok.Getter;
 public class VandaHydrometryDataConfig {
 	
 	private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataConfig.class);
-	
-	private DateTimeFormatter datePattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	/* Values from the properties file */
 	
@@ -61,6 +56,9 @@ public class VandaHydrometryDataConfig {
 	
 	@Value("${displaydata:#{null}}")
 	private String displayData;  //boolean
+	
+	@Value("${displayrawdata:#{null}}")
+	private String displayRawData;  //boolean
 	
 	@Value("${savedb:#{null}}")
 	private String saveDb;  //boolean
@@ -110,11 +108,15 @@ public class VandaHydrometryDataConfig {
 		return displayData != null;
 	}
 	
+	public boolean isDisplayRawData() {
+		return displayRawData != null;
+	}
+	
 	public boolean isSaveDb() {
 		return saveDb != null;
 	}
 	
-	public int[] getExaminationTypeSc() {
+	public Integer[] getExaminationTypeSc() {
 		if (examinationTypeSc == null || examinationTypeSc.length() == 0) {
 			return null;
 		} else if (examinationTypeSc.contains(",")) {
@@ -127,10 +129,10 @@ public class VandaHydrometryDataConfig {
 								} catch (NumberFormatException e) {
 									return false;
 								}
-							}).mapToInt(Integer::parseInt).toArray();
+							}).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
 		}
 		try {
-			return new int[] {Integer.parseInt(examinationTypeSc)};
+			return new Integer[] {Integer.parseInt(examinationTypeSc)};
 		} catch (NumberFormatException e) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid number found in 'examinationTypeSc' parameter.");
 		}
@@ -153,54 +155,51 @@ public class VandaHydrometryDataConfig {
 		}
 	}
 	
-	public LocalDateTime getWithResultsAfter() {
-		
-		//Date in = new Date();
-		//LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
-		
+	public OffsetDateTime getWithResultsAfter() {
+				
 		if (withResultsAfter == null) return null;
 		try {
-			return LocalDateTime.parse(VandaHUtility.normalizeDate(withResultsAfter), datePattern);
+			return VandaHUtility.parseForAPI(withResultsAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsAfter' parameter.");
 			return null;
 		}
 	}
 	
-	public LocalDateTime getWithResultsCreatedAfter() {
+	public OffsetDateTime getWithResultsCreatedAfter() {
 		if (withResultsCreatedAfter == null) return null;
 		try {
-			return LocalDateTime.parse(VandaHUtility.normalizeDate(withResultsCreatedAfter), datePattern);
+			return VandaHUtility.parseForAPI(withResultsCreatedAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsCreatedAfter' parameter.");
 			return null;
 		}
 	}
 	
-	public LocalDateTime getFrom() {
+	public OffsetDateTime getFrom() {
 		if (from == null) return null;
 		try {
-			return LocalDateTime.parse(VandaHUtility.normalizeDate(from), datePattern);
+			return VandaHUtility.parseForAPI(from);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'from' parameter.");
 			return null;
 		}
 	}
 	
-	public LocalDateTime getTo() {
+	public OffsetDateTime getTo() {
 		if (to == null) return null;
 		try {
-			return LocalDateTime.parse(VandaHUtility.normalizeDate(to), datePattern);
+			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'to' parameter.");
 			return null;
 		}
 	}
 	
-	public LocalDateTime getCreatedAfter() {
+	public OffsetDateTime getCreatedAfter() {
 		if (createdAfter == null) return null;
 		try {
-			return LocalDateTime.parse(VandaHUtility.normalizeDate(createdAfter), datePattern);
+			return VandaHUtility.parseForAPI(createdAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
 			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'createdAfter' parameter.");
 			return null;
@@ -217,6 +216,7 @@ public class VandaHydrometryDataConfig {
 		
 		sb.append("\tHelp: ").append(isHelp()).append("\n");
 		sb.append("\tVerbose: ").append(isVerbose()).append("\n");
+		sb.append("\tDisplayRawData: ").append(isDisplayRawData()).append("\n");
 		sb.append("\tDisplayData: ").append(isDisplayData()).append("\n");
 		sb.append("\tSaveDb: ").append(isSaveDb()).append("\n");
 		sb.append("\tStationId: ").append(getStationId()).append("\n");
