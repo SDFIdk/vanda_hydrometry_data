@@ -9,5 +9,5 @@ Name | Type | Description | Notes
 **examinationTypeSc** | **Integer** | Examination type stancode |  [optional]
 **unit** | **String** | Unit name |  [optional]
 **unitSc** | **Integer** | Unit stancode |  [optional]
-**firstResult** | [**Date**](Date.md) | A time when the first result was measured |  [optional]
-**latestResult** | [**Date**](Date.md) | A time when the last result was measured |  [optional]
+**firstResult** | [**OffsetDateTime**](Date.md) | A time when the first result was measured |  [optional]
+**latestResult** | [**OffsetDateTime**](Date.md) | A time when the last result was measured |  [optional]

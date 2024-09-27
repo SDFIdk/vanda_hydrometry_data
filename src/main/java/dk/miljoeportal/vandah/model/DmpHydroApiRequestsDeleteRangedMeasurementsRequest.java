@@ -20,11 +20,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import dk.miljoeportal.vandah.model.DmpHydroApiRequestsStationIdentifier;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiRequestsDeleteRangedMeasurementsRequest
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiRequestsDeleteRangedMeasurementsRequest {
   @JsonProperty("station")
@@ -37,10 +38,10 @@ public class DmpHydroApiRequestsDeleteRangedMeasurementsRequest {
   private Integer examinationTypeSc = null;
 
   @JsonProperty("fromDateTime")
-  private Date fromDateTime = null;
+  private OffsetDateTime fromDateTime = null;
 
   @JsonProperty("toDateTime")
-  private Date toDateTime = null;
+  private OffsetDateTime toDateTime = null;
 
   public DmpHydroApiRequestsDeleteRangedMeasurementsRequest station(DmpHydroApiRequestsStationIdentifier station) {
     this.station = station;
@@ -96,7 +97,7 @@ public class DmpHydroApiRequestsDeleteRangedMeasurementsRequest {
     this.examinationTypeSc = examinationTypeSc;
   }
 
-  public DmpHydroApiRequestsDeleteRangedMeasurementsRequest fromDateTime(Date fromDateTime) {
+  public DmpHydroApiRequestsDeleteRangedMeasurementsRequest fromDateTime(OffsetDateTime fromDateTime) {
     this.fromDateTime = fromDateTime;
     return this;
   }
@@ -106,15 +107,15 @@ public class DmpHydroApiRequestsDeleteRangedMeasurementsRequest {
    * @return fromDateTime
   **/
   @Schema(description = "From date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public Date getFromDateTime() {
+  public OffsetDateTime getFromDateTime() {
     return fromDateTime;
   }
 
-  public void setFromDateTime(Date fromDateTime) {
+  public void setFromDateTime(OffsetDateTime fromDateTime) {
     this.fromDateTime = fromDateTime;
   }
 
-  public DmpHydroApiRequestsDeleteRangedMeasurementsRequest toDateTime(Date toDateTime) {
+  public DmpHydroApiRequestsDeleteRangedMeasurementsRequest toDateTime(OffsetDateTime toDateTime) {
     this.toDateTime = toDateTime;
     return this;
   }
@@ -124,11 +125,11 @@ public class DmpHydroApiRequestsDeleteRangedMeasurementsRequest {
    * @return toDateTime
   **/
   @Schema(description = "To date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public Date getToDateTime() {
+  public OffsetDateTime getToDateTime() {
     return toDateTime;
   }
 
-  public void setToDateTime(Date toDateTime) {
+  public void setToDateTime(OffsetDateTime toDateTime) {
     this.toDateTime = toDateTime;
   }
 

@@ -43,7 +43,7 @@ public class Measurement {
 		Measurement measurement = new Measurement();
 		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
 		measurement.setResult(response.getResult());
-		measurement.setMeasurementDateTime(VandaHUtility.dateToOfssetDateTime(response.getMeasurementDateTime()));
+		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
 		
 		measurement.setStationId(stationId);
 		

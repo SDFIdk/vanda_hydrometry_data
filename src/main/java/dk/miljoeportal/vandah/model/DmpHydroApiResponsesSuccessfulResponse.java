@@ -19,20 +19,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesSuccessfulResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesSuccessfulResponse {
   @JsonProperty("timestamp")
-  private Date timestamp = null;
+  private OffsetDateTime timestamp = null;
 
   @JsonProperty("action")
   private String action = null;
 
-  public DmpHydroApiResponsesSuccessfulResponse timestamp(Date timestamp) {
+  public DmpHydroApiResponsesSuccessfulResponse timestamp(OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -42,11 +43,11 @@ public class DmpHydroApiResponsesSuccessfulResponse {
    * @return timestamp
   **/
   @Schema(description = "Measurement datetime")
-  public Date getTimestamp() {
+  public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

@@ -19,11 +19,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesLoggerAssociationResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesLoggerAssociationResponse {
   @JsonProperty("stationId")
@@ -39,10 +40,10 @@ public class DmpHydroApiResponsesLoggerAssociationResponse {
   private String loggerId = null;
 
   @JsonProperty("created")
-  private Date created = null;
+  private OffsetDateTime created = null;
 
   @JsonProperty("effective")
-  private Date effective = null;
+  private OffsetDateTime effective = null;
 
   public DmpHydroApiResponsesLoggerAssociationResponse stationId(String stationId) {
     this.stationId = stationId;
@@ -116,7 +117,7 @@ public class DmpHydroApiResponsesLoggerAssociationResponse {
     this.loggerId = loggerId;
   }
 
-  public DmpHydroApiResponsesLoggerAssociationResponse created(Date created) {
+  public DmpHydroApiResponsesLoggerAssociationResponse created(OffsetDateTime created) {
     this.created = created;
     return this;
   }
@@ -126,15 +127,15 @@ public class DmpHydroApiResponsesLoggerAssociationResponse {
    * @return created
   **/
   @Schema(description = "Date and time when the logger association was created. Blank if no logger associated")
-  public Date getCreated() {
+  public OffsetDateTime getCreated() {
     return created;
   }
 
-  public void setCreated(Date created) {
+  public void setCreated(OffsetDateTime created) {
     this.created = created;
   }
 
-  public DmpHydroApiResponsesLoggerAssociationResponse effective(Date effective) {
+  public DmpHydroApiResponsesLoggerAssociationResponse effective(OffsetDateTime effective) {
     this.effective = effective;
     return this;
   }
@@ -144,11 +145,11 @@ public class DmpHydroApiResponsesLoggerAssociationResponse {
    * @return effective
   **/
   @Schema(description = "Date and time from when measurements are being read from the associated logger. Blank if no logger associated")
-  public Date getEffective() {
+  public OffsetDateTime getEffective() {
     return effective;
   }
 
-  public void setEffective(Date effective) {
+  public void setEffective(OffsetDateTime effective) {
     this.effective = effective;
   }
 

@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * DmpHydroApiResponsesDeleteMeasurementsResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesDeleteMeasurementsResponse {
   @JsonProperty("numberOfDeletedMeasurements")

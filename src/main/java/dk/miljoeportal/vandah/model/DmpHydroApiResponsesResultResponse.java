@@ -19,11 +19,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesResultResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesResultResponse {
   @JsonProperty("measurementPointNumber")
@@ -48,7 +49,7 @@ public class DmpHydroApiResponsesResultResponse {
   private String examinationType = null;
 
   @JsonProperty("measurementDateTime")
-  private Date measurementDateTime = null;
+  private OffsetDateTime measurementDateTime = null;
 
   @JsonProperty("result")
   private Double result = null;
@@ -69,7 +70,7 @@ public class DmpHydroApiResponsesResultResponse {
   private String formulaId = null;
 
   @JsonProperty("createdTimestamp")
-  private Date createdTimestamp = null;
+  private OffsetDateTime createdTimestamp = null;
 
   @JsonProperty("reasonSc")
   private Integer reasonSc = null;
@@ -212,7 +213,7 @@ public class DmpHydroApiResponsesResultResponse {
     this.examinationType = examinationType;
   }
 
-  public DmpHydroApiResponsesResultResponse measurementDateTime(Date measurementDateTime) {
+  public DmpHydroApiResponsesResultResponse measurementDateTime(OffsetDateTime measurementDateTime) {
     this.measurementDateTime = measurementDateTime;
     return this;
   }
@@ -222,11 +223,11 @@ public class DmpHydroApiResponsesResultResponse {
    * @return measurementDateTime
   **/
   @Schema(description = "Measurement date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public Date getMeasurementDateTime() {
+  public OffsetDateTime getMeasurementDateTime() {
     return measurementDateTime;
   }
 
-  public void setMeasurementDateTime(Date measurementDateTime) {
+  public void setMeasurementDateTime(OffsetDateTime measurementDateTime) {
     this.measurementDateTime = measurementDateTime;
   }
 
@@ -338,7 +339,7 @@ public class DmpHydroApiResponsesResultResponse {
     this.formulaId = formulaId;
   }
 
-  public DmpHydroApiResponsesResultResponse createdTimestamp(Date createdTimestamp) {
+  public DmpHydroApiResponsesResultResponse createdTimestamp(OffsetDateTime createdTimestamp) {
     this.createdTimestamp = createdTimestamp;
     return this;
   }
@@ -348,11 +349,11 @@ public class DmpHydroApiResponsesResultResponse {
    * @return createdTimestamp
   **/
   @Schema(description = "The timestamp when the result was delivered/created. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public Date getCreatedTimestamp() {
+  public OffsetDateTime getCreatedTimestamp() {
     return createdTimestamp;
   }
 
-  public void setCreatedTimestamp(Date createdTimestamp) {
+  public void setCreatedTimestamp(OffsetDateTime createdTimestamp) {
     this.createdTimestamp = createdTimestamp;
   }
 

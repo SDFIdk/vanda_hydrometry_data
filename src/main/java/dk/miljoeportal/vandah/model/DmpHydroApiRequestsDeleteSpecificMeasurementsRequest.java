@@ -21,12 +21,13 @@ import dk.miljoeportal.vandah.model.DmpHydroApiRequestsStationIdentifier;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 /**
  * DmpHydroApiRequestsDeleteSpecificMeasurementsRequest
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiRequestsDeleteSpecificMeasurementsRequest {
   @JsonProperty("station")
@@ -39,7 +40,7 @@ public class DmpHydroApiRequestsDeleteSpecificMeasurementsRequest {
   private Integer examinationTypeSc = null;
 
   @JsonProperty("measurementDateTimes")
-  private List<Date> measurementDateTimes = null;
+  private List<OffsetDateTime> measurementDateTimes = null;
 
   public DmpHydroApiRequestsDeleteSpecificMeasurementsRequest station(DmpHydroApiRequestsStationIdentifier station) {
     this.station = station;
@@ -95,14 +96,14 @@ public class DmpHydroApiRequestsDeleteSpecificMeasurementsRequest {
     this.examinationTypeSc = examinationTypeSc;
   }
 
-  public DmpHydroApiRequestsDeleteSpecificMeasurementsRequest measurementDateTimes(List<Date> measurementDateTimes) {
+  public DmpHydroApiRequestsDeleteSpecificMeasurementsRequest measurementDateTimes(List<OffsetDateTime> measurementDateTimes) {
     this.measurementDateTimes = measurementDateTimes;
     return this;
   }
 
-  public DmpHydroApiRequestsDeleteSpecificMeasurementsRequest addMeasurementDateTimesItem(Date measurementDateTimesItem) {
+  public DmpHydroApiRequestsDeleteSpecificMeasurementsRequest addMeasurementDateTimesItem(OffsetDateTime measurementDateTimesItem) {
     if (this.measurementDateTimes == null) {
-      this.measurementDateTimes = new ArrayList<Date>();
+      this.measurementDateTimes = new ArrayList<OffsetDateTime>();
     }
     this.measurementDateTimes.add(measurementDateTimesItem);
     return this;
@@ -113,11 +114,11 @@ public class DmpHydroApiRequestsDeleteSpecificMeasurementsRequest {
    * @return measurementDateTimes
   **/
   @Schema(description = "A list of measurement dates.Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public List<Date> getMeasurementDateTimes() {
+  public List<OffsetDateTime> getMeasurementDateTimes() {
     return measurementDateTimes;
   }
 
-  public void setMeasurementDateTimes(List<Date> measurementDateTimes) {
+  public void setMeasurementDateTimes(List<OffsetDateTime> measurementDateTimes) {
     this.measurementDateTimes = measurementDateTimes;
   }
 

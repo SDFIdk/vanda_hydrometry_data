@@ -19,15 +19,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesFailedResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesFailedResponse {
   @JsonProperty("timestamp")
-  private Date timestamp = null;
+  private OffsetDateTime timestamp = null;
 
   @JsonProperty("isSuccess")
   private Boolean isSuccess = null;
@@ -38,7 +39,7 @@ public class DmpHydroApiResponsesFailedResponse {
   @JsonProperty("errorMessage")
   private String errorMessage = null;
 
-  public DmpHydroApiResponsesFailedResponse timestamp(Date timestamp) {
+  public DmpHydroApiResponsesFailedResponse timestamp(OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -48,11 +49,11 @@ public class DmpHydroApiResponsesFailedResponse {
    * @return timestamp
   **/
   @Schema(description = "Measurement datetime")
-  public Date getTimestamp() {
+  public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

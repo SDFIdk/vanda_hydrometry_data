@@ -80,14 +80,6 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Converts Date object representing a date like "2024-09-25T23:00:00.00Z" to an OffsetDateTime in UTC timezone 
-	 * @return
-	 */
-	public static OffsetDateTime dateToOfssetDateTime(Date date) {
-		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC) : null;
-	}
-	
-	/**
 	 * Returns the value for the given key from a json given as string
 	 * @param key
 	 * @return value as string
@@ -211,5 +203,13 @@ public class VandaHUtility {
 		OffsetDateTime odt = parseUtcOffsetDateTime(dateStr);
 		
 		return odt != null ? Date.from(odt.toInstant()) : null;
+	}
+	
+	/**
+	 * Converts Date object representing a date like "2024-09-25T23:00:00.00Z" to an OffsetDateTime in UTC timezone 
+	 * @return
+	 */
+	public static OffsetDateTime dateToOfssetDateTime(Date date) {
+		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC) : null;
 	}
 }

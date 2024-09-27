@@ -97,7 +97,7 @@ public class WaterFlowsTest {
 		result1.setUnitSc(unitSc2);
 		result1.setUnit(unit2);
 		result1.setResult(res1);
-		result1.setMeasurementDateTime(VandaHUtility.parseUtcDate(date1));
+		result1.setMeasurementDateTime(OffsetDateTime.parse(date1));
 		results.add(result1);
 		
 		DmpHydroApiResponsesResultResponse result2 = new DmpHydroApiResponsesResultResponse();
@@ -109,7 +109,7 @@ public class WaterFlowsTest {
 		result2.setUnitSc(unitSc2);
 		result2.setUnit(unit2);
 		result2.setResult(res2);
-		result2.setMeasurementDateTime(VandaHUtility.parseUtcDate(date2));
+		result2.setMeasurementDateTime(OffsetDateTime.parse(date2));
 		results.add(result2);
 		
 		measurementResult1.setResults(results);
@@ -130,7 +130,7 @@ public class WaterFlowsTest {
 		result1.setUnitSc(unitSc2);
 		result1.setUnit(unit2);
 		result1.setResult(res3);
-		result1.setMeasurementDateTime(VandaHUtility.parseUtcDate(date3));
+		result1.setMeasurementDateTime(OffsetDateTime.parse(date3));
 		results.add(result1);
 			
 		result2 = new DmpHydroApiResponsesResultResponse();	
@@ -142,7 +142,7 @@ public class WaterFlowsTest {
 		result2.setUnitSc(unitSc1);
 		result2.setUnit(unit1);
 		result2.setResult(res4);
-		result2.setMeasurementDateTime(VandaHUtility.parseUtcDate(date4));
+		result2.setMeasurementDateTime(OffsetDateTime.parse(date4));
 		results.add(result2);
 			
 		measurementResult2.setResults(results);

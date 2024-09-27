@@ -7,5 +7,5 @@ Name | Type | Description | Notes
 **operatorStationId** | **String** | Operator station id |  [optional]
 **stationOwnerCvr** | **String** | Station owner CVR |  [optional]
 **loggerId** | **String** | Logger id |  [optional]
-**created** | [**Date**](Date.md) | Date and time when the logger association was created. Blank if no logger associated |  [optional]
-**effective** | [**Date**](Date.md) | Date and time from when measurements are being read from the associated logger. Blank if no logger associated |  [optional]
+**created** | [**OffsetDateTime**](Date.md) | Date and time when the logger association was created. Blank if no logger associated |  [optional]
+**effective** | [**OffsetDateTime**](Date.md) | Date and time from when measurements are being read from the associated logger. Blank if no logger associated |  [optional]

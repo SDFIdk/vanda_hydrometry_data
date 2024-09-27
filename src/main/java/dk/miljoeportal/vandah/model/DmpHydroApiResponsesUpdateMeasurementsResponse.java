@@ -22,17 +22,18 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesSuccessfulResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 /**
  * DmpHydroApiResponsesUpdateMeasurementsResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesUpdateMeasurementsResponse {
   @JsonProperty("created")
-  private Date created = null;
+  private OffsetDateTime created = null;
 
   @JsonProperty("transactionId")
   private UUID transactionId = null;
@@ -43,7 +44,7 @@ public class DmpHydroApiResponsesUpdateMeasurementsResponse {
   @JsonProperty("failed")
   private List<DmpHydroApiResponsesFailedResponse> failed = null;
 
-  public DmpHydroApiResponsesUpdateMeasurementsResponse created(Date created) {
+  public DmpHydroApiResponsesUpdateMeasurementsResponse created(OffsetDateTime created) {
     this.created = created;
     return this;
   }
@@ -53,11 +54,11 @@ public class DmpHydroApiResponsesUpdateMeasurementsResponse {
    * @return created
   **/
   @Schema(description = "The time data is stored in the database for the batch")
-  public Date getCreated() {
+  public OffsetDateTime getCreated() {
     return created;
   }
 
-  public void setCreated(Date created) {
+  public void setCreated(OffsetDateTime created) {
     this.created = created;
   }
 

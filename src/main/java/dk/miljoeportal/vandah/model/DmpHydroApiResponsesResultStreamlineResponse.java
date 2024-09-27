@@ -19,11 +19,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesResultStreamlineResponse
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesResultStreamlineResponse {
   @JsonProperty("measurementPointNumber")
@@ -42,7 +43,7 @@ public class DmpHydroApiResponsesResultStreamlineResponse {
   private String examinationType = null;
 
   @JsonProperty("measurementDateTime")
-  private Date measurementDateTime = null;
+  private OffsetDateTime measurementDateTime = null;
 
   @JsonProperty("result")
   private Double result = null;
@@ -143,7 +144,7 @@ public class DmpHydroApiResponsesResultStreamlineResponse {
     this.examinationType = examinationType;
   }
 
-  public DmpHydroApiResponsesResultStreamlineResponse measurementDateTime(Date measurementDateTime) {
+  public DmpHydroApiResponsesResultStreamlineResponse measurementDateTime(OffsetDateTime measurementDateTime) {
     this.measurementDateTime = measurementDateTime;
     return this;
   }
@@ -153,11 +154,11 @@ public class DmpHydroApiResponsesResultStreamlineResponse {
    * @return measurementDateTime
   **/
   @Schema(description = "Measurement date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
-  public Date getMeasurementDateTime() {
+  public OffsetDateTime getMeasurementDateTime() {
     return measurementDateTime;
   }
 
-  public void setMeasurementDateTime(Date measurementDateTime) {
+  public void setMeasurementDateTime(OffsetDateTime measurementDateTime) {
     this.measurementDateTime = measurementDateTime;
   }
 

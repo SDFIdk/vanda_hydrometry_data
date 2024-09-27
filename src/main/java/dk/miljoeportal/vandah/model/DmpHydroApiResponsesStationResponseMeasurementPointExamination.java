@@ -19,11 +19,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
+import java.time.OffsetDateTime;
 /**
  * DmpHydroApiResponsesStationResponseMeasurementPointExamination
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-18T14:15:50.310248991+02:00[Europe/Copenhagen]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
 
 public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
   @JsonProperty("parameter")
@@ -45,10 +46,10 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
   private Integer unitSc = null;
 
   @JsonProperty("firstResult")
-  private Date firstResult = null;
+  private OffsetDateTime firstResult = null;
 
   @JsonProperty("latestResult")
-  private Date latestResult = null;
+  private OffsetDateTime latestResult = null;
 
   public DmpHydroApiResponsesStationResponseMeasurementPointExamination parameter(String parameter) {
     this.parameter = parameter;
@@ -158,7 +159,7 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
     this.unitSc = unitSc;
   }
 
-  public DmpHydroApiResponsesStationResponseMeasurementPointExamination firstResult(Date firstResult) {
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination firstResult(OffsetDateTime firstResult) {
     this.firstResult = firstResult;
     return this;
   }
@@ -168,15 +169,15 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * @return firstResult
   **/
   @Schema(description = "A time when the first result was measured")
-  public Date getFirstResult() {
+  public OffsetDateTime getFirstResult() {
     return firstResult;
   }
 
-  public void setFirstResult(Date firstResult) {
+  public void setFirstResult(OffsetDateTime firstResult) {
     this.firstResult = firstResult;
   }
 
-  public DmpHydroApiResponsesStationResponseMeasurementPointExamination latestResult(Date latestResult) {
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination latestResult(OffsetDateTime latestResult) {
     this.latestResult = latestResult;
     return this;
   }
@@ -186,11 +187,11 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * @return latestResult
   **/
   @Schema(description = "A time when the last result was measured")
-  public Date getLatestResult() {
+  public OffsetDateTime getLatestResult() {
     return latestResult;
   }
 
-  public void setLatestResult(Date latestResult) {
+  public void setLatestResult(OffsetDateTime latestResult) {
     this.latestResult = latestResult;
   }
 
