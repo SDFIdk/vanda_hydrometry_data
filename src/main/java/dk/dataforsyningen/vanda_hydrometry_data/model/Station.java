@@ -11,34 +11,35 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 public class Station {
 	
 	@NotNull
-	String stationUid;
+	String stationUid = null;
 	
+	@NotNull
 	@Size(max=8)
-	String stationId; //Key
+	String stationId = null; //Key
 	
 	@Size(max=100)
-	String operatorStationId;
+	String operatorStationId = null;
 	
 	@Size(max=8)
-	String oldStationNumber;
+	String oldStationNumber = null;
 	
 	@Size(max=150)
-	String Name;
+	String Name = null;
 	
 	@Size(max=150)
-	String stationOwnerName;
+	String stationOwnerName = null;
 	
 	@NotNull
-	Location location;
+	Location location = null;
 	
 	@Size(max=200)
-	String description;
+	String description = null;
 	
 	@NotNull
-	OffsetDateTime created;
+	OffsetDateTime created = null;
 	
 	@NotNull
-	OffsetDateTime updated;
+	OffsetDateTime updated = null;
 
 	public static Station from(DmpHydroApiResponsesStationResponse response) {
 		if (response == null) return null;

@@ -10,27 +10,27 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 public class Measurement {
 
 	@NotNull
-	Integer measurementPointNumber;
+	Integer measurementPointNumber = null;
 
 	@NotNull
-	OffsetDateTime measurementDateTime;
+	OffsetDateTime measurementDateTime = null;
 
 	@NotNull
-	Double result;
+	Double result = null;
 	
 	@NotNull
-	OffsetDateTime created;
+	OffsetDateTime created = null;
 	
 	@NotNull
-	Boolean isCurrent;
+	Boolean isCurrent = null;
 	
 	@NotNull
-	String stationId; //FK
+	String stationId = null; //FK
 
 	@NotNull
-	String measurementTypeId; //FK
+	String measurementTypeId = null; //FK
 	
-	MeasurementType measurementType; //keeps the measurement type object until its id is identified
+	MeasurementType measurementType = null; //keeps the measurement type object until its id is identified
 		
 	
 	public static Measurement from(DmpHydroApiResponsesResultResponse response) {
@@ -44,6 +44,7 @@ public class Measurement {
 		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
 		measurement.setResult(response.getResult());
 		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
+		measurement.setMeasurementType(MeasurementType.from(response));
 		
 		measurement.setStationId(stationId);
 		

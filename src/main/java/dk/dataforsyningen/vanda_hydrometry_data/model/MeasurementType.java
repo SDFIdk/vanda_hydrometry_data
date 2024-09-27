@@ -10,28 +10,28 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 public class MeasurementType {
 	
 	@NotNull
-	String measurementTypeId; //Key
+	String measurementTypeId = null; //Key
 	
 	@NotNull
 	@Size(max=4)
-	String unit;
+	String unit = null;
 	
 	@NotNull
-	Integer unitSc;
-	
-	@NotNull
-	@Size(max=10)
-	String parameter;
-	
-	@NotNull
-	Integer parameterSc;
+	Integer unitSc = null;
 	
 	@NotNull
 	@Size(max=10)
-	String examinationType;
+	String parameter = null;
 	
 	@NotNull
-	Integer examinationTypeSc;
+	Integer parameterSc = null;
+	
+	@NotNull
+	@Size(max=10)
+	String examinationType = null;
+	
+	@NotNull
+	Integer examinationTypeSc = null;
 	
 	public static MeasurementType from(DmpHydroApiResponsesResultResponse result) {
 		if (result == null) return null;
@@ -133,6 +133,20 @@ public class MeasurementType {
 		return Objects.equals(examinationType, other.examinationType)
 				&& Objects.equals(examinationTypeSc, other.examinationTypeSc)
 				&& Objects.equals(measurementTypeId, other.measurementTypeId)
+				&& Objects.equals(parameter, other.parameter) && Objects.equals(parameterSc, other.parameterSc)
+				&& Objects.equals(unit, other.unit) && Objects.equals(unitSc, other.unitSc);
+	}
+	
+	public boolean equalsWithoutId(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MeasurementType other = (MeasurementType) obj;
+		return Objects.equals(examinationType, other.examinationType)
+				&& Objects.equals(examinationTypeSc, other.examinationTypeSc)
 				&& Objects.equals(parameter, other.parameter) && Objects.equals(parameterSc, other.parameterSc)
 				&& Objects.equals(unit, other.unit) && Objects.equals(unitSc, other.unitSc);
 	}
