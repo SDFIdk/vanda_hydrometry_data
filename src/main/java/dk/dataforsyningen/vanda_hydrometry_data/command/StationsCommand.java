@@ -1,10 +1,8 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-import lombok.Getter;
 
 /**
  * Command to retrieve the stations.
@@ -30,7 +27,7 @@ public class StationsCommand implements CommandInterface {
 	private static final Logger log = LoggerFactory.getLogger(StationsCommand.class);
 	
 	private DmpHydroApiResponsesStationResponse[] data;
-	@Getter
+	
 	private ArrayList<Station> stations = new ArrayList<>();
 	
 	@Autowired
@@ -108,6 +105,10 @@ public class StationsCommand implements CommandInterface {
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "examinationTypeSc" + VandaHUtility.FORMAT_OFF + " : retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).");
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "withResultsAfter" + VandaHUtility.FORMAT_OFF + " : only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "withResultsCreatedAfter" + VandaHUtility.FORMAT_OFF + " : only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");		
+	}
+
+	public ArrayList<Station> getStations() {
+		return stations;
 	}
 
 }

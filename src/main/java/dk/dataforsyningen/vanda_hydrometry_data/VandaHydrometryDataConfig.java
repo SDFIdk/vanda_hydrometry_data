@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
-import lombok.Getter;
 
 /**
  * Configuration class.
@@ -27,7 +26,7 @@ public class VandaHydrometryDataConfig {
 	/* Values from the properties file */
 	
 	@Value("${dmp.vandah.api.url:#{null}}")
-	@Getter String vandahDmpApiUrl;
+	String vandahDmpApiUrl;
 	
 	/* Option values from the command line */
 	
@@ -64,7 +63,7 @@ public class VandaHydrometryDataConfig {
 	private String saveDb;  //boolean
 	
 	@Value("${stationid:#{null}}")
-	@Getter private String stationId;
+	private String stationId;
 	
 	@Value("${examinationtypesc:#{null}}")
 	private String examinationTypeSc;  //int[]
@@ -73,7 +72,7 @@ public class VandaHydrometryDataConfig {
 	private String parameterSc; //Integer
 	
 	@Value("${operatorstationid:#{null}}")
-	@Getter private String operatorStationId;
+	private String operatorStationId;
 	
 	@Value("${measurementpointnumber:#{null}}")
 	private String measurementPointNumber;  //Integer
@@ -231,6 +230,18 @@ public class VandaHydrometryDataConfig {
 		sb.append("\tCreatedAfter: ").append(getCreatedAfter()).append("\n");
 		
 		return sb.toString();
+	}
+
+	public String getVandahDmpApiUrl() {
+		return vandahDmpApiUrl;
+	}
+
+	public String getStationId() {
+		return stationId;
+	}
+
+	public String getOperatorStationId() {
+		return operatorStationId;
 	}
 	
 }

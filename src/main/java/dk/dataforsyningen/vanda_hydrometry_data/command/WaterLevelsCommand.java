@@ -16,7 +16,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
-import lombok.Getter;
 
 /**
  * Command to retrieve the water levels.
@@ -30,9 +29,9 @@ public class WaterLevelsCommand implements CommandInterface {
 	private static final Logger log = LoggerFactory.getLogger(WaterLevelsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
-	@Getter
+
 	private ArrayList<Measurement> measurements;
-	@Getter
+
 	private ArrayList<MeasurementType> measurementTypes;
 	
 	@Autowired
@@ -122,6 +121,14 @@ public class WaterLevelsCommand implements CommandInterface {
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "from" + VandaHUtility.FORMAT_OFF + " :  from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "to" + VandaHUtility.FORMAT_OFF + " :  to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
 		System.out.println("\t" + VandaHUtility.ITALIC_ON + "createdAfter" + VandaHUtility.FORMAT_OFF + " :  return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+	}
+
+	public ArrayList<Measurement> getMeasurements() {
+		return measurements;
+	}
+
+	public ArrayList<MeasurementType> getMeasurementTypes() {
+		return measurementTypes;
 	}
 
 }
