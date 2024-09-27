@@ -32,8 +32,8 @@ Retrieve a single or a subset of stations from DMP depending on extra criteria t
 * **stationId** is a 8 digits number to identify a single station.
 * **operatorStationId** the id of the stations' operator
 * **examinationTypeSc** retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).
-* **withResultsAfter** only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
-* **withResultsCreatedAfter** only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
+* **withResultsAfter** only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+* **withResultsCreatedAfter** only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 ### Read water levels
 
@@ -44,9 +44,9 @@ Returns current results of water level (ExaminationType 25) measurements.
 * **stationId** is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
 * **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
-* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
-* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
-* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
+* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 ### Read water flows
 
@@ -57,9 +57,9 @@ Returns current results of water flow (ExaminationType 27) measurements.
 * **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
 * **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
 * **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
-* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
-* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
-* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.
+* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 
 ### Read examination types
@@ -77,11 +77,17 @@ In order to save the retrieved data into the DB (using the config from propertie
 	
 The parameter is ignored for Examination Types.
 
-### Inspect data
+### Inspect API retrieved data
 
-In order to display the data in the console (or redirect the output into a file) so the user can inspect it, use the parameter "displayData". Example that will display all the stations.
+In order to display the data retrieved from the API in the console (or redirect the output into a file) so the user can inspect it, use the parameter "displayRawData". Example that will display all the stations.
 
-	stations --displayData
+	stations --displayRawData
+	
+### Inspect internal data
+
+In order to display the mapped data in the console (or redirect the output into a file) so the user can inspect it, use the parameter "displayData". Example that will display all the stations.
+
+	stations --displayData	
 	
 ### More output
 
@@ -98,7 +104,7 @@ Running the application without parameters will display the help info. For more 
 
 ## Development
 
-In order to re-generate sources (the data model) from DMP API, enable the plugin in pom.xml
+In order to re-generate sources (the data model) from DMP API, enable the plugin in pom.xml by setting **skip** to **false**.
 
 ```
 	<plugin>

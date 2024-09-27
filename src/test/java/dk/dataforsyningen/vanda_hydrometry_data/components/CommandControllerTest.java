@@ -89,6 +89,26 @@ public class CommandControllerTest {
 	}
 	
 	@Test
+	public void displayRawDataCallTest() {
+		
+		String command = "stations";
+		
+		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
+		when(config.isHelp()).thenReturn(false);
+		when(config.isSaveDb()).thenReturn(false);
+		when(config.isDisplayRawData()).thenReturn(true);
+		when(config.isDisplayData()).thenReturn(false);
+		
+		commandController.execute(command);
+		
+		verify(stationsCommand, times(1)).getData();
+		verify(stationsCommand, times(1)).mapData();
+		verify(stationsCommand, times(1)).displayData(true);
+		verify(stationsCommand, never()).saveData();
+		verify(stationsCommand, never()).displayData(false);
+	}
+	
+	@Test
 	public void saveDbCallTest() {
 		
 		String command = "stations";

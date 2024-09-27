@@ -169,7 +169,7 @@ public class VandaHUtility {
 			odt = OffsetDateTime.parse(normalized);
 		} else {
 			LocalDateTime ldt = LocalDateTime.parse(normalized, DateTimeFormatter.ISO_DATE_TIME);
-			odt = ldt.atOffset(ZoneId.systemDefault().getRules().getOffset(ldt)) //convert LDT to ODT using the system's default TZ rules
+			odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime() //convert LDT to ODT using the system's default TZ rules
 					.withOffsetSameInstant(ZoneOffset.UTC); //convert ODT to UTC timezone
 		}
 		return odt;
@@ -189,8 +189,8 @@ public class VandaHUtility {
 				odt = OffsetDateTime.parse(normalized);
 			} else {
 				LocalDateTime ldt = LocalDateTime.parse(normalized, DateTimeFormatter.ISO_DATE_TIME);
-				odt = ldt.atOffset(ZoneId.systemDefault().getRules().getOffset(ldt)) //convert LDT to ODT using the system's default TZ rules
-						.withOffsetSameInstant(ZoneOffset.UTC); //convert ODT to UTC time zone
+				odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime() //convert LDT to ODT using the system's default TZ rules
+						.withOffsetSameInstant(ZoneOffset.UTC); //convert ODT to UTC timezone
 			}
 		} catch (Exception ex) {
 			//Do nothing
