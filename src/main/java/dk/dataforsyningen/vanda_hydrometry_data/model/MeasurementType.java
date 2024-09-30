@@ -10,7 +10,7 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 public class MeasurementType {
 	
 	@NotNull
-	String measurementTypeId = null; //Key
+	Integer measurementTypeId = null; //Key
 	
 	@NotNull
 	@Size(max=4)
@@ -47,11 +47,11 @@ public class MeasurementType {
 		return measurementType;
 	}
 
-	public String getMeasurementTypeId() {
+	public Integer getMeasurementTypeId() {
 		return measurementTypeId;
 	}
 
-	public void setMeasurementTypeId(String measurementTypeId) {
+	public void setMeasurementTypeId(Integer measurementTypeId) {
 		this.measurementTypeId = measurementTypeId;
 	}
 

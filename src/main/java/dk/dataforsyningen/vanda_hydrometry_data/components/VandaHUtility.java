@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.event.Level;
 import org.springframework.http.client.ClientHttpResponse;
 
+import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
+
 public class VandaHUtility {
 	
 	public static String BOLD_ON = "\033[1m";
@@ -211,5 +213,15 @@ public class VandaHUtility {
 	 */
 	public static OffsetDateTime dateToOfssetDateTime(Date date) {
 		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC) : null;
+	}
+	
+	public static OffsetDateTime toOffsetDate(java.sql.Date d) {
+		//TODO: implement
+		return null;
+	}
+	
+	public static Location toLocation(Object loc) {
+		//TODO implement
+		return null;
 	}
 }

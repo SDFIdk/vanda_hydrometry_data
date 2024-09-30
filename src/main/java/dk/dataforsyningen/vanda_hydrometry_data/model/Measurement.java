@@ -28,7 +28,7 @@ public class Measurement {
 	String stationId = null; //FK
 
 	@NotNull
-	String measurementTypeId = null; //FK
+	Integer measurementTypeId = null; //FK
 	
 	MeasurementType measurementType = null; //keeps the measurement type object until its id is identified
 		
@@ -99,11 +99,11 @@ public class Measurement {
 		this.stationId = stationId;
 	}
 
-	public String getMeasurementTypeId() {
+	public Integer getMeasurementTypeId() {
 		return measurementTypeId;
 	}
 
-	public void setMeasurementTypeId(String measurementTypeId) {
+	public void setMeasurementTypeId(Integer measurementTypeId) {
 		this.measurementTypeId = measurementTypeId;
 	}
 
