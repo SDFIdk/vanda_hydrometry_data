@@ -116,3 +116,144 @@ COMMENT ON TABLE calculated IS 'Contains the calculated measurements of the stat
 COMMENT ON COLUMN calculated.slice IS 'The slice type (size): Y(ear), S(eason), M(onth) or D(ay)';
 COMMENT ON COLUMN calculated.date_start IS 'The start date of the slice';
 COMMENT ON COLUMN calculated.mean IS 'The mean of the measurements in the slice';
+
+CREATE TABLE hydrometry.calculated_daily (
+  date date,
+  mean double precision
+);
+
+CREATE OR REPLACE FUNCTION hydrometry.get_daily_means(
+    p_station_id char(8),
+    p_measurement_type_id int,
+    p_start_date date,
+    p_end_date date
+)
+RETURNS SETOF hydrometry.calculated_daily
+STABLE
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+      DATE(measurement_date_time) as date,
+      AVG(result) as daily_mean
+  FROM hydrometry.measurement
+  WHERE station_id = p_station_id
+    AND measurement_type_id = p_measurement_type_id
+    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+  GROUP BY DATE(measurement_date_time)
+  ORDER BY DATE(measurement_date_time);
+END;
+$$;
+
+CREATE TABLE hydrometry.calculated_monthly (
+  year int,
+  month int,
+  mean double precision
+);
+
+CREATE OR REPLACE FUNCTION hydrometry.get_monthly_means(
+  p_station_id char(8),
+  p_measurement_type_id int,
+  p_start_date date,
+  p_end_date date
+)
+RETURNS SETOF hydrometry.calculated_monthly
+STABLE
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+      EXTRACT(YEAR FROM measurement_date_time)::int as year,
+      EXTRACT(MONTH FROM measurement_date_time)::int as month,
+      AVG(result) as monthly_mean
+  FROM hydrometry.measurement
+  WHERE station_id = p_station_id
+    AND measurement_type_id = p_measurement_type_id
+    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+  GROUP BY EXTRACT(YEAR FROM measurement_date_time), EXTRACT(MONTH FROM measurement_date_time)
+  ORDER BY year, month;
+END;
+$$;
+
+CREATE TABLE hydrometry.calculated_yearly (
+  year int,
+  mean double precision
+);
+
+CREATE OR REPLACE FUNCTION hydrometry.get_yearly_means(
+  p_station_id char(8),
+  p_measurement_type_id int,
+  p_start_date date,
+  p_end_date date
+)
+RETURNS SETOF hydrometry.calculated_yearly
+STABLE
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+      EXTRACT(YEAR FROM measurement_date_time)::int as year,
+      AVG(result) as mean
+  FROM hydrometry.measurement
+  WHERE station_id = p_station_id
+    AND measurement_type_id = p_measurement_type_id
+    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+  GROUP BY EXTRACT(YEAR FROM measurement_date_time)
+  ORDER BY year;
+END;
+$$;
+
+CREATE TABLE hydrometry.calculated_seasonal (
+  year int,
+  season varchar(10),
+  mean double precision
+);
+
+CREATE OR REPLACE FUNCTION hydrometry.get_seasonal_means(
+  p_station_id char(8),
+  p_measurement_type_id int,
+  p_start_date date,
+  p_end_date date
+)
+RETURNS SETOF hydrometry.calculated_seasonal
+STABLE
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  WITH seasons AS (
+    SELECT *,
+          CASE
+              WHEN EXTRACT(MONTH FROM measurement_date_time) IN (12, 1, 2) THEN 'winter'
+              WHEN EXTRACT(MONTH FROM measurement_date_time) IN (3, 4, 5) THEN 'spring'
+              WHEN EXTRACT(MONTH FROM measurement_date_time) IN (6, 7, 8) THEN 'summer'
+              WHEN EXTRACT(MONTH FROM measurement_date_time) IN (9, 10, 11) THEN 'autumn'
+          END AS season,
+          CASE
+              WHEN EXTRACT(MONTH FROM measurement_date_time) = 12 THEN EXTRACT(YEAR FROM measurement_date_time) + 1
+              ELSE EXTRACT(YEAR FROM measurement_date_time)
+          END AS season_year
+    FROM hydrometry.measurement
+    WHERE station_id = p_station_id
+      AND measurement_type_id = p_measurement_type_id
+      AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+  )
+  SELECT 
+    season_year::int as year,
+    season,
+    AVG(result) as seasonal_mean
+  FROM seasons
+  WHERE p_season IS NULL OR season = p_season
+  GROUP BY season_year, season
+  ORDER BY season_year, 
+          CASE season
+            WHEN 'winter' THEN 1
+            WHEN 'spring' THEN 2
+            WHEN 'summer' THEN 3
+            WHEN 'autumn' THEN 4
+          END;
+END;
+$$;
