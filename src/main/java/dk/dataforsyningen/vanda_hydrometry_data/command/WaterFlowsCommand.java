@@ -14,6 +14,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
+import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 
@@ -39,6 +40,9 @@ public class WaterFlowsCommand implements CommandInterface {
 	
 	@Autowired
 	private VandaHydrometryDataConfig config;
+	
+	@Autowired
+	private DatabaseService dbService;
 
 	@Override
 	public int getData() {
@@ -80,7 +84,11 @@ public class WaterFlowsCommand implements CommandInterface {
 	@Override
 	public int saveData() {
 		if (data != null) {
-			// TODO Auto-generated method stub
+			//save the measurement types first
+			dbService.addMeasurementType(null);
+			
+			//save the measurements
+			dbService.saveMeasurements(measurements);
 		}
 		return data != null ? data.length : 0;
 	}

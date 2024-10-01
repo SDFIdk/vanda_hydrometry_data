@@ -25,22 +25,63 @@ public class DatabaseService {
 		this.measurementTypeDao = measurementTypeDao;
 	}
 	
+	/* STATION */
+	
+	public List<Station> getAllStations() {
+		return stationDao.getAllStations();
+	}
+	
 	@Transactional
 	public void saveStations(List<Station> stations) {
 		stationDao.addStations(stations);
 	}
 	
 	@Transactional
+	public void saveStation(Station station) {
+		stationDao.addStation(station);
+	}
+	
+	/* MEASUREMENT */
+	
+	public List<Measurement> getAllMeasurements() {
+		return measurementDao.getAllMeasurements();
+	}
+	
+	@Transactional
 	public void saveMeasurements(List<Measurement> measurements) {
+		//do an update in case they exist
+		measurementDao.updateMeasurements(measurements);
+		
+		//add the measurements if they are missing
 		measurementDao.addMeasurements(measurements);
 	}
 	
+	@Transactional
+	public void saveMeasurement(Measurement measurement) {
+		//do an update in case it exists
+		measurementDao.updateMeasurement(measurement);
+				
+		//add the measurement if is is missing
+		measurementDao.addMeasurement(measurement);
+	}
+	
+	/* MEASUREMENT TYPE */
+	
 	public List<MeasurementType> getAllMeasurementTypes() {
-		return measurementTypeDao.readAllMeasurementTypes();
+		return measurementTypeDao.getAllMeasurementTypes();
+	}
+	
+	public MeasurementType getMeasurementType(String id) {
+		return measurementTypeDao.findMeasurementTypeById(id);
 	}
 	
 	@Transactional
 	public void addMeasurementType(MeasurementType measurementType) {
 		measurementTypeDao.addMeasurementType(measurementType);
+	}
+	
+	@Transactional
+	public void addMeasurementTypes(List<MeasurementType> measurementTypes) {
+		measurementTypeDao.addMeasurementTypes(measurementTypes);
 	}
 }

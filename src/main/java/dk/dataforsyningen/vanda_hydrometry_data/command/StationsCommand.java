@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
@@ -35,6 +36,9 @@ public class StationsCommand implements CommandInterface {
 	
 	@Autowired
 	private VandaHydrometryDataConfig config;
+	
+	@Autowired
+	private DatabaseService dbService;
 	
 	@Override
 	public int getData() {
@@ -70,7 +74,7 @@ public class StationsCommand implements CommandInterface {
 	@Override
 	public int saveData() {
 		if (data != null) {
-			// TODO save stations
+			dbService.saveStations(stations);
 		}
 		return data != null ? data.length : 0;
 	}

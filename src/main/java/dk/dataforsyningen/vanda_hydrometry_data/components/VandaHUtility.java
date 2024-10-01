@@ -1,7 +1,11 @@
 package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -14,6 +18,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.postgresql.util.PGobject;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
@@ -208,20 +213,52 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Converts Date object representing a date like "2024-09-25T23:00:00.00Z" to an OffsetDateTime in UTC timezone 
+	 * Converts Date object representing a date to an OffsetDateTime in UTC timezone 
 	 * @return
 	 */
-	public static OffsetDateTime dateToOfssetDateTime(Date date) {
+	public static OffsetDateTime dateToOfssetDateTimeUtc(Date date) {
 		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC) : null;
 	}
 	
-	public static OffsetDateTime toOffsetDate(java.sql.Date d) {
-		//TODO: implement
-		return null;
+	/**
+	 * Converts Date object to an OffsetDateTime in Local timezone 
+	 * @return
+	 */
+	public static OffsetDateTime dateToOfssetDateTimeLocalZone(Date date) {
+		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC).atZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime() : null;
 	}
 	
-	public static Location toLocation(Object loc) {
-		//TODO implement
-		return null;
+	/**
+	 * Converts an sQL DAte to OffsetDateTime
+	 * @param ts the timestamp 
+	 * @param utc if true the date will be shown in utc time
+	 * @return
+	 */
+	public static OffsetDateTime toOffsetDate(Timestamp ts, boolean utc) {
+		
+		return utc ? dateToOfssetDateTimeUtc(new Date(ts.getTime())) 
+				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
+	}
+	
+	public static Location toLocation(String geometryValue) throws SQLException {
+		        
+        // Ensure the geometry value is in the expected format
+        if (geometryValue == null || !geometryValue.startsWith("POINT(") || !geometryValue.endsWith(")")) {
+            throw new SQLException("Invalid geometry format. Expected POINT(x y).");
+        }
+
+        // Extract the x and y values from the POINT(x y) string
+        String pointCoordinates = geometryValue.substring(6, geometryValue.length() - 1); // Remove "POINT(" and ")"
+        String[] coordinates = pointCoordinates.split(" ");
+        
+        Location loc = new Location();
+        try {
+	        loc.setX(Double.parseDouble(coordinates[0]));
+	        loc.setY(Double.parseDouble(coordinates[1]));
+        } catch (NumberFormatException ex) {
+        	throw new SQLException("Invalid geometry format. x and y should be numbers.");
+        }
+		
+        return loc;
 	}
 }

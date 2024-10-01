@@ -28,10 +28,7 @@ public class Measurement {
 	String stationId = null; //FK
 
 	@NotNull
-	Integer measurementTypeId = null; //FK
-	
-	MeasurementType measurementType = null; //keeps the measurement type object until its id is identified
-		
+	String measurementTypeId = null; //FK		
 	
 	public static Measurement from(DmpHydroApiResponsesResultResponse response) {
 		return Measurement.from(response, null);
@@ -44,7 +41,8 @@ public class Measurement {
 		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
 		measurement.setResult(response.getResult());
 		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
-		measurement.setMeasurementType(MeasurementType.from(response));
+		measurement.setMeasurementTypeId(MeasurementType.from(response).getMeasurementTypeId());
+		measurement.setIsCurrent(true); //the measurements coming from API are always the current
 		
 		measurement.setStationId(stationId);
 		
@@ -99,20 +97,12 @@ public class Measurement {
 		this.stationId = stationId;
 	}
 
-	public Integer getMeasurementTypeId() {
+	public String getMeasurementTypeId() {
 		return measurementTypeId;
 	}
 
-	public void setMeasurementTypeId(Integer measurementTypeId) {
+	public void setMeasurementTypeId(String measurementTypeId) {
 		this.measurementTypeId = measurementTypeId;
-	}
-
-	public MeasurementType getMeasurementType() {
-		return measurementType;
-	}
-
-	public void setMeasurementType(MeasurementType measurementType) {
-		this.measurementType = measurementType;
 	}
 
 	@Override

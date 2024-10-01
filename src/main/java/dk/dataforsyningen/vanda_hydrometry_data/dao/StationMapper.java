@@ -19,10 +19,10 @@ public class StationMapper implements RowMapper<Station> {
 		station.setOldStationNumber(rs.getString("old_station_number"));
 		station.setName(rs.getString("name"));
 		station.setStationOwnerName(rs.getString("station_owner_name"));
-		station.setLocation(VandaHUtility.toLocation(rs.getObject("location")));
+		station.setLocation(VandaHUtility.toLocation(rs.getString("location_as_text")));
 		station.setDescription(rs.getString("description"));
-		station.setCreated(VandaHUtility.toOffsetDate(rs.getDate("created")));
-		station.setUpdated(VandaHUtility.toOffsetDate(rs.getDate("updated")));
+		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
+		station.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));
 				
 		return station;
 	}

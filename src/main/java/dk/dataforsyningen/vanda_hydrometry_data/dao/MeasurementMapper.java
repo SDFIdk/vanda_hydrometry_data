@@ -18,9 +18,9 @@ public class MeasurementMapper implements RowMapper<Measurement> {
 		m.setStationId(rs.getString("station_id"));
 		m.setResult(rs.getDouble("result"));
 		m.setIsCurrent(rs.getBoolean("is_current"));
-		m.setMeasurementDateTime(VandaHUtility.toOffsetDate(rs.getDate("measurement_date_time")));
-		m.setCreated(VandaHUtility.toOffsetDate(rs.getDate("created")));
-		m.setMeasurementTypeId(rs.getInt("measurement_type_id"));
+		m.setMeasurementDateTime(VandaHUtility.toOffsetDate(rs.getTimestamp("measurement_date_time"), true));
+		m.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
+		m.setMeasurementTypeId(rs.getString("measurement_type_id"));
 		m.setMeasurementPointNumber(rs.getInt("measurement_point_number"));
 				
 		return m;

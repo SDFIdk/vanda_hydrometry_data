@@ -15,7 +15,7 @@ public class MeasurementTypeMapper implements RowMapper<MeasurementType> {
 		
 		MeasurementType mt = new MeasurementType();
 		
-		mt.setMeasurementTypeId(rs.getInt("measurement_type_id"));
+		mt.setMeasurementTypeId(rs.getString("measurement_type_id"));
 		mt.setParameterSc(rs.getInt("parameter_sc"));
 		mt.setParameter(rs.getString("parameter"));
 		mt.setExaminationTypeSc(rs.getInt("examination_type_sc"));

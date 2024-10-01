@@ -18,21 +18,32 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 public interface MeasurementTypeDao {
 
 	@SqlQuery("select * from measurement_type")
-	List<MeasurementType> readAllMeasurementTypes();
+	List<MeasurementType> getAllMeasurementTypes();
 	
 	@SqlQuery("select * from measurement_type where measurement_type_id = :measurementTypeId")
-	MeasurementType findMeasurementType(@Bind int measurementTypeId);
+	MeasurementType findMeasurementTypeById(@Bind String measurementTypeId);
 	
 	@SqlUpdate("""
 			insert into measurement_type
 			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
 			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
-			on conflict (measurement_type_id) do nothing
+			on conflict (measurement_type_id) do update
+				set parameter = EXCLUDED.parameter,
+					examination_type = EXCLUDED.examination_type,
+					unit = EXCLUDED.unit
 			""")
 	@GetGeneratedKeys
-	Integer addMeasurementType(@BindBean MeasurementType measurementType);
+	String addMeasurementType(@BindBean MeasurementType measurementType);
 	
-	@SqlBatch("addMeasurementType")
+	@SqlBatch("""
+			insert into measurement_type
+			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
+			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
+			on conflict (measurement_type_id) do update
+				set parameter = EXCLUDED.parameter,
+					examination_type = EXCLUDED.examination_type,
+					unit = EXCLUDED.unit
+			""")
 	@GetGeneratedKeys
-	List<Integer> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
+	List<String> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
 }
