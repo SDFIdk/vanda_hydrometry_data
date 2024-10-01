@@ -207,8 +207,8 @@ END;
 $$;
 
 CREATE TABLE hydrometry.calculated_seasonal (
-  year int,
-  season varchar(10),
+  season_year int,
+  season text,
   mean double precision
 );
 
