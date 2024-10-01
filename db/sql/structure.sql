@@ -28,7 +28,7 @@ COMMENT ON COLUMN station.description IS 'Description of the station that can co
 
 CREATE TABLE measurement_type
 (
- measurement_type_id      int NOT NULL,
+ measurement_type_id      varchar(12) NOT NULL,
  unit                     varchar(4) NOT NULL,
  unit_sc                  int NOT NULL,
  "parameter"              varchar(10) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE measurement_type
 );
 
 COMMENT ON TABLE measurement_type IS 'Contains information about the measurement types like Water Level, Water Flow, etc.';
-COMMENT ON COLUMN measurement_type.measurement_type_id IS 'The unique identifier of the measurement type';
+COMMENT ON COLUMN measurement_type.measurement_type_id IS 'The unique identifier of the measurement type, a concatenation.';
 COMMENT ON COLUMN measurement_type.unit IS 'The unit of the measurement, for example "cm, m³/s"';
 COMMENT ON COLUMN measurement_type.unit_sc IS 'The stancode of the unit';
 COMMENT ON COLUMN measurement_type.parameter IS 'The parameter of the measurement, for example "Vandføring" or "Vandstand"';
@@ -55,7 +55,7 @@ CREATE TABLE measurement
  is_current            bool NOT NULL,
  created               timestamp with time zone NOT NULL,
  station_id            char(8) NOT NULL,
- measurement_type_id   int NOT NULL,
+ measurement_type_id   varchar(12) NOT NULL,
  measurement_point_number int NOT NULL,
  CONSTRAINT FK_1 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
  CONSTRAINT FK_2 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
@@ -90,7 +90,7 @@ CREATE TABLE calculated
  created              timestamp with time zone NOT NULL,
  updated              timestamp with time zone NOT NULL,
  station_id           char(8) NOT NULL,
- measurement_type_id  int NOT NULL,
+ measurement_type_id  varchar(12) NOT NULL,
  CONSTRAINT FK_3 FOREIGN KEY ( station_id ) REFERENCES station ( station_id ),
  CONSTRAINT FK_4 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id )
 );
@@ -124,7 +124,7 @@ CREATE TABLE hydrometry.calculated_daily (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_daily_means(
     p_station_id char(8),
-    p_measurement_type_id int,
+    p_measurement_type_id varchar(12),
     p_start_date date,
     p_end_date date
 )
@@ -154,7 +154,7 @@ CREATE TABLE hydrometry.calculated_monthly (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_monthly_means(
   p_station_id char(8),
-  p_measurement_type_id int,
+  p_measurement_type_id varchar(12),
   p_start_date date,
   p_end_date date
 )
@@ -184,7 +184,7 @@ CREATE TABLE hydrometry.calculated_yearly (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_yearly_means(
   p_station_id char(8),
-  p_measurement_type_id int,
+  p_measurement_type_id varchar(12),
   p_start_date date,
   p_end_date date
 )
@@ -214,9 +214,10 @@ CREATE TABLE hydrometry.calculated_seasonal (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_seasonal_means(
   p_station_id char(8),
-  p_measurement_type_id int,
+  p_measurement_type_id varchar(12),
   p_start_date date,
-  p_end_date date
+  p_end_date date,
+  p_season text DEFAULT NULL
 )
 RETURNS SETOF hydrometry.calculated_seasonal
 STABLE
@@ -244,7 +245,7 @@ BEGIN
   SELECT 
     season_year::int as year,
     season,
-    AVG(result) as seasonal_mean
+    AVG(result) as mean
   FROM seasons
   WHERE p_season IS NULL OR season = p_season
   GROUP BY season_year, season
