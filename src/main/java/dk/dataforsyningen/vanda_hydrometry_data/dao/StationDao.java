@@ -16,11 +16,36 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 @LogSqlFactory
 public interface StationDao {
 	
-	@SqlQuery("select *, ST_AsText(location) as location_as_text from station")
+	@SqlQuery("""
+			select
+				station_id,
+				name,
+				old_station_number,
+				station_owner_name,
+				location,
+				ST_AsText(location) as location_as_text,
+				description,
+				created,
+				updated
+			from station
+			""")
 	List<Station> getAllStations();
 	
-	@SqlQuery("select * from station where station_id = :stationId ")
-	Station findStation(@Bind String stationId);
+	@SqlQuery("""
+			select
+				station_id,
+				name,
+				old_station_number,
+				station_owner_name,
+				location,
+				ST_AsText(location) as location_as_text,
+				description,
+				created,
+				updated
+			from station 
+			where station_id = :stationId 
+			""")
+	Station findStationByStationId(@Bind String stationId);
 
 	/**
 	 * Add station if not exists
@@ -53,4 +78,11 @@ public interface StationDao {
 				updated = now() 
 			""")
 	void addStations(@BindBean List<Station> stations);
+	
+	@SqlUpdate("delete from station where station_id = :id")
+	void deleteStation(@Bind String id);
+	
+	@SqlQuery("select count(*) from station")
+	int count();
+	
 }

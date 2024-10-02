@@ -26,7 +26,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.dao.StationDao;
 public class DatabaseConfiguration {
 	
 	private static final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
-	
+			
     /**
      * The SQL data source that Jdbi will connect to. https://jdbi.org/#_spring_5
      *
@@ -46,7 +46,8 @@ public class DatabaseConfiguration {
      * @return jdbi bean
      */
 	@Bean
-    public Jdbi jdbi(@Qualifier("vandaHydroDataDS") DataSource ds) {        
+    public Jdbi jdbi(@Qualifier("vandaHydroDataDS") DataSource ds) {  
+				
         TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);        
         Jdbi jdbi = Jdbi.create(proxy)
         		.installPlugin(new PostgresPlugin())

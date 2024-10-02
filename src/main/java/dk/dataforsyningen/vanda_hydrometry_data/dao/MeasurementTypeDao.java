@@ -17,10 +17,31 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 @LogSqlFactory
 public interface MeasurementTypeDao {
 
-	@SqlQuery("select * from measurement_type")
+	@SqlQuery("""
+			select
+				measurement_type_id,
+				parameter_sc,
+				parameter,
+				examination_type_sc,
+				examination_type,
+				unit_sc,
+				unit
+			from measurement_type
+			""")
 	List<MeasurementType> getAllMeasurementTypes();
 	
-	@SqlQuery("select * from measurement_type where measurement_type_id = :measurementTypeId")
+	@SqlQuery("""
+			select
+				measurement_type_id,
+				parameter_sc,
+				parameter,
+				examination_type_sc,
+				examination_type,
+				unit_sc,
+				unit
+			from measurement_type 
+			where measurement_type_id = :measurementTypeId
+			""")
 	MeasurementType findMeasurementTypeById(@Bind String measurementTypeId);
 	
 	@SqlUpdate("""
@@ -46,4 +67,10 @@ public interface MeasurementTypeDao {
 			""")
 	@GetGeneratedKeys
 	List<String> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
+	
+	@SqlUpdate("delete from measurement_type where measurement_type_id = :id")
+	void deleteMeasurementType(@Bind String id);
+	
+	@SqlQuery("select count(*) from measurement_type")
+	int count();
 }

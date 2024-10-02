@@ -1,5 +1,7 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,6 +33,10 @@ public class DatabaseService {
 		return stationDao.getAllStations();
 	}
 	
+	public Station getStation(String id) {
+		return stationDao.findStationByStationId(id);
+	}
+	
 	@Transactional
 	public void saveStations(List<Station> stations) {
 		stationDao.addStations(stations);
@@ -41,10 +47,25 @@ public class DatabaseService {
 		stationDao.addStation(station);
 	}
 	
+	public void deleteStation(String id) {
+		stationDao.deleteStation(id);
+	}
+	
+	public int countStations() {
+		return stationDao.count();
+	}
+
 	/* MEASUREMENT */
 	
 	public List<Measurement> getAllMeasurements() {
 		return measurementDao.getAllMeasurements();
+	}
+	
+	public Measurement getMeasurement(String stationId,
+			int measurementPointNumber,
+			String measurementTypeId,
+			OffsetDateTime measurementDatetime) {
+		return measurementDao.findCurrentMeasurement(stationId, measurementPointNumber, measurementTypeId, measurementDatetime);
 	}
 	
 	@Transactional
@@ -56,13 +77,32 @@ public class DatabaseService {
 		measurementDao.addMeasurements(measurements);
 	}
 	
+	/**
+	 * Tries to update the result of a measurement if the measurement exists. Returns null.
+	 * 
+	 * If it does not exist it will be inserted and the measurement returned.
+	 * 
+	 * @param measurement
+	 * @return inserted measurement or null
+	 */
 	@Transactional
-	public void saveMeasurement(Measurement measurement) {
+	public Measurement saveMeasurement(Measurement measurement) {
 		//do an update in case it exists
 		measurementDao.updateMeasurement(measurement);
 				
 		//add the measurement if is is missing
-		measurementDao.addMeasurement(measurement);
+		return measurementDao.addMeasurement(measurement);
+	}
+	
+	public void deleteMeasurement(String stationId, int measurementPointNumber,
+			String measurementTypeId,
+			OffsetDateTime measurementDatetime
+			) {
+		measurementDao.deleteMeasurement(stationId, measurementPointNumber, measurementTypeId, measurementDatetime);
+	}
+	
+	public int countMeasurements() {
+		return measurementDao.count();
 	}
 	
 	/* MEASUREMENT TYPE */
@@ -84,4 +124,13 @@ public class DatabaseService {
 	public void addMeasurementTypes(List<MeasurementType> measurementTypes) {
 		measurementTypeDao.addMeasurementTypes(measurementTypes);
 	}
+	
+	public void deleteMeasurementType(String id) {
+		measurementTypeDao.deleteMeasurementType(id);
+	}
+	
+	public int countMeasurementTypes() {
+		return measurementTypeDao.count();
+	}
+	
 }
