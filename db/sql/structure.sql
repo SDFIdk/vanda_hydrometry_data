@@ -10,8 +10,8 @@ CREATE TABLE station
  station_owner_name varchar(150) NULL,
  location           geometry(POINT,25832) NOT NULL,
  description        varchar(200) NULL,
- created            timestamp with time zone NOT NULL,
- updated            timestamp with time zone NOT NULL,
+ created            timestamp(3) with time zone NOT NULL,
+ updated            timestamp(3) with time zone NOT NULL,
  CONSTRAINT PK_1 PRIMARY KEY ( station_id )
 );
 CREATE INDEX station_IDX_location ON station USING GIST (
@@ -51,9 +51,9 @@ COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examinat
 CREATE TABLE measurement
 (
  "result"              double precision NOT NULL,
- measurement_date_time timestamp with time zone NOT NULL,
+ measurement_date_time timestamp(3) with time zone NOT NULL,
  is_current            bool NOT NULL,
- created               timestamp with time zone NOT NULL,
+ created               timestamp(3) with time zone NOT NULL,
  station_id            char(8) NOT NULL,
  measurement_type_id   varchar(12) NOT NULL,
  measurement_point_number int NOT NULL,
@@ -87,8 +87,8 @@ CREATE TABLE calculated
  slice                char NOT NULL,
  date_start           date NOT NULL,
  mean                 real NOT NULL,
- created              timestamp with time zone NOT NULL,
- updated              timestamp with time zone NOT NULL,
+ created              timestamp(3) with time zone NOT NULL,
+ updated              timestamp(3) with time zone NOT NULL,
  station_id           char(8) NOT NULL,
  measurement_type_id  varchar(12) NOT NULL,
  CONSTRAINT FK_3 FOREIGN KEY ( station_id ) REFERENCES station ( station_id ),
