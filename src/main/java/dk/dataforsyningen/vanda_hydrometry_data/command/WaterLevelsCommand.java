@@ -54,7 +54,16 @@ public class WaterLevelsCommand implements CommandInterface {
 				config.getCreatedAfter(),
 				null
 				);
-		return data != null ? data.length : 0;
+		
+		//count measurements
+		int nr = 0;
+		if (data != null) {
+			for(DmpHydroApiResponsesMeasurementResultResponse station : data) {
+				nr += (station.getResults() != null ? station.getResults().size() : 0);
+			}
+		}
+		
+		return nr;
 	}
 
 	@Override
@@ -81,16 +90,20 @@ public class WaterLevelsCommand implements CommandInterface {
 		}
 	}
 
+	/**
+	 * Inserts or updates the measurements.
+	 * As a side effect it inserts or updates the measurement types.
+	 */
 	@Override
 	public int saveData() {
-		if (data != null) {
+		if (measurements != null && measurementTypes != null) {
 			//save the measurement types first
-			dbService.addMeasurementType(null);
+			dbService.addMeasurementTypes(measurementTypes);
 			
 			//save the measurements
 			dbService.saveMeasurements(measurements);
 		}
-		return data != null ? data.length : 0;
+		return measurements != null ? measurements.size() : 0;
 	}
 
 	@Override
