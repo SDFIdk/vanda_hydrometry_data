@@ -10,7 +10,7 @@ The PROD Swagger can be accessed here [https://vandah.miljoeportal.dk/api/swagge
 
 The application is a command line application that upon execution connects to DMP Vanda API, retrieves data as configured in the command line parameters and saves the data in the database or displays it if necessary.
 
-DMP and DB connections are configured in the  _application.properties_ file. 
+DMP and DB connections are configured in the  _application.properties_ file. The database DAO queries are based on Postgresql (with Postgis extension) database.
 
 ## Usage
 This section shows the operations and parameters that can be used with the application. In order to run the application from the command line (console) use this command:
@@ -75,7 +75,9 @@ In order to save the retrieved data into the DB (using the config from propertie
 
 	stations --saveDb
 	
-The parameter is ignored for Examination Types.
+Usually if the data item already exists in the database its relevant values will be updated otherwise the item will be inserted. In this way there will not be doublets.
+
+The save command is ignored for Examination Types.
 
 ### Inspect API retrieved data
 
@@ -116,4 +118,12 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 		</configuration>
 	...
 ```
+
+## TODO
+
+This section lists the further work that is or could be planned for the project.
+
+* Implement reading from all relevant (providing the relevant examinationType) stations (ex. by using: --stationId=all)
+* Implement reading from several station given as csv (ex.: --stationId=10000002,10000003)
+* More junit tests
 
