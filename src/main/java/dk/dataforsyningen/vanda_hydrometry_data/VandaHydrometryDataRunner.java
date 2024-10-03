@@ -1,8 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,10 +15,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.command.CommandInterface;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
-import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 
 /**

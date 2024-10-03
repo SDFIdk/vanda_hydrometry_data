@@ -1,6 +1,5 @@
 package dk.dataforsyningen.vanda_hydrometry_data.dao;
 
-import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
 

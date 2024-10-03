@@ -14,7 +14,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 
 /**
  * Configuration class.
- * Reads and provides the config from properties file.
+ * Reads and provides the configuration from properties file.
  * 
  * @author Radu Dudici
  */

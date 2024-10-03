@@ -22,6 +22,9 @@ import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementTypeDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.StationDao;
 
+/**
+ * Configure the JDBI object with values from properties file.
+ */
 @Configuration
 public class DatabaseConfiguration {
 	

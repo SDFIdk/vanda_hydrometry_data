@@ -1,6 +1,5 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
-import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,6 +13,11 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 
+/**
+ * Service class providing DAO access.
+ * 
+ * @author Radu Dudici
+ */
 @Service
 public class DatabaseService {
 
@@ -37,11 +41,19 @@ public class DatabaseService {
 		return stationDao.findStationByStationId(id);
 	}
 	
+	/**
+	 * Inserts stations if it does not exist or updates it otherwise.
+	 * @param stations list
+	 */
 	@Transactional
 	public void saveStations(List<Station> stations) {
 		stationDao.addStations(stations);
 	}
 	
+	/**
+	 * Insert station if it does not exist or updates it otherwise.
+	 * @param station
+	 */
 	@Transactional
 	public void saveStation(Station station) {
 		stationDao.addStation(station);
@@ -60,7 +72,16 @@ public class DatabaseService {
 	public List<Measurement> getAllMeasurements() {
 		return measurementDao.getAllMeasurements();
 	}
-	
+
+	/**
+	 * Returns the active (there should be only one) measurement matching the given parameters.
+	 * 
+	 * @param stationId
+	 * @param measurementPointNumber
+	 * @param measurementTypeId
+	 * @param measurementDatetime
+	 * @return Measurement
+	 */
 	public Measurement getMeasurement(String stationId,
 			int measurementPointNumber,
 			String measurementTypeId,
@@ -68,6 +89,10 @@ public class DatabaseService {
 		return measurementDao.findCurrentMeasurement(stationId, measurementPointNumber, measurementTypeId, measurementDatetime);
 	}
 	
+	/**
+	 * Inserts measurements if they do not exist or updates them otherwise.
+	 * @param measurements list
+	 */
 	@Transactional
 	public void saveMeasurements(List<Measurement> measurements) {
 		//do an update in case they exist
@@ -78,7 +103,7 @@ public class DatabaseService {
 	}
 	
 	/**
-	 * Tries to update the result of a measurement if the measurement exists. Returns null.
+	 * Tries to update the result of a measurement if the measurement exists in which case it returns null.
 	 * 
 	 * If it does not exist it will be inserted and the measurement returned.
 	 * 
@@ -115,11 +140,19 @@ public class DatabaseService {
 		return measurementTypeDao.findMeasurementTypeById(id);
 	}
 	
+	/**
+	 * Inserts (if it does not exist) or updates the measurement type.
+	 * @param measurementType
+	 */
 	@Transactional
 	public void addMeasurementType(MeasurementType measurementType) {
 		measurementTypeDao.addMeasurementType(measurementType);
 	}
 	
+	/**
+	 * Inserts (if it does not exist) or update the measurement from the given list.
+	 * @param measurementTypes list
+	 */
 	@Transactional
 	public void addMeasurementTypes(List<MeasurementType> measurementTypes) {
 		measurementTypeDao.addMeasurementTypes(measurementTypes);

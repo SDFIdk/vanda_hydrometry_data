@@ -3,9 +3,6 @@ package dk.dataforsyningen.vanda_hydrometry_data.components;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -13,12 +10,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.postgresql.util.PGobject;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
@@ -26,6 +20,11 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 
+/**
+ * Utility class
+ * 
+ * @author Radu Dudici
+ */
 public class VandaHUtility {
 	
 	public static String BOLD_ON = "\033[1m";
@@ -122,7 +121,7 @@ public class VandaHUtility {
 	
 	
 	/**
-	 * Takes a string representing a data with possible deviations from the following form and converts into the form "yyyy-mm-ddThh:mm:ss.SSS[Z]"
+	 * Takes a string representing a data with possible deviations from the standard form and converts into the form "yyyy-mm-ddThh:mm:ss.SSS[Z]"
 	 * 
 	 * Input format: yyyy-mm-ddThh:mm:ss.sssZ
 	 * where there may be deviations like:
@@ -157,7 +156,10 @@ public class VandaHUtility {
 	
 	
 	/**
-	 * This will not return seconds and milliseconds and will be in UTC time zone
+	 * Parses the date/time string received from the API into an OffsetDateTime.
+	 * This will not return seconds and milliseconds and will be in UTC time zone.
+	 * 
+	 * @param API date/time string
 	 * @return OffsetDateTime in UTC
 	 */
 	public static OffsetDateTime parseForAPI(String dateStr) throws DateTimeParseException {
@@ -175,7 +177,9 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Converts a date in UTC format yyyy-mm-ddThh:mm:ss.nnZ into a OffsetDateTime object
+	 * Converts a date in UTC format yyyy-mm-ddThh:mm:ss.nnZ into an OffsetDateTime object.
+	 * It only supports UTC time zone if "Z" is present or local time zone otherwise.
+	 * 
 	 * @param dateStr
 	 * @return OffsetDateTime object
 	 */
@@ -213,26 +217,31 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Converts Date object representing a date to an OffsetDateTime in UTC timezone 
-	 * @return
+	 * Converts a Java Date object representing a date to an OffsetDateTime using the UTC time zone
+	 * 
+	 *  @param date
+	 * @return OffsetDateTime in UTC
 	 */
 	public static OffsetDateTime dateToOfssetDateTimeUtc(Date date) {
 		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC) : null;
 	}
 	
 	/**
-	 * Converts Date object to an OffsetDateTime in Local timezone 
-	 * @return
+	 * Converts a Java Date object to an OffsetDateTime using the local time zone
+	 * 
+	 * @param date 
+	 * @return OffsetDateTime in local time zone
 	 */
 	public static OffsetDateTime dateToOfssetDateTimeLocalZone(Date date) {
 		return date != null ? date.toInstant().atOffset(ZoneOffset.UTC).atZoneSameInstant(ZoneId.systemDefault()).toOffsetDateTime() : null;
 	}
 	
 	/**
-	 * Converts an sQL DAte to OffsetDateTime
-	 * @param ts the timestamp 
-	 * @param utc if true the date will be shown in utc time
-	 * @return
+	 * Converts an SQL Timestamp to an OffsetDateTime object
+	 * 
+	 * @param ts the Timestamp 
+	 * @param utc if true the date object will be set to UTC time zone
+	 * @return OffsetDateTime in local or UTC time zone
 	 */
 	public static OffsetDateTime toOffsetDate(Timestamp ts, boolean utc) {
 		
@@ -240,6 +249,12 @@ public class VandaHUtility {
 				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
 	}
 	
+	/**
+	 * Parse a location string of the form "POINT(xxx.xxx yyy.yyy) into a Location object
+	 * @param geometryValue
+	 * @return the Location object
+	 * @throws SQLException
+	 */
 	public static Location toLocation(String geometryValue) throws SQLException {
 		        
         // Ensure the geometry value is in the expected format
