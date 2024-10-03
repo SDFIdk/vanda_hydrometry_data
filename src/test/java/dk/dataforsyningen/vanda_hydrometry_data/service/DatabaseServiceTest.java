@@ -13,6 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
@@ -20,6 +21,11 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 
+/**
+ * Test suite to test the DAO classes and database service.
+ * The tests need to be activated from the properties file by:
+ * 		vanda-hidrometry-data.database.test=true
+ */
 @SpringBootTest
 public class DatabaseServiceTest {
 
@@ -68,11 +74,17 @@ public class DatabaseServiceTest {
 	OffsetDateTime date1;
 	OffsetDateTime date2;
 	
+	@Value("${vanda-hidrometry-data.database.test:#{false}}")
+	public boolean enableTest;
+	
 	@Autowired
 	private DatabaseService dbService;
 			
 	@BeforeEach
 	public void setup() {
+		
+		System.out.println("Database testing " + (enableTest ? "enabled" : "disabled"));
+		if (!enableTest) return;
 		
 		station1 = new Station();
 		station1.setStationId(stationId);
@@ -126,6 +138,8 @@ public class DatabaseServiceTest {
 	@AfterEach
 	public void deleteAll() {
 
+		if (!enableTest) return;
+		
 		testDeleteMeasurement();
 		
 		testDeleteMeasurementType();
@@ -135,6 +149,8 @@ public class DatabaseServiceTest {
 	
 	@Test
 	public void testDAO() throws InterruptedException {
+		
+		if (!enableTest) return;
 		
 		//Test StationDao
 		

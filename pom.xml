@@ -56,10 +56,6 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-    	<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
 		<dependency>
 	        <groupId>org.jdbi</groupId>
 	        <artifactId>jdbi3-spring5</artifactId>
@@ -80,29 +76,11 @@
 	        <artifactId>jdbi3-postgis</artifactId>
 	        <version>${org.jdbi.version}</version>
 	    </dependency>
-		<!--
-    	<dependency>
-	        <groupId>org.jdbi</groupId>
-	        <artifactId>jdbi3-bom</artifactId>
-	        <type>pom</type>
-	        <version>${org.jdbi.version}</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.jdbi</groupId>
-	        <artifactId>jdbi3-jackson2</artifactId>
-	        <version>${org.jdbi.version}</version>
-	    </dependency>
-	    -->
 	    <dependency>
     		<groupId>io.swagger.codegen.v3</groupId>
     		<artifactId>swagger-codegen-maven-plugin</artifactId>
     		<version>${io.swagger.codegen.version}</version>
 		</dependency>
-		<!--<dependency>
-        	<groupId>io.swagger</groupId>
-        	<artifactId>swagger-annotations</artifactId>
-        	<version>1.6.5</version>
-    	</dependency>-->
     	<dependency>
     		<groupId>org.mockito</groupId>
     		<artifactId>mockito-core</artifactId>
