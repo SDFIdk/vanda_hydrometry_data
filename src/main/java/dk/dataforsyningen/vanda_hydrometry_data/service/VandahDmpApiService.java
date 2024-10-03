@@ -3,7 +3,6 @@ package dk.dataforsyningen.vanda_hydrometry_data.service;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
@@ -19,6 +18,8 @@ import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 /**
  * Service class providing API access to DMP's VandaH.
@@ -72,9 +73,9 @@ public class VandahDmpApiService {
 			String format
 			) {
 		
-		ArrayList<DmpHydroApiResponsesStationResponse[]> arrayResults = new ArrayList<>();
+		ArrayList<DmpHydroApiResponsesStationResponse> arrayResults = new ArrayList<>();
 		for(Integer examinationTypeSc : examinationTypeScArray) {
-			arrayResults.add(getStations(
+			DmpHydroApiResponsesStationResponse[] stationResponses = getStations(
 					stationId, 
 					operatorStationId,
 					stationOwnerCvr,
@@ -84,15 +85,33 @@ public class VandahDmpApiService {
 					withResultsAfter,
 					withResultsCreatedAfter,
 					format
-					));
-		}
+					);
+			//merge results for each examination type
+			for(DmpHydroApiResponsesStationResponse stationResponse : stationResponses) {
+				boolean found = false;
+				for(DmpHydroApiResponsesStationResponse result : arrayResults) {
+					if (stationResponse.getStationId().equals(result.getStationId())) { //station found => update examinations types
+						for(DmpHydroApiResponsesStationResponseMeasurementPoint mp1 : result.getMeasurementPoints()) {
+							for(DmpHydroApiResponsesStationResponseMeasurementPoint mp2 : stationResponse.getMeasurementPoints()) {
+								if (mp1.getNumber() == mp2.getNumber()) { //same measurement point
+									//update all examinations from mp2 to mp1
+									for (DmpHydroApiResponsesStationResponseMeasurementPointExamination ex : mp2.getExaminations()) {
+										mp1.getExaminations().add(ex);
+									}
+								}
+							}
+						}
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					arrayResults.add(stationResponse);
+				}
+			}
+		}		
 		
-		DmpHydroApiResponsesStationResponse[] mergedResults = arrayResults.stream().
-				flatMap(Arrays::stream).
-				distinct().toArray(DmpHydroApiResponsesStationResponse[]::new);
-		
-		
-		return mergedResults;
+		return arrayResults.toArray(new DmpHydroApiResponsesStationResponse[arrayResults.size()]);
 	}
 	
 	public DmpHydroApiResponsesStationResponse[] getStations(
