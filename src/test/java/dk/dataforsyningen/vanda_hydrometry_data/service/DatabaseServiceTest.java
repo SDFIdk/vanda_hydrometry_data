@@ -22,7 +22,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 
 /**
- * Test suite to test the DAO classes and database service.
+ * Test suite to test the DAO and mapping classes and database service.
  * The tests need to be activated from the properties file by:
  * 		vanda-hidrometry-data.database.test=true
  */

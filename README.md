@@ -29,11 +29,11 @@ Retrieve a single or a subset of stations from DMP depending on extra criteria t
 
 	stations [--stationId=string] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
 	
-* **stationId** is a 8 digits number to identify a single station.
-* **operatorStationId** the id of the stations' operator
-* **examinationTypeSc** retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).
-* **withResultsAfter** only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
-* **withResultsCreatedAfter** only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **stationId** is a 8 digits number to identify a single station.
+- **operatorStationId** the id of the stations' operator
+- **examinationTypeSc** retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).
+- **withResultsAfter** only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **withResultsCreatedAfter** only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 ### Read water levels
 
@@ -41,12 +41,12 @@ Returns current results of water level (ExaminationType 25) measurements.
 
 	waterLevels --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
-* **stationId** is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
-* **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
-* **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
-* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
-* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
-* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided. Use "all" (for ex. --stationId=all) to read data for all stations saved in the database. Use comma separated values (f.ex. --stationId=10000002,10000003) to read data for selected stations.
+- **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
+- **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
+- **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 ### Read water flows
 
@@ -54,12 +54,12 @@ Returns current results of water flow (ExaminationType 27) measurements.
 
 	waterFlow --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
-* **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided.
-* **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
-* **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
-* **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
-* **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
-* **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided. Use "all" (for ex. --stationId=all) to read data for all stations saved in the database. Use comma separated values (f.ex. --stationId=10000002,10000003) to read data for selected stations.
+- **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
+- **measurementPointNumber** the measurement point number on the station. If not specified, returns all measurement points.
+- **from** from measurement date time to include in the response. Return results on the specified date time and later. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
+- **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
 
 ### Read examination types
@@ -121,9 +121,13 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 
 ## TODO
 
-This section lists the further work that is or could be planned for the project.
+This section lists the improvements and further work that is or could be planned for the project.
 
-* Implement reading from all relevant (providing the relevant examinationType) stations (ex. by using: --stationId=all)
-* Implement reading from several station given as csv (ex.: --stationId=10000002,10000003)
-* More junit tests
-
+- More JUnit tests
+    - VandaHydrometryDataRunner
+    - VandahDmpApiService
+    - CommandService
+    - StationsCommand - getData, saveData
+    - WaterLevelCommand
+    - WaterFlowsCommand - getData, saveData
+    - VandaHUtility
