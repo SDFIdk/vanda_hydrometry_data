@@ -3,6 +3,8 @@ package dk.dataforsyningen.vanda_hydrometry_data.service;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.client.RestClient;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
+import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
@@ -41,6 +44,9 @@ public class VandahDmpApiService {
 	
 	@Autowired
 	VandaHydrometryDataConfig config;
+	
+	@Autowired
+	private DatabaseService dbService;
 	
 	public DmpHydroApiResponsesStationResponse[] getAllStations() {
 
@@ -172,7 +178,7 @@ public class VandahDmpApiService {
 		
 	}
 	
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(
+	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevelsForStation(
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
@@ -211,7 +217,38 @@ public class VandahDmpApiService {
 		return results;
 	}
 	
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(
+	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(String stationId, 
+			String operatorStationId,
+			Integer measurementPointNumber,
+			OffsetDateTime from,
+			OffsetDateTime to,
+			OffsetDateTime createdAfter,
+			String format) {
+		
+		if ("all".equalsIgnoreCase(stationId)) { //for all stations
+			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
+			List<Station> stations = dbService.getAllStations();
+			
+			for(Station station : stations) {
+				output.addAll(Arrays.asList(getWaterLevelsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+			}
+			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
+		} else if (stationId != null && stationId.indexOf(",") != -1) { //for selected stations
+			String[] stationIds = stationId.split(",");
+			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
+			
+			for(String sId : stationIds) {
+				output.addAll(Arrays.asList(getWaterLevelsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+			}
+			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
+			
+			
+		} else { //for one station
+			return getWaterLevelsForStation(stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
+		}
+	}
+	
+	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlowsForStation(
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
@@ -248,6 +285,37 @@ public class VandahDmpApiService {
 		
 		return results;
 		
+	}
+	
+	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(String stationId, 
+			String operatorStationId,
+			Integer measurementPointNumber,
+			OffsetDateTime from,
+			OffsetDateTime to,
+			OffsetDateTime createdAfter,
+			String format) {
+		
+		if ("all".equalsIgnoreCase(stationId)) { //for all stations
+			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
+			List<Station> stations = dbService.getAllStations();
+			
+			for(Station station : stations) {
+				output.addAll(Arrays.asList(getWaterFlowsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+			}
+			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
+			
+		} else if (stationId != null && stationId.indexOf(",") != -1) { //for selected stations
+			String[] stationIds = stationId.split(",");
+			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
+			
+			for(String sId : stationIds) {
+				output.addAll(Arrays.asList(getWaterFlowsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+			}
+			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
+			
+		} else { //for one station
+			return getWaterFlowsForStation(stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
+		}
 	}
 	
 	private boolean isEmpty(Object obj) {

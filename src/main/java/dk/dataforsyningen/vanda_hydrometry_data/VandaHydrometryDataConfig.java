@@ -239,6 +239,10 @@ public class VandaHydrometryDataConfig {
 	public String getStationId() {
 		return stationId;
 	}
+	
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
 
 	public String getOperatorStationId() {
 		return operatorStationId;

@@ -1,12 +1,14 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -15,6 +17,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.command.CommandInterface;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
+import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 
 /**
@@ -41,6 +44,9 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	
 	@Autowired
 	DatabaseService databaseService;
+	
+	@Value("${vanda-hidrometry-data.one-command-per-station:#{false}}")
+	public boolean oneCmdPerStation;
 		
 	@Override
 	public void run(String... args) throws Exception {
@@ -82,7 +88,23 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		}  else { //only one command
 			String cmd = cmds.get(0);
 			try {
-				commandController.execute(cmd);
+				
+				//handle special case when more stations are required
+				if (oneCmdPerStation && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all stations
+					List<Station> stations = databaseService.getAllStations();
+					for(Station station : stations) {
+						config.setStationId(station.getStationId());
+						commandController.execute(cmd);
+					}
+				} else if (oneCmdPerStation && config.getStationId() != null && config.getStationId().indexOf(",") != -1) { //execute command for selected stations
+					String[] stationIds = config.getStationId().split(",");
+					for(String stationId : stationIds) {
+						config.setStationId(stationId);
+						commandController.execute(cmd);
+					}
+				} else { //execute command once
+					commandController.execute(cmd);
+				}
 			} catch (Exception ex) {
 				VandaHUtility.logAndPrint(log, Level.ERROR, true, "Error executing command '" + cmd + "'", ex);
 			}
