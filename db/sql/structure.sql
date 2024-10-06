@@ -1,11 +1,11 @@
-CREATE EXTENSION postgis;
 CREATE SCHEMA hydrometry;
+CREATE EXTENSION postgis WITH SCHEMA hydrometry;
 SET search_path TO hydrometry, public;
 
 CREATE TABLE station
 (
  station_id         char(8) NOT NULL,
- old_station_number char(8) NULL,
+ old_station_number varchar(20) NULL,
  name               varchar(150) NULL,
  station_owner_name varchar(150) NULL,
  location           geometry(POINT,25832) NOT NULL,
@@ -20,7 +20,7 @@ CREATE INDEX station_IDX_location ON station USING GIST (
 
 COMMENT ON TABLE station IS 'Contains information about the station';
 COMMENT ON COLUMN station.station_id IS 'ID of the station, 8 characters';
-COMMENT ON COLUMN station.old_station_number IS 'Old station number, 8 characters';
+COMMENT ON COLUMN station.old_station_number IS 'Old station number';
 COMMENT ON COLUMN station.name IS 'Name of the station';
 COMMENT ON COLUMN station.station_owner_name IS 'Name of the station owner';
 COMMENT ON COLUMN station.location IS 'The geo location of the station';
@@ -31,10 +31,10 @@ CREATE TABLE measurement_type
  measurement_type_id      varchar(12) NOT NULL,
  unit                     varchar(4) NOT NULL,
  unit_sc                  int NOT NULL,
- "parameter"              varchar(10) NOT NULL,
+ "parameter"              varchar(20) NOT NULL,
  parameter_sc             int NOT NULL,
  examination_type_sc      int NOT NULL,
- examination_type         varchar(10) NOT NULL,
+ examination_type         varchar(20) NOT NULL,
  CONSTRAINT PK_3 PRIMARY KEY ( measurement_type_id )
 );
 
