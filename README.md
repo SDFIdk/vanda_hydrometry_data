@@ -121,13 +121,3 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 
 ## TODO
 
-This section lists the improvements and further work that is or could be planned for the project.
-
-- More JUnit tests
-    - VandaHydrometryDataRunner
-    - VandahDmpApiService
-    - CommandService
-    - StationsCommand - getData, saveData
-    - WaterLevelCommand
-    - WaterFlowsCommand - getData, saveData
-    - VandaHUtility

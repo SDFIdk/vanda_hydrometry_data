@@ -95,7 +95,7 @@ public class VandaHUtility {
 		if (json == null || key == null) return null;
 		try { 
 			JSONObject bodyObj = new JSONObject(json);
-			message = bodyObj.has("message") ? "" + bodyObj.get("message") : null;
+			message = bodyObj.has(key) ? "" + bodyObj.get(key) : null;
 		} catch (Exception ex) {}
 		return message;
 	}
@@ -126,7 +126,8 @@ public class VandaHUtility {
 	 * Input format: yyyy-mm-ddThh:mm:ss.sssZ
 	 * where there may be deviations like:
 	 *   missing T or Z
-	 *   month, day ,hours, minutes and seconds or milliseconds may have 1 digit or missing from the end 
+	 *   month, day ,hours, minutes and seconds may have 1 or 2 digits or be missing
+	 *   milliseconds may have 1 to 3 digit or missing 
 	 *   
 	 * @param date
 	 * @param withoutSeconds if true the output will not contain the seconds
@@ -177,13 +178,12 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Converts a date in UTC format yyyy-mm-ddThh:mm:ss.nnZ into an OffsetDateTime object.
-	 * It only supports UTC time zone if "Z" is present or local time zone otherwise.
+	 * Same as {@link #parseForAPI} but it returns seconds and milliseconds
 	 * 
 	 * @param dateStr
-	 * @return OffsetDateTime object
+	 * @return OffsetDateTime object in UTC
 	 */
-	public static OffsetDateTime parseUtcOffsetDateTime(String dateStr) {
+	public static OffsetDateTime parseToUtcOffsetDateTime(String dateStr) {
 		if (dateStr == null) return null;
 		OffsetDateTime odt = null;
 		try {
@@ -203,7 +203,7 @@ public class VandaHUtility {
 	
 	/**
 	 * Convert a UTC date string into a Date.
-	 * see {@link parseUtcOffsetDateTime(String dateStr)}
+	 * see {@link #parseToUtcOffsetDateTime(String dateStr)}
 	 * 
 	 * @param dateStr UTC date string
 	 * @return Date
@@ -211,7 +211,7 @@ public class VandaHUtility {
 	public static Date parseUtcDate(String dateStr) {
 		if (dateStr == null) return null;
 		
-		OffsetDateTime odt = parseUtcOffsetDateTime(dateStr);
+		OffsetDateTime odt = parseToUtcOffsetDateTime(dateStr);
 		
 		return odt != null ? Date.from(odt.toInstant()) : null;
 	}

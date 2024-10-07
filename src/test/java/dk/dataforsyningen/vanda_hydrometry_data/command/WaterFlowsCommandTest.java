@@ -3,20 +3,12 @@ package dk.dataforsyningen.vanda_hydrometry_data.command;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,15 +17,18 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
+import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 
+/**
+ * This tests WateFlowsCommand functions but also the model data objects creation
+ */
 @SpringBootTest
-public class WaterFlowsTest {
+public class WaterFlowsCommandTest {
 
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
 	
@@ -74,6 +69,9 @@ public class WaterFlowsTest {
 	
 	@Mock
 	private VandahDmpApiService vandahService;
+	
+	@Mock
+	private DatabaseService dbService;
 	
 	@InjectMocks
 	private WaterFlowsCommand cmd = new WaterFlowsCommand(); 
@@ -151,14 +149,37 @@ public class WaterFlowsTest {
 		data[1] = measurementResult2;
 		
 		
-		when(config.getStationId()).thenReturn(null);
-		when(config.getOperatorStationId()).thenReturn(null);
-		when(config.getMeasurementPointNumber()).thenReturn(null);
-		when(config.getFrom()).thenReturn(null);
-		when(config.getTo()).thenReturn(null);
-		when(config.getCreatedAfter()).thenReturn(null);
+		when(config.getStationId()).thenReturn(id1);
+		when(config.getOperatorStationId()).thenReturn(opId1);
+		when(config.getMeasurementPointNumber()).thenReturn(mp1);
+		when(config.getFrom()).thenReturn(OffsetDateTime.parse(date1));
+		when(config.getTo()).thenReturn(OffsetDateTime.parse(date2));
+		when(config.getCreatedAfter()).thenReturn(OffsetDateTime.parse(date3));
 		
 		when(vandahService.getWaterFlows(any(),any(),any(),any(),any(),any(),any())).thenReturn(data);
+	}
+	
+	@Test
+	public void testGetData() {
+		int nr = cmd.getData(); //read mock data
+		
+		verify(vandahService, times(1)).getWaterFlows(id1, opId1, mp1, OffsetDateTime.parse(date1), OffsetDateTime.parse(date2), OffsetDateTime.parse(date3), null);
+		
+		assertEquals(4, nr); //4 measurements for 2 for each 2 station
+	}
+	
+	@Test
+	public void testSaveData() {
+		cmd.getData(); //read mock data
+		
+		cmd.mapData();
+		
+		int nr = cmd.saveData(); //read mock data
+		
+		verify(dbService, times(1)).addMeasurementTypes(cmd.getMeasurementTypes());
+		verify(dbService, times(1)).saveMeasurements(cmd.getMeasurements());
+		
+		assertEquals(4, nr); //4 measurements for 2 for each 2 station
 	}
 	
 	@Test

@@ -2,8 +2,12 @@ package dk.dataforsyningen.vanda_hydrometry_data.command;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -15,10 +19,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesLocationResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 
+/**
+ * This tests StationsCommand functions but also the model data objects creation
+ */
 @SpringBootTest
 public class StationsCommandTest {
 
@@ -44,11 +52,19 @@ public class StationsCommandTest {
 	private static double x2 = 21.23;
 	private static double y2 = 22.34;
 	
+	private final int mtParamSc = 1233;
+	private final Integer[] mtExamTypeSc = {25};
+	private static String date1 = "2024-09-25T09:15:00.001Z";
+	private static String date2 = "2024-09-25T08:45:00.001Z";
+	
 	@Mock
 	private VandahDmpApiService vandahService;
 	
 	@Mock
 	private VandaHydrometryDataConfig config;
+	
+	@Mock
+	private DatabaseService dbService;
 	
 	@InjectMocks
 	private StationsCommand cmd = new StationsCommand();
@@ -88,12 +104,53 @@ public class StationsCommandTest {
 		
 		when(vandahService.getAllStations()).thenReturn(data);
 		
+		when(vandahService.getStations(any(), any(), any(), any(), any(), any(Integer[].class), any(), any(), any())).thenReturn(data);
+		
+		when(config.getStationId()).thenReturn(id1);
+		when(config.getOperatorStationId()).thenReturn(opId1);
+		when(config.getParameterSc()).thenReturn(mtParamSc);
+		when(config.getWithResultsAfter()).thenReturn(OffsetDateTime.parse(date1));
+		when(config.getWithResultsCreatedAfter()).thenReturn(OffsetDateTime.parse(date2));
+		when((config.getExaminationTypeSc())).thenReturn(mtExamTypeSc);
+	}
+	
+	@Test
+	public void testGetData() {
+		int nr = cmd.getData(); //read mock data
+		
+		verify(vandahService, times(1)).getStations(id1, opId1, null, null, mtParamSc, mtExamTypeSc, OffsetDateTime.parse(date1), OffsetDateTime.parse(date2),null);
+		
+		assertEquals(2, nr); //2 station
+	}
+	
+	@Test
+	public void testGetAllData() {
+		
 		when(config.getStationId()).thenReturn(null);
 		when(config.getOperatorStationId()).thenReturn(null);
 		when(config.getParameterSc()).thenReturn(null);
 		when(config.getWithResultsAfter()).thenReturn(null);
 		when(config.getWithResultsCreatedAfter()).thenReturn(null);
 		when((config.getExaminationTypeSc())).thenReturn(null);
+		
+		int nr = cmd.getData(); //read mock data
+		
+		verify(vandahService, times(1)).getAllStations();
+		
+		assertEquals(2, nr); //2 station
+	}
+	
+	@Test
+	public void testSaveData() {
+		cmd.getData(); //read mock data
+		
+		cmd.mapData();
+		
+		int nr = cmd.saveData(); //read mock data
+		
+		verify(dbService, times(1)).saveStations(cmd.getStations());
+		
+		assertEquals(2, nr); //2 station
 	}
 	
 	@Test
