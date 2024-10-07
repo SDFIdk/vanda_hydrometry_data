@@ -119,5 +119,51 @@ In order to re-generate sources (the data model) from DMP API, enable the plugin
 	...
 ```
 
-## TODO
+## Configuration
 
+The following configurations can be adjusted in different configuration files:  _application.properties_ ,  _logback.xml_ :
+
+- **Postgres database connection info**
+
+  Provide database, username and password to connect to the Postgres database.
+
+```
+	spring.datasource.url=jdbc:postgresql:{database}
+	spring.datasource.username={username}
+	spring.datasource.password={password}
+	spring.datasource.driver-class-name=org.postgresql.Driver
+```
+
+- **Enable database test**
+
+  In order to enable the database junit testing set this property to true. Note that a functional database connection is required.
+
+```
+	vanda-hidrometry-data.database.test=true
+```
+
+- **Danmarks Miljø Portalen API URL**
+
+  Set the API URL on this property. It can point to demo (https://vandah.demo.miljoeportal.dk/api/), test (https://vandah.test.miljoeportal.dk/api/) or production (https://vandah.miljoeportal.dk/api/).
+
+```
+	dmp.vandah.api.url=https://vandah.test.miljoeportal.dk/api/
+```
+
+- **Execution for multiple stations**
+
+  If there is the need to execute a command for several stations one could use the option "--stationId". For exmple: "--stationId=all" or "--stationId=00000001,00000002". This property sets the mode the command will be executed.
+  
+  If this is set to "true" then the requested command (not API calls) is executed several times for each required station. Saving happens after each station. This is slower but less memory usage. 
+  
+  If this is set to "false" then the command is executed once for all required stations. Saving happens once for the entire data at the end. This is faster but more memory consuming. 
+  
+  Individual API calls will be made for each station in any case.
+
+```
+	vanda-hidrometry-data.one-command-per-station=true
+```
+
+- **Logging**
+
+  The file logback.xml defines the configuration for logging. It enables the logging into rolling files, their name and format.
