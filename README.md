@@ -104,6 +104,33 @@ Running the application without parameters will display the help info. For more 
 	stations --help
 
 
+## Examples
+
+Get all station, display them on the screen:
+
+```
+java -jar vanda-hydrometry-data.jar stations --verbose --displayData
+```
+
+Get all station, save them in the database (insert or update) and display the summary on the screen:
+
+```
+java -jar vanda-hydrometry-data.jar stations --verbose --saveDb
+```
+
+Get all water levels measurements between 2 dates for all stations saved into the db, then save the measurements into the DB:
+
+```
+java -jar vanda-hydrometry-data.jar waterlevels --stationId=all --verbose --saveDb --from=2024-10-01Z --to=2024-10-31Z
+```
+
+Get all water flows measurements between 2 dates for 2 stations and siplay the results on the screen:
+
+```
+java -jar vanda-hydrometry-data.jar waterflows --stationId=10000001,10000002 --verbose --displayData --from=2024-10-01Z --to=2024-10-2Z
+```
+
+
 ## Development
 
 In order to re-generate sources (the data model) from DMP API, enable the plugin in pom.xml by setting **skip** to **false**.
