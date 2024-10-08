@@ -41,9 +41,13 @@ public @interface LogSqlFactory {
         }
 
         private static void logSql(Logger log, StatementContext context) {
-            // System.out.println("Raw SQL:\n" + context.getRawSql());
-            // System.out.println("Parsed SQL:\n" + context.getParsedSql().getSql());
-        	log.debug("Statement SQL:\n" + context.getStatement());
+            //System.out.println("Raw SQL:\n" + context.getRawSql());
+        	//System.out.println("Parsed SQL:\n" + context.getParsedSql().getSql());
+        	String sql = "" + context.getStatement();
+        	if (context.getStatement() == null) {
+             sql = context.getRawSql();
+        	}
+        	log.debug("Statement SQL:\n" + sql);
         }
     }
 }

@@ -23,7 +23,7 @@ public interface StationDao {
 				old_station_number,
 				station_owner_name,
 				location,
-				ST_AsText(location) as location_as_text,
+				ST_AsEWKT(location) as location_as_ewkt,
 				description,
 				created,
 				updated
@@ -38,7 +38,7 @@ public interface StationDao {
 				old_station_number,
 				station_owner_name,
 				location,
-				ST_AsText(location) as location_as_text,
+				ST_AsEWKT(location) as location_as_ewkt,
 				description,
 				created,
 				updated
@@ -54,12 +54,12 @@ public interface StationDao {
 	@SqlUpdate("""
 			insert into station 
 			(station_id, old_station_number, name, station_owner_name, location, description, created, updated)
-			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), 25832)), :description, now(), now())
+			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), :description, now(), now())
 			on conflict (station_id) do update
 				set old_station_number = :oldStationNumber, 
 				name = :name, 
 				station_owner_name = :stationOwnerName, 
-				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), 25832)), 
+				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), 
 				description = :description, 
 				updated = now() 
 			""")
@@ -68,12 +68,12 @@ public interface StationDao {
 	@SqlBatch("""
 			insert into station 
 			(station_id, old_station_number, name, station_owner_name, location, description, created, updated)
-			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), 25832)), :description, now(), now())
+			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), :description, now(), now())
 			on conflict (station_id) do update
 				set old_station_number = :oldStationNumber, 
 				name = :name, 
 				station_owner_name = :stationOwnerName, 
-				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), 25832)), 
+				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), 
 				description = :description, 
 				updated = now() 
 			""")

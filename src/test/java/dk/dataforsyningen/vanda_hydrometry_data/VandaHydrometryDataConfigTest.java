@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -31,12 +29,11 @@ public class VandaHydrometryDataConfigTest {
 	 * Test reading options without value and missing options.
 	 * Test case insensitiveness.
 	 * Test parsing values.
-	 * Test parsing arrays of values.
 	 */
 	@Nested
 	@ContextConfiguration
 	@TestPropertySource(
-			properties = {"help", "VERBoSE", "stationid=99999999", "parameterSc=1234", "examinationtypesc=25,27"}
+			properties = {"help", "VERBoSE", "stationid=99999999", "parameterSc=1234", "examinationtypesc=25"}
 			)
 	public class VandaHydrometryDataConfigTest1 {
 		
@@ -50,9 +47,7 @@ public class VandaHydrometryDataConfigTest {
 			assertFalse(config.isSaveDb());
 			assertEquals("99999999", config.getStationId());
 			assertEquals(1234, config.getParameterSc());
-			assertEquals(2,config.getExaminationTypeSc().length);
-			assertEquals(25,config.getExaminationTypeSc()[0]);
-			assertEquals(27,config.getExaminationTypeSc()[1]);
+			assertEquals(25,config.getExaminationTypeSc());
 		}
 	}
 	
@@ -63,7 +58,7 @@ public class VandaHydrometryDataConfigTest {
 	@Nested
 	@ContextConfiguration
 	@TestPropertySource(
-			properties = {"stationid=abcd9999", "parametersc=12ab", "examinationtypesc=25,a,27"}
+			properties = {"stationid=abcd9999", "parametersc=12ab", "examinationtypesc="}
 			)
 	public class VandaHydrometryDataConfigTest2 {
 		
@@ -74,21 +69,18 @@ public class VandaHydrometryDataConfigTest {
 		public void testInvalidOptions() {
 			assertEquals("abcd9999", config.getStationId());
 			assertNull(config.getParameterSc());
-			assertEquals(2,config.getExaminationTypeSc().length);
-			assertEquals(25,config.getExaminationTypeSc()[0]);
-			assertEquals(27,config.getExaminationTypeSc()[1]);
+			assertNull(config.getExaminationTypeSc());
 		}
 	}
 	
 	
 	/**
-	 * Test missing options (with values).
-	 * Test parsing single value as array.
+	 * Test missing options (with values) and comma separated values.
 	 */
 	@Nested
 	@ContextConfiguration
 	@TestPropertySource(
-			properties = {"examinationtypesc=25"}
+			properties = {"stationId=10000001,10000002"}
 			)
 	public class VandaHydrometryDataConfigTest3 {
 		
@@ -97,10 +89,9 @@ public class VandaHydrometryDataConfigTest {
 	
 		@Test
 		public void testOptions() {
-			assertNull(config.getStationId());
+			assertEquals("10000001,10000002", config.getStationId());
 			assertNull(config.getParameterSc());
-			assertEquals(1,config.getExaminationTypeSc().length);
-			assertEquals(25,config.getExaminationTypeSc()[0]);
+			assertNull(config.getExaminationTypeSc());
 		}
 	}
 	

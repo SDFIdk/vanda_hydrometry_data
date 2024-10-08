@@ -14,7 +14,7 @@ public class Location {
 	@NotNull
 	Double y;
 	
-	String srId;
+	String srid;
 	
 	public static Location from(DmpHydroApiResponsesLocationResponse response) {
 		if (response == null) return null;
@@ -22,7 +22,7 @@ public class Location {
 		Location location = new Location();
 		location.setX(response.getX());
 		location.setY(response.getY());
-		location.setSrId(response.getSrid());
+		location.setSrid(response.getSrid());
 		
 		return location;
 	}
@@ -43,22 +43,32 @@ public class Location {
 		this.y = y;
 	}
 
-	public String getSrId() {
-		return srId;
+	public String getSrid() {
+		return srid;
+	}
+	
+	public int getSridAsInt() {
+		int v = 0;
+		try {
+			v = Integer.parseInt(srid);
+		} catch (NumberFormatException ex) {
+			//Do nothing
+		}
+		return v;
 	}
 
-	public void setSrId(String srId) {
-		this.srId = srId;
+	public void setSrid(String srid) {
+		this.srid = srid;
 	}
 
 	@Override
 	public String toString() {
-		return "Location [x=" + x + ", y=" + y + ", srId=" + srId + "]";
+		return "Location [x=" + x + ", y=" + y + ", srid=" + srid + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(srId, x, y);
+		return Objects.hash(srid, x, y);
 	}
 
 	@Override
@@ -70,7 +80,7 @@ public class Location {
 		if (getClass() != obj.getClass())
 			return false;
 		Location other = (Location) obj;
-		return Objects.equals(srId, other.srId) && Objects.equals(x, other.x) && Objects.equals(y, other.y);
+		return Objects.equals(srid, other.srid) && Objects.equals(x, other.x) && Objects.equals(y, other.y);
 	}
 	
 	

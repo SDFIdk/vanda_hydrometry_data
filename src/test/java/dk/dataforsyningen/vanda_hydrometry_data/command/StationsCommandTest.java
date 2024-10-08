@@ -52,8 +52,8 @@ public class StationsCommandTest {
 	private static double x2 = 21.23;
 	private static double y2 = 22.34;
 	
-	private final int mtParamSc = 1233;
-	private final Integer[] mtExamTypeSc = {25};
+	private int mtParamSc = 1233;
+	private Integer mtExamTypeSc = 25;
 	private static String date1 = "2024-09-25T09:15:00.001Z";
 	private static String date2 = "2024-09-25T08:45:00.001Z";
 	
@@ -104,7 +104,7 @@ public class StationsCommandTest {
 		
 		when(vandahService.getAllStations()).thenReturn(data);
 		
-		when(vandahService.getStations(any(), any(), any(), any(), any(), any(Integer[].class), any(), any(), any())).thenReturn(data);
+		when(vandahService.getStations(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(data);
 		
 		when(config.getStationId()).thenReturn(id1);
 		when(config.getOperatorStationId()).thenReturn(opId1);

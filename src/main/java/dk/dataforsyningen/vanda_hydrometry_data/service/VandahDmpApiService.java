@@ -21,8 +21,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 /**
  * Service class providing API access to DMP's VandaH.
@@ -65,59 +63,6 @@ public class VandahDmpApiService {
 				.body(DmpHydroApiResponsesStationResponse[].class);
 				
 		return stations;
-	}
-	
-	public DmpHydroApiResponsesStationResponse[] getStations(
-			String stationId, 
-			String operatorStationId,
-			String stationOwnerCvr,
-			String operatorCvr,
-			Integer parameterSc,
-			Integer[] examinationTypeScArray,
-			OffsetDateTime withResultsAfter,
-			OffsetDateTime withResultsCreatedAfter,
-			String format
-			) {
-		
-		ArrayList<DmpHydroApiResponsesStationResponse> arrayResults = new ArrayList<>();
-		for(Integer examinationTypeSc : examinationTypeScArray) {
-			DmpHydroApiResponsesStationResponse[] stationResponses = getStations(
-					stationId, 
-					operatorStationId,
-					stationOwnerCvr,
-					operatorCvr,
-					parameterSc,
-					examinationTypeSc,
-					withResultsAfter,
-					withResultsCreatedAfter,
-					format
-					);
-			//merge results for each examination type
-			for(DmpHydroApiResponsesStationResponse stationResponse : stationResponses) {
-				boolean found = false;
-				for(DmpHydroApiResponsesStationResponse result : arrayResults) {
-					if (stationResponse.getStationId().equals(result.getStationId())) { //station found => update examinations types
-						for(DmpHydroApiResponsesStationResponseMeasurementPoint mp1 : result.getMeasurementPoints()) {
-							for(DmpHydroApiResponsesStationResponseMeasurementPoint mp2 : stationResponse.getMeasurementPoints()) {
-								if (mp1.getNumber() == mp2.getNumber()) { //same measurement point
-									//update all examinations from mp2 to mp1
-									for (DmpHydroApiResponsesStationResponseMeasurementPointExamination ex : mp2.getExaminations()) {
-										mp1.getExaminations().add(ex);
-									}
-								}
-							}
-						}
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					arrayResults.add(stationResponse);
-				}
-			}
-		}		
-		
-		return arrayResults.toArray(new DmpHydroApiResponsesStationResponse[arrayResults.size()]);
 	}
 	
 	public DmpHydroApiResponsesStationResponse[] getStations(
@@ -178,6 +123,18 @@ public class VandahDmpApiService {
 		
 	}
 	
+	/**
+	 * Call to API.
+	 * 
+	 * @param stationId - should be set to an actual station ID
+	 * @param operatorStationId
+	 * @param measurementPointNumber
+	 * @param from
+	 * @param to
+	 * @param createdAfter
+	 * @param format
+	 * @return
+	 */
 	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevelsForStation(
 			String stationId, 
 			String operatorStationId,
@@ -217,7 +174,20 @@ public class VandahDmpApiService {
 		return results;
 	}
 	
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(String stationId, 
+	/**
+	 * Retrieves water levels.
+	 * 
+	 * @param stationId can be "all", comma separated values, or an actual station Id
+	 * @param operatorStationId
+	 * @param measurementPointNumber
+	 * @param from
+	 * @param to
+	 * @param createdAfter
+	 * @param format
+	 * @return array of results
+	 */
+	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(
+			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
 			OffsetDateTime from,
@@ -248,6 +218,19 @@ public class VandahDmpApiService {
 		}
 	}
 	
+	
+	/**
+	 * Call to API
+	 * 
+	 * @param stationId should be set to actual station Id
+	 * @param operatorStationId
+	 * @param measurementPointNumber
+	 * @param from
+	 * @param to
+	 * @param createdAfter
+	 * @param format
+	 * @return
+	 */
 	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlowsForStation(
 			String stationId, 
 			String operatorStationId,
@@ -287,7 +270,20 @@ public class VandahDmpApiService {
 		
 	}
 	
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(String stationId, 
+	/**
+	 * Retrieves water levels.
+	 * 
+	 * @param stationId can be "all", comma separated values, or an actual station Id* 
+	 * @param operatorStationId
+	 * @param measurementPointNumber
+	 * @param from
+	 * @param to
+	 * @param createdAfter
+	 * @param format
+	 * @return array of results
+	 */
+	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(
+			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
 			OffsetDateTime from,

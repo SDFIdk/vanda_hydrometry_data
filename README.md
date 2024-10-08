@@ -15,7 +15,7 @@ DMP and DB connections are configured in the  _application.properties_ file. The
 ## Usage
 This section shows the operations and parameters that can be used with the application. In order to run the application from the command line (console) use this command:
 
-	java -jar vanda-hydrometry-data.jar dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataApplication
+	java -jar vanda-hydrometry-data.jar
 	
 In order to tell the application what to do the following parameters should be used further (added to the command line). Parameters may be commands,or options that starts with "--" and may have or not a value after the "=" sign.
 
@@ -27,11 +27,11 @@ Retrieve all stations from DMP:
 	
 Retrieve a single or a subset of stations from DMP depending on extra criteria that is provided as parameters:
 
-	stations [--stationId=string] [--examinationTypeSc=number,number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
+	stations [--stationId=string] [--examinationTypeSc=number] [--operatorStationId=string] [--withResultsAfter=date] [--withResultsCreatedAfter=date]
 	
 - **stationId** is a 8 digits number to identify a single station.
 - **operatorStationId** the id of the stations' operator
-- **examinationTypeSc** retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).
+- **examinationTypeSc** retrieve the stations that provides the requested examination type. 
 - **withResultsAfter** only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 - **withResultsCreatedAfter** only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 

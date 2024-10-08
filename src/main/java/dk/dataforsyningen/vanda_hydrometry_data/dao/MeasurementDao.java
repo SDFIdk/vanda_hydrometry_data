@@ -63,11 +63,11 @@ public interface MeasurementDao {
 			(select :stationId, :measurementDateTime, :measurementPointNumber, :measurementTypeId, :result, :isCurrent, now()
 			where not exists (
 				select 1 from measurement where
-					station_id = :stationId and
-					measurement_date_time = :measurementDateTime and 
-					measurement_point_number = :measurementPointNumber and
-					measurement_type_id = :measurementTypeId and
-					is_current = :isCurrent
+					station_id = :stationId 
+					and measurement_date_time = :measurementDateTime 
+					and measurement_point_number = :measurementPointNumber 
+					and measurement_type_id = :measurementTypeId 
+					and is_current = :isCurrent
 			))
 			returning *  
 			""")
@@ -81,12 +81,12 @@ public interface MeasurementDao {
 	@SqlUpdate("""
 			update measurement set result = :result
 			where
-				station_id = :stationId and
-				measurement_date_time = :measurementDateTime and 
-				measurement_point_number = :measurementPointNumber and
-				measurement_type_id = :measurementTypeId and
-				result != :result and
-				is_current = :isCurrent
+				station_id = :stationId 
+				and measurement_date_time = :measurementDateTime 
+				and measurement_point_number = :measurementPointNumber 
+				and measurement_type_id = :measurementTypeId 
+				and result != :result 
+				and is_current = :isCurrent
 			""")
 	void updateMeasurement(@BindBean Measurement measurement);
 	
@@ -95,11 +95,11 @@ public interface MeasurementDao {
 			select :stationId, :measurementDateTime, :measurementPointNumber, :measurementTypeId, :result, :isCurrent, now()
 			where not exists (
 				select 1 from measurement where
-					station_id = :stationId and
-					measurement_date_time = :measurementDateTime and 
-					measurement_point_number = :measurementPointNumber and
-					measurement_type_id = :measurementTypeId and
-					is_current = :isCurrent
+					station_id = :stationId 
+					and measurement_date_time = :measurementDateTime 
+					and measurement_point_number = :measurementPointNumber 
+					and measurement_type_id = :measurementTypeId 
+					and is_current = :isCurrent
 			)
 			""")
 	void addMeasurements(@BindBean List<Measurement> measurements);
@@ -107,22 +107,24 @@ public interface MeasurementDao {
 	@SqlBatch("""
 			update measurement set result = :result
 			where
-				station_id = :stationId and
-				measurement_date_time = :measurementDateTime and 
-				measurement_point_number = :measurementPointNumber and
-				measurement_type_id = :measurementTypeId and
-				result != :result and
-				is_current = :isCurrent
+				station_id = :stationId 
+				and measurement_date_time = :measurementDateTime 
+				and measurement_point_number = :measurementPointNumber 
+				and measurement_type_id = :measurementTypeId 
+				and result != :result 
+				and is_current = :isCurrent
 			""")
 	void updateMeasurements(@BindBean List<Measurement> measurements);
 	
 	@SqlUpdate("""
-			delete from measurement where
-				station_id = :stationId and
-				measurement_date_time = :measurementDateTime and 
-				measurement_point_number = :measurementPointNumber and
-				measurement_type_id = :measurementTypeId and
-				is_current = true
+			delete 
+			from measurement 
+			where
+				station_id = :stationId 
+				and measurement_date_time = :measurementDateTime 
+				and measurement_point_number = :measurementPointNumber 
+				and measurement_type_id = :measurementTypeId 
+				and is_current = true
 			""")
 	void deleteMeasurement(@Bind String stationId, @Bind int measurementPointNumber,
 			@Bind String measurementTypeId,

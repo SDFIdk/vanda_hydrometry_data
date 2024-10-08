@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.3</version>
+		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dk.kds.vandah</groupId>
@@ -48,11 +48,6 @@
         	<artifactId>spring-boot-starter-jdbc</artifactId>
     	</dependency>
     	<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-configuration-processor</artifactId>
-    		<optional>true</optional>
-    	</dependency>
-    	<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
@@ -92,14 +87,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<!-- Auto generate (directly from the URL) the Java classes for the data model used within DMP API -->

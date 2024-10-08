@@ -13,9 +13,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
@@ -39,6 +39,7 @@ public class DatabaseServiceTest {
 	private final String stationOldNumber = "12345678";
 	private final double locationX = 12.34;
 	private final double locationY = 56.78;
+	private final String locationSrid = "25832";
 	
 	private final String mtId1 = "T1233-25-19";
 	private final int mtParamSc1 = 1233;
@@ -74,14 +75,18 @@ public class DatabaseServiceTest {
 	OffsetDateTime date1;
 	OffsetDateTime date2;
 	
-	@Value("${vanda-hidrometry-data.database.test:#{false}}")
-	public boolean enableTest;
+	private boolean enableTest = false;
 	
 	@Autowired
 	private DatabaseService dbService;
+	
+	@Autowired
+	VandaHydrometryDataConfig config;
 			
 	@BeforeEach
 	public void setup() {
+		
+		enableTest = config.isEnableTest();
 		
 		System.out.println("Database testing " + (enableTest ? "enabled" : "disabled"));
 		if (!enableTest) return;
@@ -95,6 +100,7 @@ public class DatabaseServiceTest {
 		location = new Location();
 		location.setX(locationX);
 		location.setY(locationY);
+		location.setSrid(locationSrid);
 		station1.setLocation(location);
 		
 		mt1 = new MeasurementType();

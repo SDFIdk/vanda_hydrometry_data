@@ -77,7 +77,12 @@ public class VandaHUtility {
 				log.trace(message);
 			}
 		}
-		message = (level == null || Level.INFO.equals(level) ? "" : level.name() + ": ") + message + (exception != null ? " [" + exception.getMessage() + "]" : "");
+		if (level != null && !Level.INFO.equals(level)) { 
+			message = level.name() + ": " + message;
+		}
+		if (exception != null) { 
+			message += " [" + exception.getMessage() + "]";
+		}
 		if (Level.ERROR.equals(level)) {
 			System.err.println(message);
 		} else if (consolePrint) {
@@ -250,7 +255,7 @@ public class VandaHUtility {
 	}
 	
 	/**
-	 * Parse a location string of the form "POINT(xxx.xxx yyy.yyy) into a Location object
+	 * Parse a location string of the form "POINT(xxx.xxx yyy.yyy)" or "SRID=nnnnn;POINT(xxx.xxx yyy.yyy)" into a Location object
 	 * @param geometryValue
 	 * @return the Location object
 	 * @throws SQLException
@@ -258,7 +263,21 @@ public class VandaHUtility {
 	public static Location toLocation(String geometryValue) throws SQLException {
 		        
         // Ensure the geometry value is in the expected format
-        if (geometryValue == null || !geometryValue.startsWith("POINT(") || !geometryValue.endsWith(")")) {
+        if (geometryValue == null || !(geometryValue.startsWith("POINT(") || geometryValue.startsWith("SRID="))  || !geometryValue.endsWith(")")) {
+            throw new SQLException("Invalid geometry format. Expected POINT(x y) or SRID=nnnnn;POINT(x y).");
+        }
+        
+        //Extract srid
+        String srid = null;
+        if (geometryValue.startsWith("SRID=")) {
+        	String[] touple = geometryValue.split(";");
+        	if (touple.length >= 2) {
+       			srid = touple[0].substring(5);
+        		geometryValue = touple[1];
+        	}
+        }
+        
+        if (!geometryValue.startsWith("POINT(") || !geometryValue.endsWith(")")) {
             throw new SQLException("Invalid geometry format. Expected POINT(x y).");
         }
 
@@ -270,6 +289,7 @@ public class VandaHUtility {
         try {
 	        loc.setX(Double.parseDouble(coordinates[0]));
 	        loc.setY(Double.parseDouble(coordinates[1]));
+	        loc.setSrid(srid);
         } catch (NumberFormatException ex) {
         	throw new SQLException("Invalid geometry format. x and y should be numbers.");
         }

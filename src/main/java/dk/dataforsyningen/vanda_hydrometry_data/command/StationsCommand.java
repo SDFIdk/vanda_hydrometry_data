@@ -47,7 +47,7 @@ public class StationsCommand implements CommandInterface {
 				&& config.getParameterSc() == null
 				&& config.getWithResultsAfter() == null
 				&& config.getWithResultsCreatedAfter() == null
-				&& (config.getExaminationTypeSc() == null || config.getExaminationTypeSc().length == 0);
+				&& config.getExaminationTypeSc() == null;
 		
 		if (getAllStations) {
 			data = vandahService.getAllStations();

@@ -2,7 +2,6 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,15 @@ public class VandaHydrometryDataConfig {
 	
 	@Value("${dmp.vandah.api.url:#{null}}")
 	String vandahDmpApiUrl;
+	
+	//if true runs a command for each station => more time saving, less mem
+	//if false runs one command for all stations => only one saving (faster), more mem
+	@Value("${vanda-hidrometry-data.one-command-per-station:#{false}}")
+	public boolean oneCmdPerStation;
+	
+	//enables DAO and database service testing - needs a DB connection
+	@Value("${vanda-hidrometry-data.database.test:#{false}}")
+	public boolean enableTest; //used only within testing
 	
 	/* Option values from the command line */
 	
@@ -115,27 +123,12 @@ public class VandaHydrometryDataConfig {
 		return saveDb != null;
 	}
 	
-	public Integer[] getExaminationTypeSc() {
-		if (examinationTypeSc == null || examinationTypeSc.length() == 0) {
-			return null;
-		} else if (examinationTypeSc.contains(",")) {
-			return Arrays.stream(examinationTypeSc.split(",")).filter(v -> (v != null && v.length() > 0)).
-					filter(value ->
-							{
-								try {
-									Integer.parseInt(value);
-									return true;
-								} catch (NumberFormatException e) {
-									return false;
-								}
-							}).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-		}
+	public Integer getExaminationTypeSc() {
 		try {
-			return new Integer[] {Integer.parseInt(examinationTypeSc)};
+			return Integer.parseInt(examinationTypeSc);
 		} catch (NumberFormatException e) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid number found in 'examinationTypeSc' parameter.");
+			return null;
 		}
-		return null;
 	}
 	
 	public Integer getParameterSc() {
@@ -220,7 +213,7 @@ public class VandaHydrometryDataConfig {
 		sb.append("\tSaveDb: ").append(isSaveDb()).append("\n");
 		sb.append("\tStationId: ").append(getStationId()).append("\n");
 		sb.append("\tOperatorStationId: ").append(getOperatorStationId()).append("\n");
-		sb.append("\tExaminationTypeSc: ").append(Arrays.toString(getExaminationTypeSc())).append("\n");
+		sb.append("\tExaminationTypeSc: ").append(getExaminationTypeSc()).append("\n");
 		sb.append("\tParameterSc: ").append(getParameterSc()).append("\n");
 		sb.append("\tMeasurementPointNumber: ").append(getMeasurementPointNumber()).append("\n");
 		sb.append("\tWithResultsAfter: ").append(getWithResultsAfter()).append("\n");
@@ -247,5 +240,15 @@ public class VandaHydrometryDataConfig {
 	public String getOperatorStationId() {
 		return operatorStationId;
 	}
+
+	public boolean isOneCmdPerStation() {
+		return oneCmdPerStation;
+	}
+
+	public boolean isEnableTest() {
+		return enableTest;
+	}
+	
+	
 	
 }

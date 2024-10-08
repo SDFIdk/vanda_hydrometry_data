@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -45,9 +44,6 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	@Autowired
 	DatabaseService databaseService;
 	
-	@Value("${vanda-hidrometry-data.one-command-per-station:#{false}}")
-	public boolean oneCmdPerStation;
-		
 	@Override
 	public void run(String... args) throws Exception {
 		
@@ -90,13 +86,13 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 			try {
 				
 				//handle special case when more stations are required
-				if (oneCmdPerStation && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all stations
+				if (config.isOneCmdPerStation() && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all stations
 					List<Station> stations = databaseService.getAllStations();
 					for(Station station : stations) {
 						config.setStationId(station.getStationId());
 						commandController.execute(cmd);
 					}
-				} else if (oneCmdPerStation && config.getStationId() != null && config.getStationId().indexOf(",") != -1) { //execute command for selected stations
+				} else if (config.isOneCmdPerStation() && config.getStationId() != null && config.getStationId().indexOf(",") != -1) { //execute command for selected stations
 					String[] stationIds = config.getStationId().split(",");
 					for(String stationId : stationIds) {
 						config.setStationId(stationId);

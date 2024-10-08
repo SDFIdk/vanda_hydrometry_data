@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
-
 public class CommandLineArgsParserTests {
 
 	CommandLineArgsParser commandLineArgsParser = new CommandLineArgsParser();
