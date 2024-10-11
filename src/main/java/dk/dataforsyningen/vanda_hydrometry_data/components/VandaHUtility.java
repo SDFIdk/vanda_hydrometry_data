@@ -162,8 +162,8 @@ public class VandaHUtility {
 	
 	
 	/**
-	 * Parses the date/time string received from the API into an OffsetDateTime.
-	 * This will not return seconds and milliseconds and will be in UTC time zone.
+	 * Parses the date/time string given by the user into an OffsetDateTime
+	 * without seconds and milliseconds in UTC time zone accepted by the API.
 	 * 
 	 * @param API date/time string
 	 * @return OffsetDateTime in UTC
