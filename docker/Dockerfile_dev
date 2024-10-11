@@ -1,0 +1,21 @@
+FROM maven:3.9.9-eclipse-temurin-21-alpine as builder
+
+RUN apk upgrade --available --no-cache
+
+WORKDIR /vanda_hydrometry_data
+
+COPY pom.xml .
+
+RUN mvn -e -B dependency:resolve
+
+COPY src ./src
+
+RUN mvn -e -B package -DskipTests
+
+FROM eclipse-temurin:21.0.4_7-jdk-alpine
+
+RUN apk upgrade --available --no-cache
+
+COPY --from=builder /vanda_hydrometry_data/target/vanda-hydrometry-data.jar ./vanda-hydrometry-data.jar
+
+ENTRYPOINT ["java", "-jar", "vanda-hydrometry-data.jar"]

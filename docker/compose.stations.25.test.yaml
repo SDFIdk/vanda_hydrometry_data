@@ -1,0 +1,21 @@
+services:
+    ingestion:
+        container_name: vanda_hydrometry_data_ingestion
+        build:
+            context: ../.
+            dockerfile: docker/Dockerfile_dev
+        environment:
+            - "TZ=Europe/Copenhagen"
+        networks:
+            - "default"
+        command:
+          - "stations"
+          - "--stationsId=all"
+          - "--examinationTypeSc=25"
+          - "--verbose"
+          - "--saveDb"
+
+
+networks:
+  default:
+    name: vanda_hydrometry_data_ingestion_network
