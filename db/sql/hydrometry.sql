@@ -5,11 +5,11 @@ SET search_path TO hydrometry, public;
 CREATE TABLE station
 (
  station_id         char(8) NOT NULL,
- old_station_number varchar(20) NULL,
+ old_station_number varchar(100) NULL,
  name               varchar(150) NULL,
  station_owner_name varchar(150) NULL,
  location           geometry(POINT,25832) NOT NULL,
- description        varchar(200) NULL,
+ description        varchar(1000) NULL,
  created            timestamp(3) with time zone NOT NULL,
  updated            timestamp(3) with time zone NOT NULL,
  CONSTRAINT PK_1 PRIMARY KEY ( station_id )
