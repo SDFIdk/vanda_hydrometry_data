@@ -9,8 +9,8 @@ services:
         networks:
             - "default"
         command:
-          - "stations"
-          - "--examinationTypeSc=25"
+          - "waterflows"
+          - "-stationId=all"
           - "--verbose"
           - "--saveDb"
 

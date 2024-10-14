@@ -10,7 +10,7 @@ services:
             - "default"
         command:
           - "stations"
-          - "--examinationTypeSc=25"
+          - "--examinationTypeSc=27"
           - "--verbose"
           - "--saveDb"
 
