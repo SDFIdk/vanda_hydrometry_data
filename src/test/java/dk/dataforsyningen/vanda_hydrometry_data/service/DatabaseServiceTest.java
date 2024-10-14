@@ -24,7 +24,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 /**
  * Test suite to test the DAO and mapping classes and database service.
  * The tests need to be activated from the properties file by:
- * 		vanda-hidrometry-data.database.test=true
+ * 		vanda-hydrometry-data.database.test=true
  */
 @SpringBootTest
 public class DatabaseServiceTest {

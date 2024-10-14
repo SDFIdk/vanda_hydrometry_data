@@ -166,7 +166,7 @@ The following configurations can be adjusted in different configuration files:  
   In order to enable the database junit testing set this property to true. Note that a functional database connection is required.
 
 ```
-	vanda-hidrometry-data.database.test=true
+	vanda-hydrometry-data.database.test=true
 ```
 
 - **Danmarks Miljø Portalen API URL**
@@ -188,7 +188,7 @@ The following configurations can be adjusted in different configuration files:  
   Individual API calls will be made for each station in any case.
 
 ```
-	vanda-hidrometry-data.one-command-per-station=true
+	vanda-hydrometry-data.one-command-per-station=true
 ```
 
 - **Logging**

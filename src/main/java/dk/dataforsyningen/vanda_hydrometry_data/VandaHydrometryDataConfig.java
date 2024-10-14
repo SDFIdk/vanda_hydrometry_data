@@ -29,11 +29,11 @@ public class VandaHydrometryDataConfig {
 	
 	//if true runs a command for each station => more time saving, less mem
 	//if false runs one command for all stations => only one saving (faster), more mem
-	@Value("${vanda-hidrometry-data.one-command-per-station:#{false}}")
+	@Value("${vanda-hydrometry-data.one-command-per-station:#{false}}")
 	public boolean oneCmdPerStation;
 	
 	//enables DAO and database service testing - needs a DB connection
-	@Value("${vanda-hidrometry-data.database.test:#{false}}")
+	@Value("${vanda-hydrometry-data.database.test:#{false}}")
 	public boolean enableTest; //used only within testing
 	
 	/* Option values from the command line */
