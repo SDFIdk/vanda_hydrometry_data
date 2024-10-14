@@ -26,7 +26,7 @@ public interface MeasurementTypeDao {
 				examination_type,
 				unit_sc,
 				unit
-			from measurement_type
+			from hydrometry.measurement_type
 			""")
 	List<MeasurementType> getAllMeasurementTypes();
 	
@@ -39,13 +39,13 @@ public interface MeasurementTypeDao {
 				examination_type,
 				unit_sc,
 				unit
-			from measurement_type 
+			from hydrometry.measurement_type
 			where measurement_type_id = :measurementTypeId
 			""")
 	MeasurementType findMeasurementTypeById(@Bind String measurementTypeId);
 	
 	@SqlUpdate("""
-			insert into measurement_type
+			insert into hydrometry.measurement_type
 			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
 			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
 			on conflict (measurement_type_id) do update
@@ -57,7 +57,7 @@ public interface MeasurementTypeDao {
 	String addMeasurementType(@BindBean MeasurementType measurementType);
 	
 	@SqlBatch("""
-			insert into measurement_type
+			insert into hydrometry.measurement_type
 			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
 			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
 			on conflict (measurement_type_id) do update
@@ -68,9 +68,9 @@ public interface MeasurementTypeDao {
 	@GetGeneratedKeys
 	List<String> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
 	
-	@SqlUpdate("delete from measurement_type where measurement_type_id = :id")
+	@SqlUpdate("delete from hydrometry.measurement_type where measurement_type_id = :id")
 	void deleteMeasurementType(@Bind String id);
 	
-	@SqlQuery("select count(*) from measurement_type")
+	@SqlQuery("select count(*) from hydrometry.measurement_type")
 	int count();
 }
