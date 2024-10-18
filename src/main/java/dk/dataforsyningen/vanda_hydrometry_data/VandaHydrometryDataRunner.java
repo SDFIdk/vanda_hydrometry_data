@@ -103,6 +103,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 				}
 			} catch (Exception ex) {
 				VandaHUtility.logAndPrint(log, Level.ERROR, true, "Error executing command '" + cmd + "'", ex);
+				throw ex;
 			}
 		}
 		
