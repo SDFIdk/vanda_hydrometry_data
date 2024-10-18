@@ -52,7 +52,7 @@ public interface StationDao {
 	 * @param station
 	 */
 	@SqlUpdate("""
-			insert into station
+			insert into hydrometry.station
 			(station_id, old_station_number, name, station_owner_name, location, description, created, updated)
 			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), :description, now(), now())
 			on conflict (station_id) do update
