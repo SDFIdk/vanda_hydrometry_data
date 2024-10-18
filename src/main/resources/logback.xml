@@ -2,7 +2,7 @@
 <configuration>
 
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-	<!--<include resource="org/springframework/boot/logging/logback/console-appender.xml" />-->
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 	
     <property name="APP_LOG" value="vandah"/>
@@ -11,7 +11,7 @@
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${APP_LOG}.log</file>
+        <file>log/${APP_LOG}.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${APP_LOG}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>

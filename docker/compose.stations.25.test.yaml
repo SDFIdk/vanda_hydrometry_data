@@ -8,6 +8,8 @@ services:
             - "TZ=Europe/Copenhagen"
         networks:
             - "default"
+        volumes:
+            - ../log/vandah.log:/log/vandah.log
         command:
           - "stations"
           - "--examinationTypeSc=25"
