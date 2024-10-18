@@ -12,7 +12,7 @@ services:
           - ../log/vandah.log:/log/vandah.log
         command:
           - "waterflows"
-          - "-stationId=all"
+          - "--stationId=all"
           - "--verbose"
           - "--saveDb"
 
