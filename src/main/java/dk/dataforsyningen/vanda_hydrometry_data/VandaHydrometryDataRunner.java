@@ -47,8 +47,10 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		log.debug("Application start ...");
+		
 		if (config.getVandahDmpApiUrl() == null) {
-			VandaHUtility.logAndPrint(log, Level.WARN, true, "There is no API URL defined in the properties file.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "There is no API URL defined in the properties file.");
 			return;
 		}
 		
@@ -79,7 +81,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		// Too many commands
 		} else if (cmds.size() > 1) {
-			VandaHUtility.logAndPrint(log, Level.WARN, true, "Too many commands requested.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Too many commands requested.");
 		
 		}  else { //only one command
 			String cmd = cmds.get(0);
@@ -102,10 +104,12 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 					commandController.execute(cmd);
 				}
 			} catch (Exception ex) {
-				VandaHUtility.logAndPrint(log, Level.ERROR, true, "Error executing command '" + cmd + "'", ex);
-				throw ex;
+				VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error executing command '" + cmd + "'", ex);
+				System.exit(1);
 			}
 		}
+		
+		log.debug("Application ended.");
 		
 	}
 	

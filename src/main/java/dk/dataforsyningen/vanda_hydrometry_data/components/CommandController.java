@@ -57,7 +57,7 @@ public class CommandController {
 	    		}
     		}
     	} else {
-    		VandaHUtility.logAndPrint(log, Level.ERROR, true, "No execution bean was regsitered for the given command: " + command);
+    		VandaHUtility.logAndPrint(log, Level.ERROR, false, "No execution bean was regsitered for the given command: " + command);
     	}
     }
     

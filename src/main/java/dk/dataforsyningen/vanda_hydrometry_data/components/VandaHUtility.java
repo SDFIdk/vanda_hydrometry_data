@@ -83,10 +83,12 @@ public class VandaHUtility {
 		if (exception != null) { 
 			message += " [" + exception.getMessage() + "]";
 		}
-		if (Level.ERROR.equals(level)) {
-			System.err.println(message);
-		} else if (consolePrint) {
-			System.out.println(message);
+		if (consolePrint) {
+			if (Level.ERROR.equals(level)) {
+				System.err.println(message);
+			} else {
+				System.out.println(message);
+			}
 		}
 	}
 	

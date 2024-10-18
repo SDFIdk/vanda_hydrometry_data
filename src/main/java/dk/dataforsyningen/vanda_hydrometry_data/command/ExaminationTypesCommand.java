@@ -43,7 +43,7 @@ public class ExaminationTypesCommand  implements CommandInterface {
 
 	@Override
 	public int saveData() {
-		VandaHUtility.logAndPrint(log, Level.WARN, config.isVerbose(), "Save to DB is not relevant for this data");
+		VandaHUtility.logAndPrint(log, Level.WARN, false, "Save to DB is not relevant for this data");
 		return 0;
 	}
 

@@ -56,9 +56,9 @@ public class VandahDmpApiService {
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, config.isVerbose(), "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
+					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving water levels: " + message);
+					throw new InternalException("Error retrieving stations: " + message);
 				})
 				.body(DmpHydroApiResponsesStationResponse[].class);
 				
@@ -95,9 +95,9 @@ public class VandahDmpApiService {
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, config.isVerbose(), "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
+					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving water levels: " + message);
+					throw new InternalException("Error retrieving stations: " + message);
 				})
 				.body(DmpHydroApiResponsesStationResponse[].class);
 				
@@ -113,9 +113,9 @@ public class VandahDmpApiService {
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, config.isVerbose(), "Error retrieving examination types: [" + response.getStatusCode() + "] " + response.getStatusText());
+					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving examination types: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving water levels: " + message);
+					throw new InternalException("Error retrieving examination types: " + message);
 				})
 				.body(DmpHydroApiResponsesExaminationTypeResponse[].class);
 				
@@ -165,7 +165,7 @@ public class VandahDmpApiService {
 		.accept(MediaType.APPLICATION_JSON)
 		.retrieve()
 		.onStatus(status -> status.value() >= 400, (request, response) -> {
-			VandaHUtility.logAndPrint(log, Level.ERROR, config.isVerbose(), "Error retrieving water levels: [" + response.getStatusCode() + "] " + response.getStatusText());
+			VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water levels: [" + response.getStatusCode() + "] " + response.getStatusText());
 			String message = VandaHUtility.valueFromJson(response, "message");
 			throw new InternalException("Error retrieving water levels: " + message);
 		})
@@ -260,7 +260,7 @@ public class VandahDmpApiService {
 		.accept(MediaType.APPLICATION_JSON)
 		.retrieve()
 		.onStatus(status -> status.value() >= 400, (request, response) -> {
-			VandaHUtility.logAndPrint(log, Level.ERROR, config.isVerbose(), "Error retrieving water flows: [" + response.getStatusCode() + "] " + response.getStatusText());
+			VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water flows: [" + response.getStatusCode() + "] " + response.getStatusText());
 			String message = VandaHUtility.valueFromJson(response, "message");
 			throw new InternalException("Error retrieving water flows: " + message);
 		})

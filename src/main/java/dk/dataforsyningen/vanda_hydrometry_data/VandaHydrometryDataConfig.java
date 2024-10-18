@@ -153,7 +153,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(withResultsAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsAfter' parameter.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsAfter' parameter.");
 			return null;
 		}
 	}
@@ -163,7 +163,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(withResultsCreatedAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'withResultsCreatedAfter' parameter.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsCreatedAfter' parameter.");
 			return null;
 		}
 	}
@@ -173,7 +173,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(from);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'from' parameter.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'from' parameter.");
 			return null;
 		}
 	}
@@ -183,7 +183,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'to' parameter.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'to' parameter.");
 			return null;
 		}
 	}
@@ -193,7 +193,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(createdAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, isVerbose(), "Invalid date format found in 'createdAfter' parameter.");
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'createdAfter' parameter.");
 			return null;
 		}
 	}
