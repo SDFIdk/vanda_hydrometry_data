@@ -26,6 +26,23 @@ COMMENT ON COLUMN station.station_owner_name IS 'Name of the station owner';
 COMMENT ON COLUMN station.location IS 'The geo location of the station';
 COMMENT ON COLUMN station.description IS 'Description of the station that can contain catchment information, for example "Opland = 426,7 km2"';
 
+CREATE TABLE stations_measurement_type
+(
+    station_id char(8) NOT NULL,
+    measurement_type_id varchar(12) NOT NULL,
+    CONSTRAINT FK_1 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
+    CONSTRAINT FK_2 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
+);
+
+CREATE INDEX ON stations_measurement_type
+(
+     measurement_type_id
+);
+CREATE INDEX ON stations_measurement_type
+(
+     station_id
+);
+
 CREATE TABLE measurement_type
 (
  measurement_type_id      varchar(12) NOT NULL,
