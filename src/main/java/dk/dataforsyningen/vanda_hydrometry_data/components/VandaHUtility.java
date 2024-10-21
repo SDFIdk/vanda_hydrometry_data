@@ -1,7 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -17,8 +16,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 import org.springframework.http.client.ClientHttpResponse;
-
-import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 
 /**
  * Utility class
@@ -254,48 +251,5 @@ public class VandaHUtility {
 		
 		return utc ? dateToOfssetDateTimeUtc(new Date(ts.getTime())) 
 				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
-	}
-	
-	/**
-	 * Parse a location string of the form "POINT(xxx.xxx yyy.yyy)" or "SRID=nnnnn;POINT(xxx.xxx yyy.yyy)" into a Location object
-	 * @param geometryValue
-	 * @return the Location object
-	 * @throws SQLException
-	 */
-	public static Location toLocation(String geometryValue) throws SQLException {
-		        
-        // Ensure the geometry value is in the expected format
-        if (geometryValue == null || !(geometryValue.startsWith("POINT(") || geometryValue.startsWith("SRID="))  || !geometryValue.endsWith(")")) {
-            throw new SQLException("Invalid geometry format. Expected POINT(x y) or SRID=nnnnn;POINT(x y).");
-        }
-        
-        //Extract srid
-        String srid = null;
-        if (geometryValue.startsWith("SRID=")) {
-        	String[] touple = geometryValue.split(";");
-        	if (touple.length >= 2) {
-       			srid = touple[0].substring(5);
-        		geometryValue = touple[1];
-        	}
-        }
-        
-        if (!geometryValue.startsWith("POINT(") || !geometryValue.endsWith(")")) {
-            throw new SQLException("Invalid geometry format. Expected POINT(x y).");
-        }
-
-        // Extract the x and y values from the POINT(x y) string
-        String pointCoordinates = geometryValue.substring(6, geometryValue.length() - 1); // Remove "POINT(" and ")"
-        String[] coordinates = pointCoordinates.split(" ");
-        
-        Location loc = new Location();
-        try {
-	        loc.setX(Double.parseDouble(coordinates[0]));
-	        loc.setY(Double.parseDouble(coordinates[1]));
-	        loc.setSrid(srid);
-        } catch (NumberFormatException ex) {
-        	throw new SQLException("Invalid geometry format. x and y should be numbers.");
-        }
-		
-        return loc;
 	}
 }

@@ -3,14 +3,11 @@ package dk.dataforsyningen.vanda_hydrometry_data.components;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
-
-import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 
 public class VandaHUtilityTest {
 
@@ -221,14 +218,6 @@ public class VandaHUtilityTest {
 		assertEquals(now.getSecond(), odt.getSecond());
 		assertEquals(0, odt.getNano());
 		assertEquals(now.getOffset(), odt.getOffset());
-	}
-	
-	@Test
-	public void testToLocation() throws SQLException {
-		Location loc = VandaHUtility.toLocation("POINT(1234.5678 9876.5432)");
-		
-		assertEquals(1234.5678, loc.getX());
-		assertEquals(9876.5432, loc.getY());
 	}
 }
 
