@@ -46,16 +46,6 @@ public class Location {
 	public String getSrid() {
 		return srid;
 	}
-	
-	public int getSridAsInt() {
-		int v = 0;
-		try {
-			v = Integer.parseInt(srid);
-		} catch (NumberFormatException ex) {
-			//Do nothing
-		}
-		return v;
-	}
 
 	public void setSrid(String srid) {
 		this.srid = srid;

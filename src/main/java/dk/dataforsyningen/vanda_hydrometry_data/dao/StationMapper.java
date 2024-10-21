@@ -3,6 +3,7 @@ package dk.dataforsyningen.vanda_hydrometry_data.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
@@ -19,7 +20,14 @@ public class StationMapper implements RowMapper<Station> {
 		station.setOldStationNumber(rs.getString("old_station_number"));
 		station.setName(rs.getString("name"));
 		station.setStationOwnerName(rs.getString("station_owner_name"));
-		station.setLocation(VandaHUtility.toLocation(rs.getString("location_as_ewkt")));
+
+		Location location = new Location();
+
+		location.setX((Double) rs.getObject("location_x"));
+		location.setY((Double) rs.getObject("location_y"));
+		location.setSrid(rs.getString("location_srid"));
+		station.setLocation(location);
+
 		station.setDescription(rs.getString("description"));
 		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
 		station.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));

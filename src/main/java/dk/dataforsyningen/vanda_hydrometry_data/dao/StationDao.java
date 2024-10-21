@@ -22,8 +22,9 @@ public interface StationDao {
 				name,
 				old_station_number,
 				station_owner_name,
-				location,
-				ST_AsEWKT(location) as location_as_ewkt,
+				ST_X(location) as location_x,
+				ST_Y(location) as location_y,
+				ST_SRID(location) as location_srid,
 				description,
 				created,
 				updated
@@ -37,8 +38,9 @@ public interface StationDao {
 				name,
 				old_station_number,
 				station_owner_name,
-				location,
-				ST_AsEWKT(location) as location_as_ewkt,
+				ST_X(location) as location_x,
+				ST_Y(location) as location_y,
+				ST_SRID(location) as location_srid,
 				description,
 				created,
 				updated
@@ -54,12 +56,12 @@ public interface StationDao {
 	@SqlUpdate("""
 			insert into hydrometry.station
 			(station_id, old_station_number, name, station_owner_name, location, description, created, updated)
-			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), :description, now(), now())
+			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.srid::int)), :description, now(), now())
 			on conflict (station_id) do update
 				set old_station_number = :oldStationNumber,
 				name = :name,
 				station_owner_name = :stationOwnerName,
-				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)),
+				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.srid::int)),
 				description = :description,
 				updated = now()
 			""")
@@ -68,12 +70,12 @@ public interface StationDao {
 	@SqlBatch("""
 			insert into hydrometry.station
 			(station_id, old_station_number, name, station_owner_name, location, description, created, updated)
-			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)), :description, now(), now())
+			values ( :stationId, :oldStationNumber, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.srid::int)), :description, now(), now())
 			on conflict (station_id) do update
 				set old_station_number = :oldStationNumber,
 				name = :name,
 				station_owner_name = :stationOwnerName,
-				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.sridAsInt)),
+				location = (ST_SetSRID(ST_MakePoint(:location.x, :location.y), :location.srid::int)),
 				description = :description,
 				updated = now()
 			""")
