@@ -72,7 +72,7 @@ public class VandaHydrometryDataRunnerTest {
 		
 		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
 			runner.run(args);
-			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.WARN), eq(true), eq("Too many commands requested.")), times(1));
+			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.WARN), eq(false), eq("Too many commands requested.")), times(1));
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class VandaHydrometryDataRunnerTest {
 		
 		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
 			runner.run(args);
-			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.ERROR), eq(true), eq("No execution bean was regsitered for the given command: command1")), times(1));
+			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.ERROR), eq(false), eq("No execution bean was regsitered for the given command: command1")), times(1));
 		}
 	}
 	
