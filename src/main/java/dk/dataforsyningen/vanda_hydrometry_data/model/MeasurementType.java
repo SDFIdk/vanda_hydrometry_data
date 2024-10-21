@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 public class MeasurementType {
 	
@@ -34,6 +35,26 @@ public class MeasurementType {
 	Integer examinationTypeSc = null;
 	
 	public static MeasurementType from(DmpHydroApiResponsesResultResponse result) {
+		if (result == null) return null;
+		
+		MeasurementType measurementType = new MeasurementType();
+		measurementType.setParameter(result.getParameter());
+		measurementType.setParameterSc(result.getParameterSc());
+		measurementType.setExaminationType(result.getExaminationType());
+		measurementType.setExaminationTypeSc(result.getExaminationTypeSc());
+		measurementType.setUnit(result.getUnit());
+		measurementType.setUnitSc(result.getUnitSc());
+		
+		measurementType.setMeasurementTypeId(
+				measurementType.getParameterSc() + "-" +
+				measurementType.getExaminationTypeSc() + "-" +
+				measurementType.getUnitSc()
+				); //construct id
+		
+		return measurementType;
+	}
+	
+	public static MeasurementType from(DmpHydroApiResponsesStationResponseMeasurementPointExamination result) {
 		if (result == null) return null;
 		
 		MeasurementType measurementType = new MeasurementType();

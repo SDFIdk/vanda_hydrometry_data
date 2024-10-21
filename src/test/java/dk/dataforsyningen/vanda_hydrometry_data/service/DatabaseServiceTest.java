@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.junit.jupiter.api.AfterEach;
@@ -67,6 +69,7 @@ public class DatabaseServiceTest {
 	private final double result2 = 56.78;
 	
 	Station station1;
+	Station station2;
 	Location location;
 	MeasurementType mt1;
 	MeasurementType mt2;
@@ -91,18 +94,6 @@ public class DatabaseServiceTest {
 		System.out.println("Database testing " + (enableTest ? "enabled" : "disabled"));
 		if (!enableTest) return;
 		
-		station1 = new Station();
-		station1.setStationId(stationId);
-		station1.setName(stationName);
-		station1.setStationOwnerName(stationOwner);
-		station1.setDescription(stationDescription);
-		station1.setOldStationNumber(stationOldNumber);
-		location = new Location();
-		location.setX(locationX);
-		location.setY(locationY);
-		location.setSrid(locationSrid);
-		station1.setLocation(location);
-		
 		mt1 = new MeasurementType();
 		mt1.setMeasurementTypeId(mtId1);
 		mt1.setParameterSc(mtParamSc1);
@@ -120,6 +111,29 @@ public class DatabaseServiceTest {
 		mt2.setExaminationType(mtExamType2);
 		mt2.setUnitSc(mtUnitSc2);
 		mt2.setUnit(mtUnit2);
+		
+		station1 = new Station();
+		station1.setStationId(stationId);
+		station1.setName(stationName);
+		station1.setStationOwnerName(stationOwner);
+		station1.setDescription(stationDescription);
+		station1.setOldStationNumber(stationOldNumber);
+		location = new Location();
+		location.setX(locationX);
+		location.setY(locationY);
+		location.setSrid(locationSrid);
+		station1.setLocation(location);
+		station1.getMeasurementTypes().add(mt1);
+		station1.getMeasurementTypes().add(mt2);
+		
+		station2 = new Station();
+		station2.setStationId(stationId);
+		station2.setName(stationName);
+		station2.setStationOwnerName(stationOwner);
+		station2.setDescription(stationDescription);
+		station2.setOldStationNumber(stationOldNumber);
+		station2.setLocation(location);
+		station2.getMeasurementTypes().add(mt1);
 		
 		m1 = new Measurement();
 		m1.setStationId(stationId);
@@ -146,6 +160,8 @@ public class DatabaseServiceTest {
 
 		if (!enableTest) return;
 		
+		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
+		
 		testDeleteMeasurement();
 		
 		testDeleteMeasurementType();
@@ -169,6 +185,9 @@ public class DatabaseServiceTest {
 		testUpdateStations();
 		
 		// MeasurementTypeDao
+		
+		//can only delete measurement_type if relation station - measurement type is not present
+		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
 		
 		testDeleteMeasurementType();
 		
@@ -210,6 +229,9 @@ public class DatabaseServiceTest {
 		assertEquals(stationOldNumber, station.getOldStationNumber());
 		assertEquals(stationDescription, station.getDescription());
 		assertEquals(location, station.getLocation());
+		assertEquals(2, station.getMeasurementTypes().size());
+		assertTrue(mt1.equals(station.getMeasurementTypes().get(0)) || mt1.equals(station.getMeasurementTypes().get(1)));
+		assertTrue(mt2.equals(station.getMeasurementTypes().get(0)) || mt2.equals(station.getMeasurementTypes().get(1)));
 		
 		assertNotNull(station.getCreated());
 		assertNotNull(station.getUpdated());
@@ -361,4 +383,37 @@ public class DatabaseServiceTest {
 		int nr2 = dbService.countMeasurements();
 		assertEquals(nr1, nr2);
 	}
+	
+	@Test
+	public void testStationMeasurementTypeAddition() {
+		
+		if (!enableTest) return;
+				
+		testDeleteStation();
+		
+		dbService.saveStation(station2);
+		
+		Station station = dbService.getStation(stationId);
+		
+		assertEquals(stationId, station.getStationId());
+		assertEquals(stationName, station.getName());
+		assertEquals(stationOwner, station.getStationOwnerName());
+		assertEquals(stationOldNumber, station.getOldStationNumber());
+		assertEquals(stationDescription, station.getDescription());
+		assertEquals(location, station.getLocation());
+		assertEquals(1, station.getMeasurementTypes().size());
+		assertEquals(mt1, station.getMeasurementTypes().getFirst());
+
+		station2.getMeasurementTypes().add(mt2);
+		
+		dbService.saveStation(station2);
+		
+		station = dbService.getStation(stationId);
+		
+		assertEquals(2, station.getMeasurementTypes().size());
+		assertTrue(mt1.equals(station.getMeasurementTypes().get(0)) || mt1.equals(station.getMeasurementTypes().get(1)));
+		assertTrue(mt2.equals(station.getMeasurementTypes().get(0)) || mt2.equals(station.getMeasurementTypes().get(1)));
+		
+	}
 }
+

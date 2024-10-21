@@ -1,12 +1,15 @@
 package dk.dataforsyningen.vanda_hydrometry_data.model;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 public class Station {
 	
@@ -40,6 +43,8 @@ public class Station {
 	
 	@NotNull
 	OffsetDateTime updated = null;
+	
+	ArrayList<MeasurementType> measurementTypes = new ArrayList<>();
 
 	public static Station from(DmpHydroApiResponsesStationResponse response) {
 		if (response == null) return null;
@@ -54,6 +59,18 @@ public class Station {
 		station.setStationOwnerName(response.getStationOwnerName());
 		station.setLocation(Location.from(response.getLocation()));
 		station.setDescription(response.getDescription());
+		station.measurementTypes = new ArrayList<>();
+		if (response.getMeasurementPoints() != null) {
+			for(DmpHydroApiResponsesStationResponseMeasurementPoint mp : response.getMeasurementPoints()) {
+				if (mp.getExaminations() != null) {
+					for(DmpHydroApiResponsesStationResponseMeasurementPointExamination mpe : mp.getExaminations()) {
+						if (mpe != null) {
+							station.measurementTypes.add(MeasurementType.from(mpe));
+						}
+					}
+				}
+			}
+		}
 		
 		return station;
 	}
@@ -138,6 +155,14 @@ public class Station {
 		this.updated = updated;
 	}
 
+	public ArrayList<MeasurementType> getMeasurementTypes() {
+		return measurementTypes;
+	}
+
+	public void setMeasurementTypes(ArrayList<MeasurementType> measurementTypes) {
+		this.measurementTypes = measurementTypes;
+	}
+
 	@Override
 	public String toString() {
 		return "Station [" + 
@@ -150,7 +175,9 @@ public class Station {
 				",\n\tlocation=" + location + 
 				",\n\tdescription=" + description + 
 				",\n\tcreated=" + created + 
-				",\n\tupdated=" + updated + "]";
+				",\n\tupdated=" + updated +
+				",\n\tmeasurementTypes=" + measurementTypes +
+				"]";
 	}
 
 	@Override
