@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
+import dk.dataforsyningen.vanda_hydrometry_data.command.WaterFlowsCommand;
+import dk.dataforsyningen.vanda_hydrometry_data.command.WaterLevelsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
@@ -197,7 +199,7 @@ public class VandahDmpApiService {
 		
 		if ("all".equalsIgnoreCase(stationId)) { //for all stations
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStations();
+			List<Station> stations = dbService.getAllStationsByMeasurementType(WaterLevelsCommand.EXAMINATION_TYPE_SC);
 			
 			for(Station station : stations) {
 				output.addAll(Arrays.asList(getWaterLevelsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
@@ -208,7 +210,9 @@ public class VandahDmpApiService {
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
 			
 			for(String sId : stationIds) {
-				output.addAll(Arrays.asList(getWaterLevelsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+				if (dbService.isMeasurementSupported(sId, WaterLevelsCommand.EXAMINATION_TYPE_SC)) {
+					output.addAll(Arrays.asList(getWaterLevelsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+				}
 			}
 			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
 			
@@ -273,7 +277,7 @@ public class VandahDmpApiService {
 	/**
 	 * Retrieves water levels.
 	 * 
-	 * @param stationId can be "all", comma separated values, or an actual station Id* 
+	 * @param stationId can be "all", comma separated values, or an actual station Id
 	 * @param operatorStationId
 	 * @param measurementPointNumber
 	 * @param from
@@ -293,7 +297,7 @@ public class VandahDmpApiService {
 		
 		if ("all".equalsIgnoreCase(stationId)) { //for all stations
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStations();
+			List<Station> stations = dbService.getAllStationsByMeasurementType(WaterFlowsCommand.EXAMINATION_TYPE_SC);
 			
 			for(Station station : stations) {
 				output.addAll(Arrays.asList(getWaterFlowsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
@@ -305,7 +309,9 @@ public class VandahDmpApiService {
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
 			
 			for(String sId : stationIds) {
-				output.addAll(Arrays.asList(getWaterFlowsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+				if (dbService.isMeasurementSupported(sId, WaterFlowsCommand.EXAMINATION_TYPE_SC)) {
+					output.addAll(Arrays.asList(getWaterFlowsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
+				}
 			}
 			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
 			

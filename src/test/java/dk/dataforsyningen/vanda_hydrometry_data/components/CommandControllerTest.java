@@ -34,14 +34,11 @@ public class CommandControllerTest {
 	@Test
 	public void showShortHelpCallTest() {
 		
-		String command = "stations";
-		
-		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(true);
 		when(config.isSaveDb()).thenReturn(false);
 		when(config.isDisplayData()).thenReturn(false);
 		
-		commandController.execute(command);
+		commandController.execute(stationsCommand);
 		
 		verify(stationsCommand, never()).getData();
 		verify(stationsCommand, never()).mapData();
@@ -54,14 +51,11 @@ public class CommandControllerTest {
 	@Test
 	public void getDataCallTest() {
 		
-		String command = "stations";
-		
-		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(false);
 		when(config.isDisplayData()).thenReturn(false);
 		
-		commandController.execute(command);
+		commandController.execute(stationsCommand);
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
@@ -72,14 +66,11 @@ public class CommandControllerTest {
 	@Test
 	public void displayDataCallTest() {
 		
-		String command = "stations";
-		
-		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(false);
 		when(config.isDisplayData()).thenReturn(true);
 		
-		commandController.execute(command);
+		commandController.execute(stationsCommand);
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
@@ -90,15 +81,12 @@ public class CommandControllerTest {
 	@Test
 	public void displayRawDataCallTest() {
 		
-		String command = "stations";
-		
-		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(false);
 		when(config.isDisplayRawData()).thenReturn(true);
 		when(config.isDisplayData()).thenReturn(false);
 		
-		commandController.execute(command);
+		commandController.execute(stationsCommand);
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
@@ -110,14 +98,11 @@ public class CommandControllerTest {
 	@Test
 	public void saveDbCallTest() {
 		
-		String command = "stations";
-		
-		when(commandService.getCommandBean(command)).thenReturn(stationsCommand);
 		when(config.isHelp()).thenReturn(false);
 		when(config.isSaveDb()).thenReturn(true);
 		when(config.isDisplayData()).thenReturn(false);
 		
-		commandController.execute(command);
+		commandController.execute(stationsCommand);
 		
 		verify(stationsCommand, times(1)).getData();
 		verify(stationsCommand, times(1)).mapData();
