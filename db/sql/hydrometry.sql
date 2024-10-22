@@ -26,24 +26,6 @@ COMMENT ON COLUMN station.station_owner_name IS 'Name of the station owner';
 COMMENT ON COLUMN station.location IS 'The geo location of the station';
 COMMENT ON COLUMN station.description IS 'Description of the station that can contain catchment information, for example "Opland = 426,7 km2"';
 
-CREATE TABLE station_measurement_type
-(
-    station_id char(8) NOT NULL,
-    measurement_type_id varchar(12) NOT NULL,
-    CONSTRAINT PK_2 PRIMARY KEY ( station_id, measurement_type_id ),
-    CONSTRAINT FK_5 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
-    CONSTRAINT FK_6 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
-);
-
-CREATE INDEX ON station_measurement_type
-(
-     measurement_type_id
-);
-CREATE INDEX ON station_measurement_type
-(
-     station_id
-);
-
 CREATE TABLE measurement_type
 (
  measurement_type_id      varchar(12) NOT NULL,
@@ -65,6 +47,25 @@ COMMENT ON COLUMN measurement_type.parameter_sc IS 'The stancode of the paramete
 COMMENT ON COLUMN measurement_type.examination_type_sc IS 'The stancode of the examination type';
 COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
 COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
+
+CREATE TABLE station_measurement_type
+(
+    station_id char(8) NOT NULL,
+    measurement_type_id varchar(12) NOT NULL,
+    CONSTRAINT PK_2 PRIMARY KEY ( station_id, measurement_type_id ),
+    CONSTRAINT FK_5 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
+    CONSTRAINT FK_6 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
+);
+
+CREATE INDEX ON station_measurement_type
+(
+     measurement_type_id
+);
+CREATE INDEX ON station_measurement_type
+(
+     station_id
+);
+
 
 CREATE TABLE measurement
 (
@@ -152,7 +153,7 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
-  SELECT 
+  SELECT
       DATE(measurement_date_time) as date,
       AVG(result) as daily_mean
   FROM hydrometry.measurement
@@ -182,7 +183,7 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
-  SELECT 
+  SELECT
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
       EXTRACT(MONTH FROM measurement_date_time)::int as month,
       AVG(result) as monthly_mean
@@ -212,7 +213,7 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
-  SELECT 
+  SELECT
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
       AVG(result) as mean
   FROM hydrometry.measurement
@@ -260,14 +261,14 @@ BEGIN
       AND measurement_type_id = p_measurement_type_id
       AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
   )
-  SELECT 
+  SELECT
     season_year::int as year,
     season,
     AVG(result) as mean
   FROM seasons
   WHERE p_season IS NULL OR season = p_season
   GROUP BY season_year, season
-  ORDER BY season_year, 
+  ORDER BY season_year,
           CASE season
             WHEN 'winter' THEN 1
             WHEN 'spring' THEN 2
