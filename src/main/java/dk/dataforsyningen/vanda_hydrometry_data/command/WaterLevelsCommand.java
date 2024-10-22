@@ -27,6 +27,8 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultRespons
 @CommandQualifier(command = "waterlevels")
 public class WaterLevelsCommand implements CommandInterface {
 
+	public static final int EXAMINATION_TYPE_SC = 25;
+	
 	private static final Logger log = LoggerFactory.getLogger(WaterLevelsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
@@ -150,6 +152,11 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	public ArrayList<MeasurementType> getMeasurementTypes() {
 		return measurementTypes;
+	}
+	
+	@Override
+	public int getExaminationTypeSc() {
+		return EXAMINATION_TYPE_SC;
 	}
 
 }

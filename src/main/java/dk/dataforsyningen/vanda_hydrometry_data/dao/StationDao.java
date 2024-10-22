@@ -71,6 +71,44 @@ public interface StationDao {
 			where s.station_id = :stationId
 			""")
 	List<Station> findStationByStationId(@Bind String stationId);
+	
+	@SqlQuery("""
+			select
+				s.station_id,
+				s.name,
+				s.old_station_number,
+				s.station_owner_name,
+				s.location,
+				ST_X(location) as location_x,
+				ST_Y(location) as location_y,
+				ST_SRID(location) as location_srid,
+				s.description,
+				s.created,
+				s.updated,
+				mt.measurement_type_id,
+				mt.parameter_sc,
+				mt.parameter,
+				mt.examination_type_sc,
+				mt.examination_type,
+				mt.unit_sc,
+				mt.unit
+			from hydrometry.station s left join hydrometry.station_measurement_type smt 
+				on s.station_id = smt.station_id
+				left join hydrometry.measurement_type mt
+				on smt.measurement_type_id = mt.measurement_type_id 
+			where mt.examination_type_sc = :examinationTypeSc
+			""")
+	List<Station> findStationByExaminationTypeSc(@Bind int examinationTypeSc);
+	
+	@SqlQuery("""
+			select count(*)
+			from hydrometry.station_measurement_type smt 
+				left join hydrometry.measurement_type mt
+				on smt.measurement_type_id = mt.measurement_type_id 
+			where smt.station_id = :stationId 
+				and mt.examination_type_sc = :examinationTypeSc
+			""")
+	int isExaminationTypeScSupported(@Bind String stationId, @Bind int examinationTypeSc);
 
 	/**
 	 * Add (only) station if not exists

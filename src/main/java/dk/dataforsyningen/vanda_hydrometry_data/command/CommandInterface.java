@@ -15,6 +15,14 @@ public interface CommandInterface {
 	public int getData();
 	
 	/**
+	 * Returns the examination type SC associated with the command if this is relevant
+	 * F.ex. 	water-levels has examination type sc = 25
+	 * 			water-flows has examination type sc = 27
+	 * @return examination type sc or 0 if it is not relevant
+	 */
+	default int getExaminationTypeSc() { return 0; } 
+	
+	/**
 	 * Map data to local model
 	 */
 	public void mapData();

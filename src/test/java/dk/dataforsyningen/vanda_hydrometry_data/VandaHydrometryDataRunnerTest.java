@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 
 import org.slf4j.event.Level;
@@ -21,27 +22,34 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import dk.dataforsyningen.vanda_hydrometry_data.command.StationsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 
 @SpringBootTest
 public class VandaHydrometryDataRunnerTest {
 
-	
-	@SpyBean
-	CommandController commandController;
+	@Mock
+	private StationsCommand stationsCommand;
 	
 	@MockBean
-	DatabaseService databaseService;
+	private CommandService commandService;
+	
+	@SpyBean
+	private CommandController commandController;
+	
+	@MockBean
+	private DatabaseService databaseService;
 		
 	@Autowired
-	CommandLineArgsParser commandLineArgsParser;
+	private CommandLineArgsParser commandLineArgsParser;
 	
 	@Autowired
-	VandaHydrometryDataConfig config;
+	private VandaHydrometryDataConfig config;
 	
 	@Autowired
 	@InjectMocks
@@ -82,6 +90,8 @@ public class VandaHydrometryDataRunnerTest {
 		String[] args = new String[1];
 		args[0] = "command1";
 		
+		when(commandService.getCommandBean(args[0])).thenReturn(null);
+		
 		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
 			runner.run(args);
 			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.ERROR), eq(false), eq("No execution bean was regsitered for the given command: command1")), times(1));
@@ -95,9 +105,10 @@ public class VandaHydrometryDataRunnerTest {
 		args[0] = "stations";
 				
 		doNothing().when(commandController).execute(any());
+		when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 		
 		runner.run(args);
-		verify(commandController, times(1)).execute(args[0]);
+		verify(commandController, times(1)).execute(eq(stationsCommand));
 	}
 	
 	@Test
@@ -117,12 +128,14 @@ public class VandaHydrometryDataRunnerTest {
 		ids.add(st2);
 		
 		config.setStationId("all");
+		config.setOneCmdPerStation(true);
 				
 		when(databaseService.getAllStations()).thenReturn(ids);
 		doNothing().when(commandController).execute(any());
+		when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 		
 		runner.run(args);
-		verify(commandController, times(2)).execute(args[0]);
+		verify(commandController, times(2)).execute(eq(stationsCommand));
 	}
 	
 	@Test
@@ -142,10 +155,12 @@ public class VandaHydrometryDataRunnerTest {
 		ids.add(st2);
 		
 		config.setStationId("10000001,10000002");
+		config.setOneCmdPerStation(true);
 		doNothing().when(commandController).execute(any());
+		when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 		
 		runner.run(args);
-		verify(commandController, times(2)).execute(args[0]);
+		verify(commandController, times(2)).execute(eq(stationsCommand));
 	}
 	
 	

@@ -244,6 +244,10 @@ public class VandaHydrometryDataConfig {
 	public boolean isOneCmdPerStation() {
 		return oneCmdPerStation;
 	}
+	
+	public void setOneCmdPerStation(boolean oneCmdPerStation) {
+		this.oneCmdPerStation = oneCmdPerStation;
+	}
 
 	public boolean isEnableTest() {
 		return enableTest;

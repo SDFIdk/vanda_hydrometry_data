@@ -33,32 +33,26 @@ public class CommandController {
 	 * 
 	 * @param command
 	 */
-    public void execute(String command) {
-    	VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Execute command: " + command);
+    public void execute(CommandInterface commandBean) {
+    	VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Execute command: " + commandBean.getClass().getSimpleName());
     	
-    	CommandInterface commandBean = commandService.getCommandBean(command);
-    	if (commandBean != null) {
+		if (config.isHelp()) {
+			showHelp(commandBean, false);
+		} else {
+    		int nr = commandBean.getData();
+    		VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Read (" + nr + ") items.");
     		
-    		if (config.isHelp()) {
-    			showHelp(commandBean, false);
-    		} else {
-	    		int nr = commandBean.getData();
-	    		VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Read (" + nr + ") items.");
-	    		
-	    		commandBean.mapData();
-	    		
-	    		if (config.isDisplayData() || config.isDisplayRawData()) {
-	    			commandBean.displayData(config.isDisplayRawData());
-	    		}
-	    		
-	    		if (config.isSaveDb()) {
-	    			nr = commandBean.saveData();
-	    			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Save (" + nr + ") items to DB.");
-	    		}
+    		commandBean.mapData();
+    		
+    		if (config.isDisplayData() || config.isDisplayRawData()) {
+    			commandBean.displayData(config.isDisplayRawData());
     		}
-    	} else {
-    		VandaHUtility.logAndPrint(log, Level.ERROR, false, "No execution bean was regsitered for the given command: " + command);
-    	}
+    		
+    		if (config.isSaveDb()) {
+    			nr = commandBean.saveData();
+    			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Save (" + nr + ") items to DB.");
+    		}
+		}
     }
     
     public Map<String, CommandInterface> getAllCommandBeans() {

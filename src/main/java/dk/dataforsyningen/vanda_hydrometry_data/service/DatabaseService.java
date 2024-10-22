@@ -57,6 +57,26 @@ public class DatabaseService {
 		return new ArrayList<Station>(stations.values());
 	}
 	
+	public List<Station> getAllStationsByMeasurementType(int examinationTypeSc) {
+		List<Station> stationsAndMeasurementTypes = stationDao.findStationByExaminationTypeSc(examinationTypeSc);
+		
+		//merge on same station
+		HashMap<String, Station> stations = new HashMap<>();
+		for(Station s : stationsAndMeasurementTypes) {
+			if (!stations.containsKey(s.getStationId())) {
+				stations.put(s.getStationId(), s);
+			} else {
+				Station station = stations.get(s.getStationId());
+				if (s.getMeasurementTypes().size() > 0) {
+					//after mapping from DB the station objects will only contain one (or none) measurements
+					station.getMeasurementTypes().add(s.getMeasurementTypes().getFirst()); 
+				}
+			}
+		}
+		
+		return new ArrayList<Station>(stations.values());
+	}
+	
 	public Station getStation(String id) {
 		List<Station> stationsAndMeasurementTypes = stationDao.findStationByStationId(id);
 		
@@ -75,6 +95,10 @@ public class DatabaseService {
 		}
 	
 		return station;
+	}
+	
+	public boolean isMeasurementSupported(String stationId, int examinationTypeSc) {
+		return stationDao.isExaminationTypeScSupported(stationId, examinationTypeSc) > 0;
 	}
 	
 	/**

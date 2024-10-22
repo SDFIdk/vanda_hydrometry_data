@@ -17,6 +17,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 
 /**
@@ -40,6 +41,9 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	
 	@Autowired
 	CommandController commandController;
+	
+	@Autowired
+	private CommandService commandService;
 	
 	@Autowired
 	DatabaseService databaseService;
@@ -85,28 +89,37 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		}  else { //only one command
 			String cmd = cmds.get(0);
-			try {
-				
-				//handle special case when more stations are required
-				if (config.isOneCmdPerStation() && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all stations
-					List<Station> stations = databaseService.getAllStations();
-					for(Station station : stations) {
-						config.setStationId(station.getStationId());
-						commandController.execute(cmd);
+			CommandInterface commandBean = commandService.getCommandBean(cmd);
+			if (commandBean != null) {
+				try {
+					//handle special case when more stations are required
+					//however, filter the station by the requested examinationTypeSc if necessary
+					if (config.isOneCmdPerStation() && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all relevant stations
+						List<Station> stations =  commandBean.getExaminationTypeSc() == 0 ? 
+									databaseService.getAllStations() 
+									: databaseService.getAllStationsByMeasurementType(commandBean.getExaminationTypeSc());
+						for(Station station : stations) {
+							config.setStationId(station.getStationId());
+							commandController.execute(commandBean);
+						}
+					} else if (config.isOneCmdPerStation() && config.getStationId() != null && config.getStationId().indexOf(",") != -1) { //execute command for selected stations
+						String[] stationIds = config.getStationId().split(",");
+						for(String stationId : stationIds) {
+							if (commandBean.getExaminationTypeSc() == 0 || databaseService.isMeasurementSupported(stationId, commandBean.getExaminationTypeSc())) {
+								config.setStationId(stationId);
+								commandController.execute(commandBean);
+							}
+						}
+					} else { //execute command once
+						commandController.execute(commandBean);
 					}
-				} else if (config.isOneCmdPerStation() && config.getStationId() != null && config.getStationId().indexOf(",") != -1) { //execute command for selected stations
-					String[] stationIds = config.getStationId().split(",");
-					for(String stationId : stationIds) {
-						config.setStationId(stationId);
-						commandController.execute(cmd);
-					}
-				} else { //execute command once
-					commandController.execute(cmd);
+				} catch (Exception ex) {
+					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error executing command '" + cmd + "'", ex);
+					System.exit(1);
 				}
-			} catch (Exception ex) {
-				VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error executing command '" + cmd + "'", ex);
-				System.exit(1);
-			}
+			} else {
+	    		VandaHUtility.logAndPrint(log, Level.ERROR, false, "No execution bean was regsitered for the given command: " + cmd);
+	    	}
 		}
 		
 		log.debug("Application ended.");
