@@ -126,25 +126,31 @@ public class VandaHydrometryDataConfig {
 	public Integer getExaminationTypeSc() {
 		try {
 			return Integer.parseInt(examinationTypeSc);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid data found in 'examinationTypeSc' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public Integer getParameterSc() {
 		try {
 			return Integer.parseInt(parameterSc);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid data found in 'parameterSc' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public Integer getMeasurementPointNumber() {
 		try {
 			return Integer.parseInt(measurementPointNumber);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid data found in 'measurementPointNumber' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public OffsetDateTime getWithResultsAfter() {
@@ -153,9 +159,10 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(withResultsAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsAfter' parameter.");
-			return null;
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsAfter' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public OffsetDateTime getWithResultsCreatedAfter() {
@@ -163,30 +170,34 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(withResultsCreatedAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsCreatedAfter' parameter.");
-			return null;
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsCreatedAfter' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public OffsetDateTime getFrom() {
 		if (from == null) return null;
+		VandaHUtility.logAndPrint(log, Level.WARN, false, "from: " + from);
 		try {
 			return VandaHUtility.parseForAPI(from);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'from' parameter.");
-			return null;
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'from' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public OffsetDateTime getTo() {
 		if (to == null) return null;
-		VandaHUtility.logAndPrint(log, Level.WARN, false, to);
+		VandaHUtility.logAndPrint(log, Level.WARN, false, "to: " + to);
 		try {
 			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'to' parameter.");
-			return null;
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'to' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	public OffsetDateTime getCreatedAfter() {
@@ -194,9 +205,10 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(createdAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'createdAfter' parameter.");
-			return null;
+			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'createdAfter' parameter.", ex);
+			System.exit(1);
 		}
+		return null;
 	}
 	
 	
