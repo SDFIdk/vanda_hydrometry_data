@@ -190,7 +190,9 @@ public class VandaHydrometryDataConfig {
 	
 	public OffsetDateTime getTo() {
 		if (to == null) return null;
-		VandaHUtility.logAndPrint(log, Level.WARN, false, "to: " + to);
+		if ("now".equalsIgnoreCase(to)) {
+			return VandaHUtility.parseForAPI(OffsetDateTime.now().toString());
+		}
 		try {
 			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {

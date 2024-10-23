@@ -2,6 +2,7 @@ package dk.dataforsyningen.vanda_hydrometry_data.components;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -42,7 +43,14 @@ public class VandaHUtilityTest {
 	
 	@Test
 	public void testParseForApi() {
-		OffsetDateTime date = VandaHUtility.parseForAPI("2024-10-09T10:11:12.123Z");
+		OffsetDateTime date = VandaHUtility.parseForAPI("2024-10-23T23:30:13.562469701+02:00");
+		assertEquals(2024, date.getYear());
+		assertEquals(10, date.getMonthValue());
+		assertEquals(23, date.getDayOfMonth());
+		assertEquals(0, date.getSecond());
+		assertEquals(ZoneOffset.UTC, date.getOffset());
+		
+		date = VandaHUtility.parseForAPI("2024-10-09T10:11:12.123Z");
 		assertEquals(2024, date.getYear());
 		assertEquals(10, date.getMonthValue());
 		assertEquals(9, date.getDayOfMonth());
