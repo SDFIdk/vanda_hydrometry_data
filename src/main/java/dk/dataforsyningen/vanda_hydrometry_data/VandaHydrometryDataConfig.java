@@ -180,6 +180,9 @@ public class VandaHydrometryDataConfig {
 	
 	public OffsetDateTime getTo() {
 		if (to == null) return null;
+		if ("now".equalsIgnoreCase(to)) {
+			return VandaHUtility.parseForAPI(OffsetDateTime.now().toString());
+		}
 		VandaHUtility.logAndPrint(log, Level.WARN, false, to);
 		try {
 			return VandaHUtility.parseForAPI(to);
@@ -205,23 +208,23 @@ public class VandaHydrometryDataConfig {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Configuration:\n");
+		sb.append("Configuration \"param: (input_value) parssed_value\" :\n");
 		
-		sb.append("\tHelp: ").append(isHelp()).append("\n");
-		sb.append("\tVerbose: ").append(isVerbose()).append("\n");
-		sb.append("\tDisplayRawData: ").append(isDisplayRawData()).append("\n");
-		sb.append("\tDisplayData: ").append(isDisplayData()).append("\n");
-		sb.append("\tSaveDb: ").append(isSaveDb()).append("\n");
-		sb.append("\tStationId: ").append(getStationId()).append("\n");
-		sb.append("\tOperatorStationId: ").append(getOperatorStationId()).append("\n");
-		sb.append("\tExaminationTypeSc: ").append(getExaminationTypeSc()).append("\n");
-		sb.append("\tParameterSc: ").append(getParameterSc()).append("\n");
-		sb.append("\tMeasurementPointNumber: ").append(getMeasurementPointNumber()).append("\n");
-		sb.append("\tWithResultsAfter: ").append(getWithResultsAfter()).append("\n");
-		sb.append("\tWithResultsCreatedAfter: ").append(getWithResultsCreatedAfter()).append("\n");
-		sb.append("\tFrom: ").append(getFrom()).append("\n");
-		sb.append("\tTo: ").append(getTo()).append("\n");
-		sb.append("\tCreatedAfter: ").append(getCreatedAfter()).append("\n");
+		sb.append("\tHelp: ").append("(" + help + ") ").append(isHelp()).append("\n");
+		sb.append("\tVerbose: ").append("(" + verbose + ") ").append(isVerbose()).append("\n");
+		sb.append("\tDisplayRawData: ").append("(" + displayRawData + ") ").append(isDisplayRawData()).append("\n");
+		sb.append("\tDisplayData: ").append("(" + displayData + ") ").append(isDisplayData()).append("\n");
+		sb.append("\tSaveDb: ").append("(" + saveDb + ") ").append(isSaveDb()).append("\n");
+		sb.append("\tStationId: ").append("(" + stationId + ") ").append(getStationId()).append("\n");
+		sb.append("\tOperatorStationId: ").append("(" + operatorStationId + ") ").append(getOperatorStationId()).append("\n");
+		sb.append("\tExaminationTypeSc: ").append("(" + examinationTypeSc + ") ").append(getExaminationTypeSc()).append("\n");
+		sb.append("\tParameterSc: ").append("(" + parameterSc + ") ").append(getParameterSc()).append("\n");
+		sb.append("\tMeasurementPointNumber: ").append("(" + measurementPointNumber + ") ").append(getMeasurementPointNumber()).append("\n");
+		sb.append("\tWithResultsAfter: ").append("(" + withResultsAfter + ") ").append(getWithResultsAfter()).append("\n");
+		sb.append("\tWithResultsCreatedAfter: ").append("(" + withResultsCreatedAfter + ") ").append(getWithResultsCreatedAfter()).append("\n");
+		sb.append("\tFrom: ").append("(" + from + ") ").append(getFrom()).append("\n");
+		sb.append("\tTo: ").append("(" + to + ") ").append(getTo()).append("\n");
+		sb.append("\tCreatedAfter: ").append("(" + createdAfter + ") ").append(getCreatedAfter()).append("\n");
 		
 		return sb.toString();
 	}

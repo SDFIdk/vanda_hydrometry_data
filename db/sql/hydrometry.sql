@@ -88,7 +88,7 @@ CREATE INDEX FK_2_M ON measurement
 (
  station_id
 );
-CREATE UNIQUE INDEX measurement_station_IDX ON measurement
+CREATE INDEX measurement_station_IDX ON measurement
 (
   station_id,
   measurement_type_id,
