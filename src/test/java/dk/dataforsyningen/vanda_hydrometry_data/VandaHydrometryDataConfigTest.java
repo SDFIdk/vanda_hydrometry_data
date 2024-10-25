@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -68,8 +70,8 @@ public class VandaHydrometryDataConfigTest {
 		@Test
 		public void testInvalidOptions() {
 			assertEquals("abcd9999", config.getStationId());
-			assertNull(config.getParameterSc());
-			assertNull(config.getExaminationTypeSc());
+			assertThrows(NumberFormatException.class, () -> config.getParameterSc());
+			assertThrows(NumberFormatException.class, () -> config.getExaminationTypeSc());
 		}
 	}
 	
@@ -201,15 +203,15 @@ public class VandaHydrometryDataConfigTest {
 	
 		@Test
 		public void testInvalidDates() {
-			assertNull(config.getWithResultsAfter());
+			assertThrows(InvalidParameterException.class, () -> config.getWithResultsAfter());
 			
-			assertNull(config.getWithResultsCreatedAfter());
+			assertThrows(InvalidParameterException.class, () -> config.getWithResultsCreatedAfter());
 			
-			assertNull(config.getFrom());
+			assertThrows(InvalidParameterException.class, () -> config.getFrom());
 			
-			assertNull(config.getTo());
+			assertThrows(InvalidParameterException.class, () -> config.getTo());
 			
-			assertNull(config.getCreatedAfter());
+			assertThrows(InvalidParameterException.class, () -> config.getCreatedAfter());
 		}
 	}
 }

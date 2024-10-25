@@ -1,5 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
+import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 
@@ -124,37 +125,38 @@ public class VandaHydrometryDataConfig {
 	}
 	
 	public Integer getExaminationTypeSc() {
+		if (examinationTypeSc == null) return null;
 		try {
 			return Integer.parseInt(examinationTypeSc);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			throw new NumberFormatException("Invalid data found in 'examinationTypeSc' parameter.");
 		}
 	}
 	
 	public Integer getParameterSc() {
+		if (parameterSc == null) return null;
 		try {
 			return Integer.parseInt(parameterSc);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			throw new NumberFormatException("Invalid data found in 'parameterSc' parameter.");
 		}
 	}
 	
 	public Integer getMeasurementPointNumber() {
+		if (measurementPointNumber == null) return null;
 		try {
 			return Integer.parseInt(measurementPointNumber);
-		} catch (NumberFormatException e) {
-			return null;
+		} catch (NumberFormatException ex) {
+			throw new NumberFormatException("Invalid data found in 'measurementPointNumber' parameter.");
 		}
 	}
 	
-	public OffsetDateTime getWithResultsAfter() {
-				
+	public OffsetDateTime getWithResultsAfter() {				
 		if (withResultsAfter == null) return null;
 		try {
 			return VandaHUtility.parseForAPI(withResultsAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsAfter' parameter.");
-			return null;
+			throw new InvalidParameterException("Invalid date format found in 'withResultsAfter' parameter.");
 		}
 	}
 	
@@ -163,8 +165,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(withResultsCreatedAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'withResultsCreatedAfter' parameter.");
-			return null;
+			throw new InvalidParameterException("Invalid date format found in 'withResultsCreatedAfter' parameter.");
 		}
 	}
 	
@@ -173,8 +174,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(from);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'from' parameter.");
-			return null;
+			throw new InvalidParameterException("Invalid date format found in 'from' parameter.");
 		}
 	}
 	
@@ -187,8 +187,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'to' parameter.");
-			return null;
+			throw new InvalidParameterException("Invalid date format found in 'to' parameter.");
 		}
 	}
 	
@@ -197,8 +196,7 @@ public class VandaHydrometryDataConfig {
 		try {
 			return VandaHUtility.parseForAPI(createdAfter);
 		} catch (DateTimeParseException | NullPointerException ex) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Invalid date format found in 'createdAfter' parameter.");
-			return null;
+			throw new InvalidParameterException("Invalid date format found in 'createdAfter' parameter.");
 		}
 	}
 	
@@ -210,21 +208,21 @@ public class VandaHydrometryDataConfig {
 		
 		sb.append("Configuration \"param: (input_value) parssed_value\" :\n");
 		
-		sb.append("\tHelp: ").append("(" + help + ") ").append(isHelp()).append("\n");
-		sb.append("\tVerbose: ").append("(" + verbose + ") ").append(isVerbose()).append("\n");
-		sb.append("\tDisplayRawData: ").append("(" + displayRawData + ") ").append(isDisplayRawData()).append("\n");
-		sb.append("\tDisplayData: ").append("(" + displayData + ") ").append(isDisplayData()).append("\n");
-		sb.append("\tSaveDb: ").append("(" + saveDb + ") ").append(isSaveDb()).append("\n");
-		sb.append("\tStationId: ").append("(" + stationId + ") ").append(getStationId()).append("\n");
-		sb.append("\tOperatorStationId: ").append("(" + operatorStationId + ") ").append(getOperatorStationId()).append("\n");
-		sb.append("\tExaminationTypeSc: ").append("(" + examinationTypeSc + ") ").append(getExaminationTypeSc()).append("\n");
-		sb.append("\tParameterSc: ").append("(" + parameterSc + ") ").append(getParameterSc()).append("\n");
-		sb.append("\tMeasurementPointNumber: ").append("(" + measurementPointNumber + ") ").append(getMeasurementPointNumber()).append("\n");
-		sb.append("\tWithResultsAfter: ").append("(" + withResultsAfter + ") ").append(getWithResultsAfter()).append("\n");
-		sb.append("\tWithResultsCreatedAfter: ").append("(" + withResultsCreatedAfter + ") ").append(getWithResultsCreatedAfter()).append("\n");
-		sb.append("\tFrom: ").append("(" + from + ") ").append(getFrom()).append("\n");
-		sb.append("\tTo: ").append("(" + to + ") ").append(getTo()).append("\n");
-		sb.append("\tCreatedAfter: ").append("(" + createdAfter + ") ").append(getCreatedAfter()).append("\n");
+		sb.append("\tHelp: ").append("(" + help + ") "); try { sb.append(isHelp()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tVerbose: ").append("(" + verbose + ") "); try { sb.append(isVerbose()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tDisplayRawData: ").append("(" + displayRawData + ") "); try { sb.append(isDisplayRawData()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tDisplayData: ").append("(" + displayData + ") "); try { sb.append(isDisplayData()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tSaveDb: ").append("(" + saveDb + ") "); try { sb.append(isSaveDb()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tStationId: ").append("(" + stationId + ") "); try { sb.append(getStationId()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tOperatorStationId: ").append("(" + operatorStationId + ") "); try { sb.append(getOperatorStationId()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tExaminationTypeSc: ").append("(" + examinationTypeSc + ") "); try { sb.append(getExaminationTypeSc()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tParameterSc: ").append("(" + parameterSc + ") "); try { sb.append(getParameterSc()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tMeasurementPointNumber: ").append("(" + measurementPointNumber + ") "); try { sb.append(getMeasurementPointNumber()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tWithResultsAfter: ").append("(" + withResultsAfter + ") "); try { sb.append(getWithResultsAfter()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tWithResultsCreatedAfter: ").append("(" + withResultsCreatedAfter + ") "); try { sb.append(getWithResultsCreatedAfter()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tFrom: ").append("(" + from + ") "); try { sb.append(getFrom()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tTo: ").append("(" + to + ") "); try { sb.append(getTo()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
+		sb.append("\tCreatedAfter: ").append("(" + createdAfter + ") "); try { sb.append(getCreatedAfter()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
 		
 		return sb.toString();
 	}
