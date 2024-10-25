@@ -180,7 +180,6 @@ public class VandaHydrometryDataConfig {
 	
 	public OffsetDateTime getTo() {
 		if (to == null) return null;
-		VandaHUtility.logAndPrint(log, Level.WARN, false, to);
 		try {
 			return VandaHUtility.parseForAPI(to);
 		} catch (DateTimeParseException | NullPointerException ex) {
