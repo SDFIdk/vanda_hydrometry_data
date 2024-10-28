@@ -9,6 +9,7 @@ CREATE TABLE station
  name               varchar(150) NULL,
  station_owner_name varchar(150) NULL,
  location           geometry(POINT,25832) NOT NULL,
+ locationType       varchar(100) NULL,
  description        varchar(1000) NULL,
  created            timestamp(3) with time zone NOT NULL,
  updated            timestamp(3) with time zone NOT NULL,
@@ -70,6 +71,7 @@ CREATE INDEX ON station_measurement_type
 CREATE TABLE measurement
 (
  "result"              double precision NOT NULL,
+ result_elevation_corrected double precision NULL,
  measurement_date_time timestamp(3) with time zone NOT NULL,
  is_current            bool NOT NULL,
  created               timestamp(3) with time zone NOT NULL,
