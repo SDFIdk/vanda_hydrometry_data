@@ -29,38 +29,36 @@ COMMENT ON COLUMN station.description IS 'Description of the station that can co
 
 CREATE TABLE measurement_type
 (
- measurement_type_id      varchar(12) NOT NULL,
- unit                     varchar(4) NOT NULL,
- unit_sc                  int NOT NULL,
- "parameter"              varchar(20) NOT NULL,
- parameter_sc             int NOT NULL,
  examination_type_sc      int NOT NULL,
  examination_type         varchar(20) NOT NULL,
- CONSTRAINT PK_3 PRIMARY KEY ( measurement_type_id )
+ "parameter"              varchar(20) NOT NULL,
+ parameter_sc             int NOT NULL,
+ unit                     varchar(4) NOT NULL,
+ unit_sc                  int NOT NULL,
+ CONSTRAINT PK_3 PRIMARY KEY ( examination_type_sc )
 );
 
 COMMENT ON TABLE measurement_type IS 'Contains information about the measurement types like Water Level, Water Flow, etc.';
-COMMENT ON COLUMN measurement_type.measurement_type_id IS 'The unique identifier of the measurement type, a concatenation.';
-COMMENT ON COLUMN measurement_type.unit IS 'The unit of the measurement, for example "cm, m³/s"';
-COMMENT ON COLUMN measurement_type.unit_sc IS 'The stancode of the unit';
+COMMENT ON COLUMN measurement_type.examination_type_sc IS 'The stancode of the examination type and the key in the table';
+COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
 COMMENT ON COLUMN measurement_type.parameter IS 'The parameter of the measurement, for example "Vandføring" or "Vandstand"';
 COMMENT ON COLUMN measurement_type.parameter_sc IS 'The stancode of the parameter';
-COMMENT ON COLUMN measurement_type.examination_type_sc IS 'The stancode of the examination type';
-COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
-COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
+COMMENT ON COLUMN measurement_type.unit IS 'The unit of the measurement, for example "cm, m³/s"';
+COMMENT ON COLUMN measurement_type.unit_sc IS 'The stancode of the unit';
+
 
 CREATE TABLE station_measurement_type
 (
-    station_id char(8) NOT NULL,
-    measurement_type_id varchar(12) NOT NULL,
-    CONSTRAINT PK_2 PRIMARY KEY ( station_id, measurement_type_id ),
-    CONSTRAINT FK_5 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
+    station_id 			char(8) NOT NULL,
+    examination_type_sc	int NOT NULL,
+    CONSTRAINT PK_2 PRIMARY KEY ( station_id, examination_type_sc ),
+    CONSTRAINT FK_5 FOREIGN KEY ( examination_type_sc ) REFERENCES measurement_type ( examination_type_sc ),
     CONSTRAINT FK_6 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
 );
 
 CREATE INDEX ON station_measurement_type
 (
-     measurement_type_id
+     examination_type_sc
 );
 CREATE INDEX ON station_measurement_type
 (
@@ -75,16 +73,18 @@ CREATE TABLE measurement
  measurement_date_time timestamp(3) with time zone NOT NULL,
  is_current            bool NOT NULL,
  created               timestamp(3) with time zone NOT NULL,
+ updated               timestamp(3) with time zone NOT NULL,
+ vanda_event_timestamp timestamp(3) with time zone NOT NULL,
  station_id            char(8) NOT NULL,
- measurement_type_id   varchar(12) NOT NULL,
+ examination_type_sc      int NOT NULL,
  measurement_point_number int NOT NULL,
- CONSTRAINT FK_1 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id ),
+ CONSTRAINT FK_1 FOREIGN KEY ( examination_type_sc ) REFERENCES measurement_type ( examination_type_sc ),
  CONSTRAINT FK_2 FOREIGN KEY ( station_id ) REFERENCES station ( station_id )
 );
 
 CREATE INDEX FK_1_M ON measurement
 (
- measurement_type_id
+ examination_type_sc
 );
 CREATE INDEX FK_2_M ON measurement
 (
@@ -93,7 +93,8 @@ CREATE INDEX FK_2_M ON measurement
 CREATE INDEX measurement_station_IDX ON measurement
 (
   station_id,
-  measurement_type_id,
+  examination_type_sc,
+  measurement_point_number,
   is_current,
   measurement_date_time
 );
@@ -101,6 +102,7 @@ CREATE INDEX measurement_station_IDX ON measurement
 COMMENT ON TABLE measurement IS 'Contains the measurements of the stations';
 COMMENT ON COLUMN measurement.result IS 'The result of the measurement, for example 4203';
 COMMENT ON COLUMN measurement.measurement_date_time IS 'The measurement date time';
+COMMENT ON COLUMN measurement.vanda_event_timestamp IS 'The timestamp when the record was created in the source system (vanda)';
 COMMENT ON COLUMN measurement.is_current IS 'Is the result current, ie. the latest result';
 
 CREATE TABLE calculated
@@ -111,9 +113,9 @@ CREATE TABLE calculated
  created              timestamp(3) with time zone NOT NULL,
  updated              timestamp(3) with time zone NOT NULL,
  station_id           char(8) NOT NULL,
- measurement_type_id  varchar(12) NOT NULL,
+ examination_type_sc  int NOT NULL,
  CONSTRAINT FK_3 FOREIGN KEY ( station_id ) REFERENCES station ( station_id ),
- CONSTRAINT FK_4 FOREIGN KEY ( measurement_type_id ) REFERENCES measurement_type ( measurement_type_id )
+ CONSTRAINT FK_4 FOREIGN KEY ( examination_type_sc ) REFERENCES measurement_type ( examination_type_sc )
 );
 
 CREATE INDEX FK_1_C ON calculated
@@ -122,7 +124,7 @@ CREATE INDEX FK_1_C ON calculated
 );
 CREATE INDEX FK_2_C ON calculated
 (
- measurement_type_id
+ examination_type_sc
 );
 -- unique index
 CREATE UNIQUE INDEX calculated_IDX ON calculated
@@ -130,7 +132,7 @@ CREATE UNIQUE INDEX calculated_IDX ON calculated
  slice,
  station_id,
  date_start,
- measurement_type_id
+ examination_type_sc
 );
 
 COMMENT ON TABLE calculated IS 'Contains the calculated measurements of the stations';
@@ -145,7 +147,7 @@ CREATE TABLE hydrometry.calculated_daily (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_daily_means(
     p_station_id char(8),
-    p_measurement_type_id varchar(12),
+    p_examination_type_sc int,
     p_start_date date,
     p_end_date date
 )
@@ -160,7 +162,7 @@ BEGIN
       AVG(result) as daily_mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
-    AND measurement_type_id = p_measurement_type_id
+    AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
   GROUP BY DATE(measurement_date_time)
   ORDER BY DATE(measurement_date_time);
@@ -175,7 +177,7 @@ CREATE TABLE hydrometry.calculated_monthly (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_monthly_means(
   p_station_id char(8),
-  p_measurement_type_id varchar(12),
+  p_examination_type_sc int,
   p_start_date date,
   p_end_date date
 )
@@ -191,7 +193,7 @@ BEGIN
       AVG(result) as monthly_mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
-    AND measurement_type_id = p_measurement_type_id
+    AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
   GROUP BY EXTRACT(YEAR FROM measurement_date_time), EXTRACT(MONTH FROM measurement_date_time)
   ORDER BY year, month;
@@ -205,7 +207,7 @@ CREATE TABLE hydrometry.calculated_yearly (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_yearly_means(
   p_station_id char(8),
-  p_measurement_type_id varchar(12),
+  p_examination_type_sc int,
   p_start_date date,
   p_end_date date
 )
@@ -220,7 +222,7 @@ BEGIN
       AVG(result) as mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
-    AND measurement_type_id = p_measurement_type_id
+    AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
   GROUP BY EXTRACT(YEAR FROM measurement_date_time)
   ORDER BY year;
@@ -235,7 +237,7 @@ CREATE TABLE hydrometry.calculated_seasonal (
 
 CREATE OR REPLACE FUNCTION hydrometry.get_seasonal_means(
   p_station_id char(8),
-  p_measurement_type_id varchar(12),
+  p_examination_type_sc int,
   p_start_date date,
   p_end_date date,
   p_season text DEFAULT NULL
@@ -260,7 +262,7 @@ BEGIN
           END AS season_year
     FROM hydrometry.measurement
     WHERE station_id = p_station_id
-      AND measurement_type_id = p_measurement_type_id
+      AND examination_type_sc = p_examination_type_sc
       AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
   )
   SELECT
