@@ -66,7 +66,7 @@ public class StationsCommand implements CommandInterface {
 	public void mapData() {
 		if (data != null) {
 			stations = Arrays.stream(data) //make the array of stations responses into a Stream<DmpHydroApiResponsesStationResponse>
-					.map(response -> Station.from(response)) //map the stream of stations into a Stream<Stations>
+					.map(response -> VandaHUtility.stationFrom(response)) //map the stream of stations into a Stream<Stations>
 					.collect(Collectors.toCollection(ArrayList::new)); //convert to List<Stations>
 		}
 	}

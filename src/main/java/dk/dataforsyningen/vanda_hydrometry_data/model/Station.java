@@ -4,10 +4,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
-
 public class Station {
 	
 	String stationUid = null;
@@ -38,44 +34,13 @@ public class Station {
 	
 	ArrayList<MeasurementType> measurementTypes = new ArrayList<>();
 
-	public static Station from(DmpHydroApiResponsesStationResponse response) {
-		if (response == null) return null;
-		
-		Station station = new Station();
-		
-		station.setStationId(response.getStationId());
-		station.setStationUid(response.getStationUid() != null ? response.getStationUid().toString() : null);
-		station.setOperatorStationId(response.getOperatorStationId());
-		station.setOldStationNumber(response.getOldStationNumber());
-		station.setName(response.getName());
-		station.setStationOwnerName(response.getStationOwnerName());
-		station.setX(response.getLocation() != null ? response.getLocation().getX() : null);
-		station.setY(response.getLocation() != null ? response.getLocation().getY() : null);
-		station.setSrid(response.getLocation() != null ? response.getLocation().getSrid() : null);
-		station.setLocationType(response.getLocationType());
-		station.setDescription(response.getDescription());
-		station.measurementTypes = new ArrayList<>();
-		if (response.getMeasurementPoints() != null) {
-			for(DmpHydroApiResponsesStationResponseMeasurementPoint mp : response.getMeasurementPoints()) {
-				if (mp.getExaminations() != null) {
-					for(DmpHydroApiResponsesStationResponseMeasurementPointExamination mpe : mp.getExaminations()) {
-						if (mpe != null) {
-							station.measurementTypes.add(MeasurementType.from(mpe));
-						}
-					}
-				}
-			}
-		}
-		
-		return station;
-	}
 
 	public String getStationUid() {
 		return stationUid;
 	}
 
 	public void setStationUid(String stationUid) {
-		this.stationUid = stationUid;
+		this.stationUid = (stationUid == null || stationUid.isEmpty() ? null : stationUid);
 	}
 
 	public String getStationId() {
@@ -91,7 +56,7 @@ public class Station {
 	}
 
 	public void setOperatorStationId(String operatorStationId) {
-		this.operatorStationId = operatorStationId;
+		this.operatorStationId = (operatorStationId == null || operatorStationId.isEmpty() ? null : operatorStationId);
 	}
 
 	public String getOldStationNumber() {
@@ -99,7 +64,7 @@ public class Station {
 	}
 
 	public void setOldStationNumber(String oldStationNumber) {
-		this.oldStationNumber = oldStationNumber;
+		this.oldStationNumber = (oldStationNumber == null || oldStationNumber.isEmpty() ? null : oldStationNumber);
 	}
 
 	public String getName() {
@@ -115,7 +80,7 @@ public class Station {
 	}
 
 	public void setStationOwnerName(String stationOwnerName) {
-		this.stationOwnerName = stationOwnerName;
+		this.stationOwnerName = (stationOwnerName == null || stationOwnerName.isEmpty() ? null : stationOwnerName);
 	}
 
 	public Double getX() {
