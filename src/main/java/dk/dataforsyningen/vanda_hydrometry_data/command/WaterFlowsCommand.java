@@ -79,12 +79,12 @@ public class WaterFlowsCommand implements CommandInterface {
 								.map( result -> {
 									
 									//Create the Measurement Type too
-									MeasurementType mt = MeasurementType.from(result);
+									MeasurementType mt = VandaHUtility.measurementTypeFrom(result);
 									if (!measurementTypes.contains(mt)) {
 										measurementTypes.add(mt);
 									}
 									
-									return Measurement.from( result , response.getStationId()); 
+									return VandaHUtility.measurementFrom( result , response.getStationId()); 
 								}) //map the array of Results into Stream<Measurements>
 				) //map the response for each station into a Stream<Measurement>. the results is Stream<Stream<Measurements>> 
 				.flatMap(Function.identity()) //flatten the streams of streams into a single stream of measurements

@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,14 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 import org.springframework.http.client.ClientHttpResponse;
+
+import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
+import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
+import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
+import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 /**
  * Utility class
@@ -251,5 +260,85 @@ public class VandaHUtility {
 		if (ts == null) return null;
 		return utc ? dateToOfssetDateTimeUtc(new Date(ts.getTime())) 
 				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
+	}
+	
+	public static Measurement measurementFrom(DmpHydroApiResponsesResultResponse response) {
+		return measurementFrom(response, null);
+	}
+	
+	public static Measurement measurementFrom(DmpHydroApiResponsesResultResponse response, String stationId) {
+		if (response == null) return null;
+		
+		Measurement measurement = new Measurement();
+		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
+		measurement.setResult(response.getResult());
+		measurement.setResultElevationCorrected(response.getResultElevationCorrected());
+		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
+		measurement.setExaminationTypeSc(response.getExaminationTypeSc());
+		measurement.setIsCurrent(true); //the measurements coming from API are always the current
+		
+		measurement.setStationId(stationId);
+		
+		return measurement;
+	}
+	
+	public static MeasurementType measurementTypeFrom(DmpHydroApiResponsesResultResponse result) {
+		if (result == null) return null;
+		
+		MeasurementType measurementType = new MeasurementType();
+		measurementType.setParameter(result.getParameter());
+		measurementType.setParameterSc(result.getParameterSc());
+		measurementType.setExaminationType(result.getExaminationType());
+		measurementType.setExaminationTypeSc(result.getExaminationTypeSc());
+		measurementType.setUnit(result.getUnit());
+		measurementType.setUnitSc(result.getUnitSc());
+				
+		return measurementType;
+	}
+	
+	public static MeasurementType measurementTypeFrom(DmpHydroApiResponsesStationResponseMeasurementPointExamination result) {
+		if (result == null) return null;
+		
+		MeasurementType measurementType = new MeasurementType();
+		measurementType.setParameter(result.getParameter());
+		measurementType.setParameterSc(result.getParameterSc());
+		measurementType.setExaminationType(result.getExaminationType());
+		measurementType.setExaminationTypeSc(result.getExaminationTypeSc());
+		measurementType.setUnit(result.getUnit());
+		measurementType.setUnitSc(result.getUnitSc());
+				
+		return measurementType;
+	}
+	
+	public static Station stationFrom(DmpHydroApiResponsesStationResponse response) {
+		if (response == null) return null;
+		
+		Station station = new Station();
+		
+		station.setStationId(response.getStationId());
+		station.setStationUid(response.getStationUid() != null ? response.getStationUid().toString() : null);
+		station.setOperatorStationId(response.getOperatorStationId());
+		station.setOldStationNumber(response.getOldStationNumber());
+		station.setName(response.getName());
+		station.setStationOwnerName(response.getStationOwnerName());
+		station.setX(response.getLocation() != null ? response.getLocation().getX() : null);
+		station.setY(response.getLocation() != null ? response.getLocation().getY() : null);
+		station.setSrid(response.getLocation() != null ? response.getLocation().getSrid() : null);
+		station.setLocationType(response.getLocationType());
+		station.setDescription(response.getDescription());
+		station.setMeasurementTypes(new ArrayList<>());
+		if (response.getMeasurementPoints() != null) {
+			for(DmpHydroApiResponsesStationResponseMeasurementPoint mp : response.getMeasurementPoints()) {
+				if (mp.getExaminations() != null) {
+					for(DmpHydroApiResponsesStationResponseMeasurementPointExamination mpe : mp.getExaminations()) {
+						if (mpe != null) {
+							station.getMeasurementTypes().add(measurementTypeFrom(mpe));
+						}
+					}
+				}
+			}
+		}
+		
+		return station;
 	}
 }
