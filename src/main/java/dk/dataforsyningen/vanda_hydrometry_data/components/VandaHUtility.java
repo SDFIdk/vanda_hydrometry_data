@@ -248,7 +248,7 @@ public class VandaHUtility {
 	 * @return OffsetDateTime in local or UTC time zone
 	 */
 	public static OffsetDateTime toOffsetDate(Timestamp ts, boolean utc) {
-		
+		if (ts == null) return null;
 		return utc ? dateToOfssetDateTimeUtc(new Date(ts.getTime())) 
 				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
 	}

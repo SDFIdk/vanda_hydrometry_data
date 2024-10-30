@@ -14,6 +14,8 @@ public class Measurement {
 
 	@NotNull
 	OffsetDateTime measurementDateTime = null;
+	
+	Double resultElevationCorrected = null;
 
 	@NotNull
 	Double result = null;
@@ -22,13 +24,18 @@ public class Measurement {
 	OffsetDateTime created = null;
 	
 	@NotNull
+	OffsetDateTime updated = null;
+	
+	OffsetDateTime vandaEventTimestamp = null;
+	
+	@NotNull
 	Boolean isCurrent = null;
 	
 	@NotNull
 	String stationId = null; //FK
 
 	@NotNull
-	String measurementTypeId = null; //FK		
+	Integer examinationTypeSc = null; //FK		
 	
 	public static Measurement from(DmpHydroApiResponsesResultResponse response) {
 		return Measurement.from(response, null);
@@ -41,7 +48,7 @@ public class Measurement {
 		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
 		measurement.setResult(response.getResult());
 		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
-		measurement.setMeasurementTypeId(MeasurementType.from(response).getMeasurementTypeId());
+		measurement.setExaminationTypeSc(MeasurementType.from(response).getExaminationTypeSc());
 		measurement.setIsCurrent(true); //the measurements coming from API are always the current
 		
 		measurement.setStationId(stationId);
@@ -96,31 +103,60 @@ public class Measurement {
 	public void setStationId(String stationId) {
 		this.stationId = stationId;
 	}
+	
+	
 
-	public String getMeasurementTypeId() {
-		return measurementTypeId;
+	public Double getResultElevationCorrected() {
+		return resultElevationCorrected;
 	}
 
-	public void setMeasurementTypeId(String measurementTypeId) {
-		this.measurementTypeId = measurementTypeId;
+	public void setResultElevationCorrected(Double resultElevationCorrected) {
+		this.resultElevationCorrected = resultElevationCorrected;
+	}
+
+	public OffsetDateTime getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(OffsetDateTime updated) {
+		this.updated = updated;
+	}
+
+	public OffsetDateTime getVandaEventTimestamp() {
+		return vandaEventTimestamp;
+	}
+
+	public void setVandaEventTimestamp(OffsetDateTime vandaEventTimestamp) {
+		this.vandaEventTimestamp = vandaEventTimestamp;
+	}
+
+	public Integer getExaminationTypeSc() {
+		return examinationTypeSc;
+	}
+
+	public void setExaminationTypeSc(Integer examinationTypeSc) {
+		this.examinationTypeSc = examinationTypeSc;
 	}
 
 	@Override
 	public String toString() {
-		return "Measurement [" +
-				"\n\tstationId=" + stationId +
-				",\n\tmeasurementPointNumber=" + measurementPointNumber + 
-				",\n\tmeasurementDateTime=" + measurementDateTime + 
-				",\n\tresult=" + result + 
-				",\n\tcreated=" + created + 
-				",\n\tisCurrent=" + isCurrent +
-				",\n\tmeasurementTypeId=" + measurementTypeId + "]";
+		return "Measurement [measurementPointNumber=" + measurementPointNumber 
+				+ ", measurementDateTime=" + measurementDateTime 
+				+ ", resultElevationCorrected=" + resultElevationCorrected 
+				+ ", result=" + result
+				+ ", created=" + created 
+				+ ", updated=" + updated 
+				+ ", vandaEventTimestamp=" + vandaEventTimestamp
+				+ ", isCurrent=" + isCurrent 
+				+ ", stationId=" + stationId 
+				+ ", examinationTypeSc=" + examinationTypeSc
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(created, isCurrent, measurementDateTime, measurementPointNumber, measurementTypeId, result,
-				stationId);
+		return Objects.hash(created, examinationTypeSc, isCurrent, measurementDateTime, measurementPointNumber, result,
+				resultElevationCorrected, stationId, updated, vandaEventTimestamp);
 	}
 
 	@Override
@@ -132,12 +168,17 @@ public class Measurement {
 		if (getClass() != obj.getClass())
 			return false;
 		Measurement other = (Measurement) obj;
-		return Objects.equals(created, other.created) && Objects.equals(isCurrent, other.isCurrent)
+		return Objects.equals(created, other.created) && Objects.equals(examinationTypeSc, other.examinationTypeSc)
+				&& Objects.equals(isCurrent, other.isCurrent)
 				&& Objects.equals(measurementDateTime, other.measurementDateTime)
 				&& Objects.equals(measurementPointNumber, other.measurementPointNumber)
-				&& Objects.equals(measurementTypeId, other.measurementTypeId) && Objects.equals(result, other.result)
-				&& Objects.equals(stationId, other.stationId);
+				&& Objects.equals(result, other.result)
+				&& Objects.equals(resultElevationCorrected, other.resultElevationCorrected)
+				&& Objects.equals(stationId, other.stationId) && Objects.equals(updated, other.updated)
+				&& Objects.equals(vandaEventTimestamp, other.vandaEventTimestamp);
 	}
+
+
 	
 	
 }

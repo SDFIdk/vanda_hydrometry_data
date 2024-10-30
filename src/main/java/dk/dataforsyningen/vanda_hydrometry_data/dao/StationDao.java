@@ -30,7 +30,6 @@ public interface StationDao {
 				s.description,
 				s.created,
 				s.updated,
-				mt.measurement_type_id,
 				mt.parameter_sc,
 				mt.parameter,
 				mt.examination_type_sc,
@@ -40,7 +39,7 @@ public interface StationDao {
 			from hydrometry.station s left join hydrometry.station_measurement_type smt 
 				on s.station_id = smt.station_id
 				left join hydrometry.measurement_type mt
-				on smt.measurement_type_id = mt.measurement_type_id
+				on smt.examination_type_sc = mt.examination_type_sc
 			""")
 	List<Station> getAllStations();
 	
@@ -57,7 +56,6 @@ public interface StationDao {
 				s.description,
 				s.created,
 				s.updated,
-				mt.measurement_type_id,
 				mt.parameter_sc,
 				mt.parameter,
 				mt.examination_type_sc,
@@ -67,7 +65,7 @@ public interface StationDao {
 			from hydrometry.station s left join hydrometry.station_measurement_type smt 
 				on s.station_id = smt.station_id
 				left join hydrometry.measurement_type mt
-				on smt.measurement_type_id = mt.measurement_type_id 
+				on smt.examination_type_sc = mt.examination_type_sc 
 			where s.station_id = :stationId
 			""")
 	List<Station> findStationByStationId(@Bind String stationId);
@@ -85,7 +83,6 @@ public interface StationDao {
 				s.description,
 				s.created,
 				s.updated,
-				mt.measurement_type_id,
 				mt.parameter_sc,
 				mt.parameter,
 				mt.examination_type_sc,
@@ -95,7 +92,7 @@ public interface StationDao {
 			from hydrometry.station s left join hydrometry.station_measurement_type smt 
 				on s.station_id = smt.station_id
 				left join hydrometry.measurement_type mt
-				on smt.measurement_type_id = mt.measurement_type_id 
+				on smt.examination_type_sc = mt.examination_type_sc 
 			where mt.examination_type_sc = :examinationTypeSc
 			""")
 	List<Station> findStationByExaminationTypeSc(@Bind int examinationTypeSc);
@@ -103,10 +100,8 @@ public interface StationDao {
 	@SqlQuery("""
 			select count(*)
 			from hydrometry.station_measurement_type smt 
-				left join hydrometry.measurement_type mt
-				on smt.measurement_type_id = mt.measurement_type_id 
 			where smt.station_id = :stationId 
-				and mt.examination_type_sc = :examinationTypeSc
+				and smt.examination_type_sc = :examinationTypeSc
 			""")
 	int isExaminationTypeScSupported(@Bind String stationId, @Bind int examinationTypeSc);
 
@@ -143,18 +138,18 @@ public interface StationDao {
 	void addStations(@BindBean List<Station> stations);
 	
 	@SqlUpdate("""
-			insert into hydrometry.station_measurement_type (station_id, measurement_type_id)
-			values (:stationId, :measurementTypeId)
+			insert into hydrometry.station_measurement_type (station_id, examination_type_sc)
+			values (:stationId, :examinationTypeSc)
 			on conflict do nothing
 			""")
-	void addStationMeasurementTypeRelation(@Bind String stationId, @Bind String measurementTypeId);
+	void addStationMeasurementTypeRelation(@Bind String stationId, @Bind String examinationTypeSc);
 	
 	@SqlBatch("""
-			insert into hydrometry.station_measurement_type (station_id, measurement_type_id)
-			values (:stationId, :measurementTypeId)
+			insert into hydrometry.station_measurement_type (station_id, examination_type_sc)
+			values (:stationId, :examinationTypeSc)
 			on conflict do nothing
 			""")
-	void addStationMeasurementTypeRelations(@Bind List<String> stationId, @BindBean List<MeasurementType> measurementType);
+	void addStationMeasurementTypeRelations(@Bind List<String> stationId, @BindBean List<MeasurementType> examinationTypeSc);
 	
 	@SqlUpdate("delete from hydrometry.station where station_id = :id")
 	void deleteStation(@Bind String id);

@@ -19,11 +19,10 @@ public interface MeasurementTypeDao {
 
 	@SqlQuery("""
 			select
-				measurement_type_id,
-				parameter_sc,
-				parameter,
 				examination_type_sc,
 				examination_type,
+				parameter_sc,
+				parameter,
 				unit_sc,
 				unit
 			from hydrometry.measurement_type
@@ -32,23 +31,22 @@ public interface MeasurementTypeDao {
 	
 	@SqlQuery("""
 			select
-				measurement_type_id,
-				parameter_sc,
-				parameter,
 				examination_type_sc,
 				examination_type,
+				parameter_sc,
+				parameter,
 				unit_sc,
 				unit
 			from hydrometry.measurement_type
-			where measurement_type_id = :measurementTypeId
+			where examination_type_sc = :examinationTypeSc
 			""")
-	MeasurementType findMeasurementTypeById(@Bind String measurementTypeId);
+	MeasurementType findMeasurementTypeById(@Bind int examinationTypeSc);
 	
 	@SqlUpdate("""
 			insert into hydrometry.measurement_type
-			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
-			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
-			on conflict (measurement_type_id) do update
+			(parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
+			values (:parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
+			on conflict (examination_type_sc) do update
 				set parameter = EXCLUDED.parameter,
 					examination_type = EXCLUDED.examination_type,
 					unit = EXCLUDED.unit
@@ -58,9 +56,9 @@ public interface MeasurementTypeDao {
 	
 	@SqlBatch("""
 			insert into hydrometry.measurement_type
-			(measurement_type_id, parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
-			values (:measurementTypeId, :parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
-			on conflict (measurement_type_id) do update
+			(parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
+			values (:parameterSc, :parameter, :examinationTypeSc, :examinationType, :unitSc, :unit)
+			on conflict (examination_type_sc) do update
 				set parameter = EXCLUDED.parameter,
 					examination_type = EXCLUDED.examination_type,
 					unit = EXCLUDED.unit
@@ -68,8 +66,8 @@ public interface MeasurementTypeDao {
 	@GetGeneratedKeys
 	List<String> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
 	
-	@SqlUpdate("delete from hydrometry.measurement_type where measurement_type_id = :id")
-	void deleteMeasurementType(@Bind String id);
+	@SqlUpdate("delete from hydrometry.measurement_type where examination_type_sc = :examinationTypeSc")
+	void deleteMeasurementType(@Bind int examinationTypeSc);
 	
 	@SqlQuery("select count(*) from hydrometry.measurement_type")
 	int count();

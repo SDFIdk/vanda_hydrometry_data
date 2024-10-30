@@ -173,9 +173,9 @@ public class DatabaseService {
 	 */
 	public Measurement getMeasurement(String stationId,
 			int measurementPointNumber,
-			String measurementTypeId,
+			int examinationTypeSc,
 			OffsetDateTime measurementDatetime) {
-		return measurementDao.findCurrentMeasurement(stationId, measurementPointNumber, measurementTypeId, measurementDatetime);
+		return measurementDao.findCurrentMeasurement(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
 	}
 	
 	/**
@@ -209,10 +209,10 @@ public class DatabaseService {
 	}
 	
 	public void deleteMeasurement(String stationId, int measurementPointNumber,
-			String measurementTypeId,
+			int examinationTypeSc,
 			OffsetDateTime measurementDatetime
 			) {
-		measurementDao.deleteMeasurement(stationId, measurementPointNumber, measurementTypeId, measurementDatetime);
+		measurementDao.deleteMeasurement(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
 	}
 	
 	public int countMeasurements() {
@@ -225,8 +225,8 @@ public class DatabaseService {
 		return measurementTypeDao.getAllMeasurementTypes();
 	}
 	
-	public MeasurementType getMeasurementType(String id) {
-		return measurementTypeDao.findMeasurementTypeById(id);
+	public MeasurementType getMeasurementType(int examinationTypeSc) {
+		return measurementTypeDao.findMeasurementTypeById(examinationTypeSc);
 	}
 	
 	/**
@@ -247,8 +247,8 @@ public class DatabaseService {
 		measurementTypeDao.addMeasurementTypes(measurementTypes);
 	}
 	
-	public void deleteMeasurementType(String id) {
-		measurementTypeDao.deleteMeasurementType(id);
+	public void deleteMeasurementType(int examinationTypeSc) {
+		measurementTypeDao.deleteMeasurementType(examinationTypeSc);
 	}
 	
 	public int countMeasurementTypes() {

@@ -35,12 +35,9 @@ public class StationMapper implements RowMapper<Station> {
 		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
 		station.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));
 		
-		String mtid = rs.getString("measurement_type_id");
-		
-		if (mtid != null) {
+		if ((Integer)rs.getObject("examination_type_sc") != null) {
 			MeasurementType mt = new MeasurementType();
 		
-			mt.setMeasurementTypeId(mtid);
 			mt.setParameterSc(rs.getInt("parameter_sc"));
 			mt.setParameter(rs.getString("parameter"));
 			mt.setExaminationTypeSc(rs.getInt("examination_type_sc"));

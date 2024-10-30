@@ -43,21 +43,19 @@ public class DatabaseServiceTest {
 	private final double locationY = 56.78;
 	private final String locationSrid = "25832";
 	
-	private final String mtId1 = "T1233-25-19";
 	private final int mtParamSc1 = 1233;
 	private final String mtParam1 = "WaterLevel";
 	private final String mtParam1b = "Vandstand";
-	private final int mtExamTypeSc1 = 25;
+	private final int mtExamTypeSc1 = 999925; //should be fake
 	private final String mtExamType1 = "WaterLevel";
 	private final String mtExamType1b = "Vandstand";
 	private final int mtUnitSc1 = 19;
 	private final String mtUnit1 = "CM";
 	private final String mtUnit1b = "cm";
 	
-	private final String mtId2 = "T1155-27-55";
 	private final int mtParamSc2 = 1155;
 	private final String mtParam2 = "Vandføring";
-	private final int mtExamTypeSc2 = 27;
+	private final int mtExamTypeSc2 = 999927; //should be fake
 	private final String mtExamType2 = "Vandføring";
 	private final int mtUnitSc2 = 55;
 	private final String mtUnit2 = "l/s";
@@ -95,7 +93,6 @@ public class DatabaseServiceTest {
 		if (!enableTest) return;
 		
 		mt1 = new MeasurementType();
-		mt1.setMeasurementTypeId(mtId1);
 		mt1.setParameterSc(mtParamSc1);
 		mt1.setParameter(mtParam1);
 		mt1.setExaminationTypeSc(mtExamTypeSc1);
@@ -104,7 +101,6 @@ public class DatabaseServiceTest {
 		mt1.setUnit(mtUnit1);
 		
 		mt2 = new MeasurementType();
-		mt2.setMeasurementTypeId(mtId2);
 		mt2.setParameterSc(mtParamSc2);
 		mt2.setParameter(mtParam2);
 		mt2.setExaminationTypeSc(mtExamTypeSc2);
@@ -140,7 +136,7 @@ public class DatabaseServiceTest {
 		m1.setIsCurrent(true);
 		m1.setMeasurementPointNumber(measurementPoint1);
 		m1.setResult(result1);
-		m1.setMeasurementTypeId(mtId1);
+		m1.setExaminationTypeSc(mtExamTypeSc1);
 		m1.setMeasurementDateTime(OffsetDateTime.now());
 		
 		m2 = new Measurement();
@@ -148,7 +144,7 @@ public class DatabaseServiceTest {
 		m2.setIsCurrent(true);
 		m2.setMeasurementPointNumber(measurementPoint2);
 		m2.setResult(result2);
-		m2.setMeasurementTypeId("fail");
+		m2.setExaminationTypeSc(0);
 		m2.setMeasurementDateTime(OffsetDateTime.now());
 	}
 	
@@ -175,6 +171,9 @@ public class DatabaseServiceTest {
 		if (!enableTest) return;
 		
 		//Test StationDao
+
+		//can only delete station if relation station/measurement type is not present
+		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
 		
 		testDeleteStation();
 		
@@ -186,7 +185,7 @@ public class DatabaseServiceTest {
 		
 		// MeasurementTypeDao
 		
-		//can only delete measurement_type if relation station - measurement type is not present
+		//can only delete measurement_type if relation station/measurement type is not present
 		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
 		
 		testDeleteMeasurementType();
@@ -263,14 +262,14 @@ public class DatabaseServiceTest {
 	}
 	
 	private void testDeleteMeasurementType() {
-		dbService.deleteMeasurementType(mtId1);
+		dbService.deleteMeasurementType(mtExamTypeSc1);
 		
-		MeasurementType mt = dbService.getMeasurementType(mtId1);
+		MeasurementType mt = dbService.getMeasurementType(mtExamTypeSc1);
 		assertNull(mt);
 		
-		dbService.deleteMeasurementType(mtId2);
+		dbService.deleteMeasurementType(mtExamTypeSc2);
 		
-		mt = dbService.getMeasurementType(mtId2);
+		mt = dbService.getMeasurementType(mtExamTypeSc2);
 		assertNull(mt);
 	}
 	
@@ -282,7 +281,7 @@ public class DatabaseServiceTest {
 		
 		dbService.addMeasurementType(mt2);
 		
-		MeasurementType mt = dbService.getMeasurementType(mtId1);
+		MeasurementType mt = dbService.getMeasurementType(mtExamTypeSc1);
 		//System.out.println("Inserted 1st measurement type: " + mt);
 		
 		assertEquals(mtParamSc1, mt.getParameterSc());
@@ -292,7 +291,7 @@ public class DatabaseServiceTest {
 		assertEquals(mtUnitSc1, mt.getUnitSc());
 		assertEquals(mtUnit1, mt.getUnit());
 		
-		mt = dbService.getMeasurementType(mtId2);
+		mt = dbService.getMeasurementType(mtExamTypeSc2);
 		//System.out.println("Inserted 2nd measurement type: " + mt);
 		
 		assertEquals(mtParamSc2, mt.getParameterSc());
@@ -315,7 +314,7 @@ public class DatabaseServiceTest {
 		mt1.setUnit(mtUnit1b);
 		dbService.addMeasurementType(mt1);
 		
-		MeasurementType mt = dbService.getMeasurementType(mtId1);
+		MeasurementType mt = dbService.getMeasurementType(mtExamTypeSc1);
 		//System.out.println("Updated measurement type: " + mt);
 		
 		assertEquals(mtParam1b, mt.getParameter());
@@ -333,16 +332,16 @@ public class DatabaseServiceTest {
 		
 		if (date1 != null) {
 		
-			dbService.deleteMeasurement(stationId, measurementPoint1, mtId1, date1);
+			dbService.deleteMeasurement(stationId, measurementPoint1, mtExamTypeSc1, date1);
 			
-			m = dbService.getMeasurement(stationId, measurementPoint1, mtId1, date1);
+			m = dbService.getMeasurement(stationId, measurementPoint1, mtExamTypeSc1, date1);
 			assertNull(m);
 		}
 		
 		if (date2 != null) {
-			dbService.deleteMeasurement(stationId, measurementPoint2, mtId2, date2);
+			dbService.deleteMeasurement(stationId, measurementPoint2, mtExamTypeSc2, date2);
 			
-			m = dbService.getMeasurement(stationId, measurementPoint2, mtId2, date2);
+			m = dbService.getMeasurement(stationId, measurementPoint2, mtExamTypeSc2, date2);
 			assertNull(m);
 		}
 	}
@@ -359,7 +358,7 @@ public class DatabaseServiceTest {
 		}); //because the measurement_type does not exist
 		assertTrue(ex.getMessage().indexOf("ERROR: insert or update on table \"measurement\" violates foreign key constraint \"fk_1\"") != -1);
 		
-		m2.setMeasurementTypeId(mtId2);
+		m2.setExaminationTypeSc(mtExamTypeSc2);
 		m2 = dbService.saveMeasurement(m2);
 		//System.out.println("Inserted 2nd measurement: " + m2);
 		date2 = m2.getMeasurementDateTime();
@@ -375,10 +374,13 @@ public class DatabaseServiceTest {
 		Measurement m = dbService.saveMeasurement(m1);
 		assertNull(m); //the measurement already exists so it is updated
 		
-		m = dbService.getMeasurement(stationId, measurementPoint1, mtId1, date1);
+		m = dbService.getMeasurement(stationId, measurementPoint1, mtExamTypeSc1, date1);
 		//System.out.println("Updated measurement: " + m);
 		
 		assertEquals(result1b, m.getResult());
+		assertNotNull(m.getCreated());
+		assertNotNull(m.getUpdated());
+		assertTrue(m.getCreated().isBefore(m.getUpdated()));
 		
 		int nr2 = dbService.countMeasurements();
 		assertEquals(nr1, nr2);
@@ -388,6 +390,9 @@ public class DatabaseServiceTest {
 	public void testStationMeasurementTypeAddition() {
 		
 		if (!enableTest) return;
+		
+		//can only delete station if relation station/measurement type is not present
+		dbService.deleteStationMeasurementTypeRelation(station2.getStationId());
 				
 		testDeleteStation();
 		
