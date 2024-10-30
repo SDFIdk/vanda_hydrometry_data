@@ -1,7 +1,8 @@
-package dk.dataforsyningen.vanda_hydrometry_data.model;
+package dk.dataforsyningen.vanda_hydrometry_data.mapper;
 
 import java.util.ArrayList;
 
+import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;

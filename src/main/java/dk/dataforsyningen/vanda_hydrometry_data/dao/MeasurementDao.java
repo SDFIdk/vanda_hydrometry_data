@@ -3,6 +3,7 @@ package dk.dataforsyningen.vanda_hydrometry_data.dao;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import dk.dataforsyningen.vanda_hydrometry_data.mapper.MeasurementMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

@@ -1,5 +1,6 @@
-package dk.dataforsyningen.vanda_hydrometry_data.model;
+package dk.dataforsyningen.vanda_hydrometry_data.mapper;
 
+import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 
 public class MeasurementModelMapper {

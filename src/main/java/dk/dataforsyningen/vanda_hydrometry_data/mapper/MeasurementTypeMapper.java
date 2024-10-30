@@ -1,4 +1,4 @@
-package dk.dataforsyningen.vanda_hydrometry_data.dao;
+package dk.dataforsyningen.vanda_hydrometry_data.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,20 +12,17 @@ public class MeasurementTypeMapper implements RowMapper<MeasurementType> {
 
 	@Override
 	public MeasurementType map(ResultSet rs, StatementContext ctx) throws SQLException {
-		
+		ValidateHelper validateHelper = new ValidateHelper();
+
 		MeasurementType mt = new MeasurementType();
 		
 		mt.setParameterSc(rs.getInt("parameter_sc"));
-		mt.setParameter(nullifyEmpty(rs.getString("parameter")));
+		mt.setParameter(validateHelper.validate(rs.getString("parameter")));
 		mt.setExaminationTypeSc(rs.getInt("examination_type_sc"));
-		mt.setExaminationType(nullifyEmpty(rs.getString("examination_type")));
+		mt.setExaminationType(validateHelper.validate(rs.getString("examination_type")));
 		mt.setUnitSc(rs.getInt("unit_sc"));
-		mt.setUnit(nullifyEmpty(rs.getString("unit")));
+		mt.setUnit(validateHelper.validate(rs.getString("unit")));
 		
 		return mt;
-	}
-
-	private String nullifyEmpty(String s) {
-		return (s == null || s.isEmpty() ? null : s);
 	}
 }
