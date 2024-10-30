@@ -3,38 +3,28 @@ package dk.dataforsyningen.vanda_hydrometry_data.model;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 
 public class Measurement {
 
-	@NotNull
 	Integer measurementPointNumber = null;
 
-	@NotNull
 	OffsetDateTime measurementDateTime = null;
 	
 	Double resultElevationCorrected = null;
 
-	@NotNull
 	Double result = null;
 	
-	@NotNull
 	OffsetDateTime created = null;
 	
-	@NotNull
 	OffsetDateTime updated = null;
 	
 	OffsetDateTime vandaEventTimestamp = null;
 	
-	@NotNull
 	Boolean isCurrent = null;
 	
-	@NotNull
 	String stationId = null; //FK
 
-	@NotNull
 	Integer examinationTypeSc = null; //FK		
 	
 	public static Measurement from(DmpHydroApiResponsesResultResponse response) {
@@ -47,8 +37,9 @@ public class Measurement {
 		Measurement measurement = new Measurement();
 		measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
 		measurement.setResult(response.getResult());
+		measurement.setResultElevationCorrected(response.getResultElevationCorrected());
 		measurement.setMeasurementDateTime(response.getMeasurementDateTime());
-		measurement.setExaminationTypeSc(MeasurementType.from(response).getExaminationTypeSc());
+		measurement.setExaminationTypeSc(response.getExaminationTypeSc());
 		measurement.setIsCurrent(true); //the measurements coming from API are always the current
 		
 		measurement.setStationId(stationId);

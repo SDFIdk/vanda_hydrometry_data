@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Location;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
@@ -68,7 +67,6 @@ public class DatabaseServiceTest {
 	
 	Station station1;
 	Station station2;
-	Location location;
 	MeasurementType mt1;
 	MeasurementType mt2;
 	Measurement m1;
@@ -114,11 +112,9 @@ public class DatabaseServiceTest {
 		station1.setStationOwnerName(stationOwner);
 		station1.setDescription(stationDescription);
 		station1.setOldStationNumber(stationOldNumber);
-		location = new Location();
-		location.setX(locationX);
-		location.setY(locationY);
-		location.setSrid(locationSrid);
-		station1.setLocation(location);
+		station1.setX(locationX);
+		station1.setY(locationY);
+		station1.setSrid(locationSrid);
 		station1.getMeasurementTypes().add(mt1);
 		station1.getMeasurementTypes().add(mt2);
 		
@@ -128,7 +124,9 @@ public class DatabaseServiceTest {
 		station2.setStationOwnerName(stationOwner);
 		station2.setDescription(stationDescription);
 		station2.setOldStationNumber(stationOldNumber);
-		station2.setLocation(location);
+		station2.setX(locationX);
+		station2.setY(locationY);
+		station2.setSrid(locationSrid);
 		station2.getMeasurementTypes().add(mt1);
 		
 		m1 = new Measurement();
@@ -227,7 +225,9 @@ public class DatabaseServiceTest {
 		assertEquals(stationOwner, station.getStationOwnerName());
 		assertEquals(stationOldNumber, station.getOldStationNumber());
 		assertEquals(stationDescription, station.getDescription());
-		assertEquals(location, station.getLocation());
+		assertEquals(locationX, station.getX());
+		assertEquals(locationY, station.getY());
+		assertEquals(locationSrid, station.getSrid());
 		assertEquals(2, station.getMeasurementTypes().size());
 		assertTrue(mt1.equals(station.getMeasurementTypes().get(0)) || mt1.equals(station.getMeasurementTypes().get(1)));
 		assertTrue(mt2.equals(station.getMeasurementTypes().get(0)) || mt2.equals(station.getMeasurementTypes().get(1)));
@@ -405,7 +405,9 @@ public class DatabaseServiceTest {
 		assertEquals(stationOwner, station.getStationOwnerName());
 		assertEquals(stationOldNumber, station.getOldStationNumber());
 		assertEquals(stationDescription, station.getDescription());
-		assertEquals(location, station.getLocation());
+		assertEquals(locationX, station.getX());
+		assertEquals(locationY, station.getY());
+		assertEquals(locationSrid, station.getSrid());
 		assertEquals(1, station.getMeasurementTypes().size());
 		assertEquals(mt1, station.getMeasurementTypes().getFirst());
 
@@ -421,4 +423,5 @@ public class DatabaseServiceTest {
 		
 	}
 }
+
 

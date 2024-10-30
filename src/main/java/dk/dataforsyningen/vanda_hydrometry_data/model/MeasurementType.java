@@ -2,33 +2,21 @@ package dk.dataforsyningen.vanda_hydrometry_data.model;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
 
 public class MeasurementType {
 	
-	@NotNull
 	Integer examinationTypeSc = null;
 	
-	@NotNull
-	@Size(max=10)
 	String examinationType = null;
 	
-	@NotNull
 	Integer parameterSc = null;
 
-	@NotNull
-	@Size(max=10)
 	String parameter = null;
 	
-	@NotNull
 	Integer unitSc = null;
 
-	@NotNull
-	@Size(max=4)
 	String unit = null;
 		
 	public static MeasurementType from(DmpHydroApiResponsesResultResponse result) {
