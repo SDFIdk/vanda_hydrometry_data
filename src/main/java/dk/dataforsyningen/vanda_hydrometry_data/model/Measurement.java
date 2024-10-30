@@ -3,7 +3,6 @@ package dk.dataforsyningen.vanda_hydrometry_data.model;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-
 public class Measurement {
 
 	Integer measurementPointNumber = null;

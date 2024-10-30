@@ -3,8 +3,6 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 import javax.sql.DataSource;
 
 import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.core.statement.SqlStatements;
-//import org.jdbi.v3.jackson2.Jackson2Plugin;
 import org.jdbi.v3.postgis.PostgisPlugin;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
