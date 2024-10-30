@@ -147,7 +147,7 @@ public class Station {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = (description == null || description.isEmpty() ? null : description);
 	}
 
 	public OffsetDateTime getCreated() {
@@ -179,7 +179,7 @@ public class Station {
 	}
 
 	public void setLocationType(String locationType) {
-		this.locationType = locationType;
+		this.locationType = (locationType == null || locationType.isEmpty() ? null : locationType);
 	}
 
 	@Override
