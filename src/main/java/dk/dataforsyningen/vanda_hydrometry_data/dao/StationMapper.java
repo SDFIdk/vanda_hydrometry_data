@@ -16,15 +16,15 @@ public class StationMapper implements RowMapper<Station> {
 	public Station map(ResultSet rs, StatementContext ctx) throws SQLException {
 		Station station = new Station();
 		
-		station.setStationId(rs.getString("station_id"));
-		station.setOldStationNumber(rs.getString("old_station_number"));
-		station.setName(rs.getString("name"));
-		station.setStationOwnerName(rs.getString("station_owner_name"));
+		station.setStationId(nullifyEmpty(rs.getString("station_id")));
+		station.setOldStationNumber(nullifyEmpty(rs.getString("old_station_number")));
+		station.setName(nullifyEmpty(rs.getString("name")));
+		station.setStationOwnerName(nullifyEmpty(rs.getString("station_owner_name")));
 		station.setLocationX((Double) rs.getObject("location_x"));
 		station.setLocationY((Double) rs.getObject("location_y"));
 		station.setLocationSrid(rs.getString("location_srid"));
-		station.setLocationType(rs.getString("location_type"));
-		station.setDescription(rs.getString("description"));
+		station.setLocationType(nullifyEmpty(rs.getString("location_type")));
+		station.setDescription(nullifyEmpty(rs.getString("description")));
 		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
 		station.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));
 		
@@ -44,4 +44,7 @@ public class StationMapper implements RowMapper<Station> {
 		return station;
 	}
 
+	private String nullifyEmpty(String s) {
+		return (s == null || s.isEmpty() ? null : s);
+	}
 }

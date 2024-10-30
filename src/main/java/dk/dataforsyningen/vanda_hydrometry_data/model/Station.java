@@ -40,7 +40,7 @@ public class Station {
 	}
 
 	public void setStationUid(String stationUid) {
-		this.stationUid = (stationUid == null || stationUid.isEmpty() ? null : stationUid);
+		this.stationUid = stationUid;
 	}
 
 	public String getStationId() {
@@ -56,7 +56,7 @@ public class Station {
 	}
 
 	public void setOperatorStationId(String operatorStationId) {
-		this.operatorStationId = (operatorStationId == null || operatorStationId.isEmpty() ? null : operatorStationId);
+		this.operatorStationId = operatorStationId;
 	}
 
 	public String getOldStationNumber() {
@@ -64,7 +64,7 @@ public class Station {
 	}
 
 	public void setOldStationNumber(String oldStationNumber) {
-		this.oldStationNumber = (oldStationNumber == null || oldStationNumber.isEmpty() ? null : oldStationNumber);
+		this.oldStationNumber = oldStationNumber;
 	}
 
 	public String getName() {
@@ -80,7 +80,7 @@ public class Station {
 	}
 
 	public void setStationOwnerName(String stationOwnerName) {
-		this.stationOwnerName = (stationOwnerName == null || stationOwnerName.isEmpty() ? null : stationOwnerName);
+		this.stationOwnerName = stationOwnerName;
 	}
 
 	public Double getLocationX() {
@@ -112,7 +112,7 @@ public class Station {
 	}
 
 	public void setDescription(String description) {
-		this.description = (description == null || description.isEmpty() ? null : description);
+		this.description = description;
 	}
 
 	public OffsetDateTime getCreated() {
@@ -144,7 +144,7 @@ public class Station {
 	}
 
 	public void setLocationType(String locationType) {
-		this.locationType = (locationType == null || locationType.isEmpty() ? null : locationType);
+		this.locationType = locationType;
 	}
 
 	@Override
