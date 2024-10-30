@@ -174,8 +174,8 @@ public class StationsCommandTest {
 		assertEquals(owner1, station1.getStationOwnerName());
 		assertEquals(name1, station1.getName());
 		assertEquals(desc1, station1.getDescription());
-		assertEquals(x1, station1.getX());
-		assertEquals(y1, station1.getY());
+		assertEquals(x1, station1.getLocationX());
+		assertEquals(y1, station1.getLocationY());
 		
 		assertEquals(id2, station2.getStationId());
 		assertEquals(oldNr2, station2.getOldStationNumber());
@@ -183,7 +183,7 @@ public class StationsCommandTest {
 		assertEquals(owner2, station2.getStationOwnerName());
 		assertEquals(name2, station2.getName());
 		assertEquals(desc2, station2.getDescription());
-		assertEquals(x2, station2.getX());
-		assertEquals(y2, station2.getY());
+		assertEquals(x2, station2.getLocationX());
+		assertEquals(y2, station2.getLocationY());
 	}
 }

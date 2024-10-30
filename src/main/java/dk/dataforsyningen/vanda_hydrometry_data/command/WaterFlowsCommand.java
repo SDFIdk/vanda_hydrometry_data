@@ -14,6 +14,8 @@ import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
+import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementModelMapper;
+import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementTypeModelMapper;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
@@ -79,12 +81,12 @@ public class WaterFlowsCommand implements CommandInterface {
 								.map( result -> {
 									
 									//Create the Measurement Type too
-									MeasurementType mt = VandaHUtility.measurementTypeFrom(result);
+									MeasurementType mt = MeasurementTypeModelMapper.from(result);
 									if (!measurementTypes.contains(mt)) {
 										measurementTypes.add(mt);
 									}
 									
-									return VandaHUtility.measurementFrom( result , response.getStationId()); 
+									return MeasurementModelMapper.from( result , response.getStationId()); 
 								}) //map the array of Results into Stream<Measurements>
 				) //map the response for each station into a Stream<Measurement>. the results is Stream<Stream<Measurements>> 
 				.flatMap(Function.identity()) //flatten the streams of streams into a single stream of measurements
