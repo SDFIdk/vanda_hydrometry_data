@@ -9,7 +9,7 @@ CREATE TABLE station
  name               varchar(150) NULL,
  station_owner_name varchar(150) NULL,
  location           geometry(POINT,25832) NOT NULL,
- locationType       varchar(100) NULL,
+ location_type      varchar(100) NULL,
  description        varchar(1000) NULL,
  created            timestamp(3) with time zone NOT NULL,
  updated            timestamp(3) with time zone NOT NULL,
