@@ -30,7 +30,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<org.jdbi.version>3.45.4</org.jdbi.version>
+		<org.jdbi.version>3.47.0</org.jdbi.version>
 		<io.swagger.codegen.version>3.0.61</io.swagger.codegen.version>
 	</properties>
 	<dependencies>
