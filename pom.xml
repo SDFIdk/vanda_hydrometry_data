@@ -31,7 +31,6 @@
 	<properties>
 		<java.version>21</java.version>
 		<org.jdbi.version>3.47.0</org.jdbi.version>
-		<io.swagger.codegen.version>3.0.61</io.swagger.codegen.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -71,10 +70,10 @@
 	        <artifactId>jdbi3-postgis</artifactId>
 	        <version>${org.jdbi.version}</version>
 	    </dependency>
-	    <dependency>
-    		<groupId>io.swagger.codegen.v3</groupId>
-    		<artifactId>swagger-codegen-maven-plugin</artifactId>
-    		<version>${io.swagger.codegen.version}</version>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240303</version>
 		</dependency>
     	<dependency>
     		<groupId>org.mockito</groupId>
@@ -89,46 +88,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<!-- Auto generate (directly from the URL) the Java classes for the data model used within DMP API -->
-	            <groupId>io.swagger.codegen.v3</groupId>
-	            <artifactId>swagger-codegen-maven-plugin</artifactId>
-	            <version>${io.swagger.codegen.version}</version>
-	            <configuration>
-        			<skip>true</skip>
-    			</configuration>
-	            <executions>
-	                <execution>
-	                    <goals>
-	                        <goal>generate</goal>
-	                    </goals>
-	                    <configuration>
-	                        <inputSpec>https://vandah.miljoeportal.dk/api/swagger/v1/swagger.json</inputSpec> <!-- Path to your swagger.yaml/json -->
-	                        <language>java</language> <!-- Specify the language, e.g., java -->
-	                        <configOptions>
-	                            <library>resttemplate</library> <!-- Type of HTTP client -->
-	                            <dateLibrary>legacy</dateLibrary>
-	                        </configOptions>
-	                        <generateApis>false</generateApis>
-	                        <generateModels>true</generateModels>
-	                        <generateSupportingFiles>false</generateSupportingFiles>
-	                        <generateApiDocumentation>false</generateApiDocumentation>
-	                        <modelPackage>dk.miljoeportal.vandah.model</modelPackage>
-                        	<apiPackage>dk.miljoeportal.vandah.api</apiPackage>
-	                        <!-- Use this output path instead if you want the sources generated under the target folder not in the main src folder
-								<output>${project.build.directory}/generated-sources/swagger</output>-->
-	                        <output>${basedir}</output>
-	                        <typeMappings>
-	                        	<typeMapping>Date=OffsetDateTime</typeMapping>
-	                        </typeMappings>
-							<importMappings>
-								<importMapping>java.util.Date=java.time.OffsetDateTime</importMapping>
-								<importMapping>org.threeten.bp.OffsetDateTime=java.time.OffsetDateTime</importMapping>
-							</importMappings>
-	                    </configuration>
-	                </execution>
-	            </executions>
-	        </plugin>
 		</plugins>
 	</build>
 

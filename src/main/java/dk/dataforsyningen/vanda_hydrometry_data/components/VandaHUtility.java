@@ -8,7 +8,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,15 +16,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 import org.springframework.http.client.ClientHttpResponse;
-
-import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
-import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
-
 /**
  * Utility class
  * 

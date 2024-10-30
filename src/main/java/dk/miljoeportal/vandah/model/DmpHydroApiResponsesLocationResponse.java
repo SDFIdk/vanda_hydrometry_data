@@ -13,17 +13,11 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * DmpHydroApiResponsesLocationResponse
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesLocationResponse {
   @JsonProperty("x")
   private Double x = null;
@@ -43,7 +37,6 @@ public class DmpHydroApiResponsesLocationResponse {
    * X coordinate in UTM32N
    * @return x
   **/
-  @Schema(description = "X coordinate in UTM32N")
   public Double getX() {
     return x;
   }
@@ -61,7 +54,6 @@ public class DmpHydroApiResponsesLocationResponse {
    * Y coordinate in UTM32N
    * @return y
   **/
-  @Schema(description = "Y coordinate in UTM32N")
   public Double getY() {
     return y;
   }
@@ -79,7 +71,6 @@ public class DmpHydroApiResponsesLocationResponse {
    * Location SRID
    * @return srid
   **/
-  @Schema(description = "Location SRID")
   public String getSrid() {
     return srid;
   }

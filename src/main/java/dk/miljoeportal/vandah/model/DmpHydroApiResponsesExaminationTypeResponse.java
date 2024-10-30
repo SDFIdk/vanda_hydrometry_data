@@ -13,19 +13,13 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * DmpHydroApiResponsesExaminationTypeResponse
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesExaminationTypeResponse {
   @JsonProperty("examinationTypeSc")
   private Integer examinationTypeSc = null;
@@ -69,7 +63,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Examination type stancode
    * @return examinationTypeSc
   **/
-  @Schema(description = "Examination type stancode")
   public Integer getExaminationTypeSc() {
     return examinationTypeSc;
   }
@@ -87,7 +80,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Examination type name
    * @return examinationTypeName
   **/
-  @Schema(description = "Examination type name")
   public String getExaminationTypeName() {
     return examinationTypeName;
   }
@@ -105,7 +97,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Measurement point type stancode, a subset of stancode list 1002
    * @return measurementPointTypeSc
   **/
-  @Schema(description = "Measurement point type stancode, a subset of stancode list 1002")
   public Integer getMeasurementPointTypeSc() {
     return measurementPointTypeSc;
   }
@@ -123,7 +114,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Parameter stancode, a subset of stancode list 1008
    * @return parameterSc
   **/
-  @Schema(description = "Parameter stancode, a subset of stancode list 1008")
   public Integer getParameterSc() {
     return parameterSc;
   }
@@ -141,7 +131,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Unit stancode, a subset of stancode list 1009
    * @return unitSc
   **/
-  @Schema(description = "Unit stancode, a subset of stancode list 1009")
   public Integer getUnitSc() {
     return unitSc;
   }
@@ -159,7 +148,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Min value of measurements under the examination type
    * @return min
   **/
-  @Schema(description = "Min value of measurements under the examination type")
   public Double getMin() {
     return min;
   }
@@ -177,7 +165,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Max value of measurements under the examination type
    * @return max
   **/
-  @Schema(description = "Max value of measurements under the examination type")
   public Double getMax() {
     return max;
   }
@@ -195,7 +182,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * The minimum interval between measurement in minutes
    * @return measurementIntervalMin
   **/
-  @Schema(description = "The minimum interval between measurement in minutes")
   public Integer getMeasurementIntervalMin() {
     return measurementIntervalMin;
   }
@@ -213,7 +199,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Number of decimals rounded for the measurements values
    * @return decimals
   **/
-  @Schema(description = "Number of decimals rounded for the measurements values")
   public Integer getDecimals() {
     return decimals;
   }
@@ -231,7 +216,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * Description for the examination type
    * @return description
   **/
-  @Schema(description = "Description for the examination type")
   public String getDescription() {
     return description;
   }
@@ -257,7 +241,6 @@ public class DmpHydroApiResponsesExaminationTypeResponse {
    * List of reason codes stancode, a subset of stancode list 1188
    * @return reasonCodesSc
   **/
-  @Schema(description = "List of reason codes stancode, a subset of stancode list 1188")
   public List<Integer> getReasonCodesSc() {
     return reasonCodesSc;
   }

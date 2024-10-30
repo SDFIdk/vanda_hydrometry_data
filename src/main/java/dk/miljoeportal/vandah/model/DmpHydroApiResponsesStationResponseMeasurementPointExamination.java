@@ -13,19 +13,12 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
 import java.time.OffsetDateTime;
+
 /**
  * DmpHydroApiResponsesStationResponseMeasurementPointExamination
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
   @JsonProperty("parameter")
   private String parameter = null;
@@ -60,7 +53,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Parameter name
    * @return parameter
   **/
-  @Schema(description = "Parameter name")
   public String getParameter() {
     return parameter;
   }
@@ -78,7 +70,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Parameter stancode
    * @return parameterSc
   **/
-  @Schema(description = "Parameter stancode")
   public Integer getParameterSc() {
     return parameterSc;
   }
@@ -96,7 +87,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Examination type name
    * @return examinationType
   **/
-  @Schema(description = "Examination type name")
   public String getExaminationType() {
     return examinationType;
   }
@@ -114,7 +104,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Examination type stancode
    * @return examinationTypeSc
   **/
-  @Schema(description = "Examination type stancode")
   public Integer getExaminationTypeSc() {
     return examinationTypeSc;
   }
@@ -132,7 +121,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Unit name
    * @return unit
   **/
-  @Schema(description = "Unit name")
   public String getUnit() {
     return unit;
   }
@@ -150,7 +138,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * Unit stancode
    * @return unitSc
   **/
-  @Schema(description = "Unit stancode")
   public Integer getUnitSc() {
     return unitSc;
   }
@@ -168,7 +155,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * A time when the first result was measured
    * @return firstResult
   **/
-  @Schema(description = "A time when the first result was measured")
   public OffsetDateTime getFirstResult() {
     return firstResult;
   }
@@ -186,7 +172,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
    * A time when the last result was measured
    * @return latestResult
   **/
-  @Schema(description = "A time when the last result was measured")
   public OffsetDateTime getLatestResult() {
     return latestResult;
   }

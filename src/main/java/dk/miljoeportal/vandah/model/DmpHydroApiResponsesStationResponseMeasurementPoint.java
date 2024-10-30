@@ -13,21 +13,13 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesLocationResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPointExamination;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * DmpHydroApiResponsesStationResponseMeasurementPoint
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesStationResponseMeasurementPoint {
   @JsonProperty("number")
   private Integer number = null;
@@ -62,7 +54,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Measurement point number in a station
    * @return number
   **/
-  @Schema(description = "Measurement point number in a station")
   public Integer getNumber() {
     return number;
   }
@@ -80,7 +71,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Measurement point name
    * @return name
   **/
-  @Schema(description = "Measurement point name")
   public String getName() {
     return name;
   }
@@ -98,7 +88,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Measurement point type name
    * @return measurementPointType
   **/
-  @Schema(description = "Measurement point type name")
   public String getMeasurementPointType() {
     return measurementPointType;
   }
@@ -116,7 +105,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Measurement point type stancode
    * @return measurementPointTypeSc
   **/
-  @Schema(description = "Measurement point type stancode")
   public Integer getMeasurementPointTypeSc() {
     return measurementPointTypeSc;
   }
@@ -134,7 +122,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Measurement point description
    * @return description
   **/
-  @Schema(description = "Measurement point description")
   public String getDescription() {
     return description;
   }
@@ -152,7 +139,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Get location
    * @return location
   **/
-  @Schema(description = "")
   public DmpHydroApiResponsesLocationResponse getLocation() {
     return location;
   }
@@ -170,7 +156,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * Intake number of Grundvand station
    * @return intakeNumber
   **/
-  @Schema(description = "Intake number of Grundvand station")
   public Integer getIntakeNumber() {
     return intakeNumber;
   }
@@ -196,7 +181,6 @@ public class DmpHydroApiResponsesStationResponseMeasurementPoint {
    * A list of examination performed on the measurement point
    * @return examinations
   **/
-  @Schema(description = "A list of examination performed on the measurement point")
   public List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> getExaminations() {
     return examinations;
   }
