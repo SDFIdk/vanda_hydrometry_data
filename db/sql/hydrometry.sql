@@ -74,7 +74,7 @@ CREATE TABLE measurement
  is_current            bool NOT NULL,
  created               timestamp(3) with time zone NOT NULL,
  updated               timestamp(3) with time zone NOT NULL,
- vanda_event_timestamp timestamp(3) with time zone NOT NULL,
+ vanda_event_timestamp timestamp(3) with time zone,
  station_id            char(8) NOT NULL,
  examination_type_sc      int NOT NULL,
  measurement_point_number int NOT NULL,
