@@ -16,13 +16,16 @@ public class MeasurementTypeMapper implements RowMapper<MeasurementType> {
 		MeasurementType mt = new MeasurementType();
 		
 		mt.setParameterSc(rs.getInt("parameter_sc"));
-		mt.setParameter(rs.getString("parameter"));
+		mt.setParameter(nullifyEmpty(rs.getString("parameter")));
 		mt.setExaminationTypeSc(rs.getInt("examination_type_sc"));
-		mt.setExaminationType(rs.getString("examination_type"));
+		mt.setExaminationType(nullifyEmpty(rs.getString("examination_type")));
 		mt.setUnitSc(rs.getInt("unit_sc"));
-		mt.setUnit(rs.getString("unit"));
+		mt.setUnit(nullifyEmpty(rs.getString("unit")));
 		
 		return mt;
 	}
 
+	private String nullifyEmpty(String s) {
+		return (s == null || s.isEmpty() ? null : s);
+	}
 }

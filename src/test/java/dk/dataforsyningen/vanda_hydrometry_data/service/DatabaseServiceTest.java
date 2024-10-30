@@ -112,9 +112,9 @@ public class DatabaseServiceTest {
 		station1.setStationOwnerName(stationOwner);
 		station1.setDescription(stationDescription);
 		station1.setOldStationNumber(stationOldNumber);
-		station1.setX(locationX);
-		station1.setY(locationY);
-		station1.setSrid(locationSrid);
+		station1.setLocationX(locationX);
+		station1.setLocationY(locationY);
+		station1.setLocationSrid(locationSrid);
 		station1.getMeasurementTypes().add(mt1);
 		station1.getMeasurementTypes().add(mt2);
 		
@@ -124,9 +124,9 @@ public class DatabaseServiceTest {
 		station2.setStationOwnerName(stationOwner);
 		station2.setDescription(stationDescription);
 		station2.setOldStationNumber(stationOldNumber);
-		station2.setX(locationX);
-		station2.setY(locationY);
-		station2.setSrid(locationSrid);
+		station2.setLocationX(locationX);
+		station2.setLocationY(locationY);
+		station2.setLocationSrid(locationSrid);
 		station2.getMeasurementTypes().add(mt1);
 		
 		m1 = new Measurement();
@@ -225,9 +225,9 @@ public class DatabaseServiceTest {
 		assertEquals(stationOwner, station.getStationOwnerName());
 		assertEquals(stationOldNumber, station.getOldStationNumber());
 		assertEquals(stationDescription, station.getDescription());
-		assertEquals(locationX, station.getX());
-		assertEquals(locationY, station.getY());
-		assertEquals(locationSrid, station.getSrid());
+		assertEquals(locationX, station.getLocationX());
+		assertEquals(locationY, station.getLocationY());
+		assertEquals(locationSrid, station.getLocationSrid());
 		assertEquals(2, station.getMeasurementTypes().size());
 		assertTrue(mt1.equals(station.getMeasurementTypes().get(0)) || mt1.equals(station.getMeasurementTypes().get(1)));
 		assertTrue(mt2.equals(station.getMeasurementTypes().get(0)) || mt2.equals(station.getMeasurementTypes().get(1)));
@@ -405,9 +405,9 @@ public class DatabaseServiceTest {
 		assertEquals(stationOwner, station.getStationOwnerName());
 		assertEquals(stationOldNumber, station.getOldStationNumber());
 		assertEquals(stationDescription, station.getDescription());
-		assertEquals(locationX, station.getX());
-		assertEquals(locationY, station.getY());
-		assertEquals(locationSrid, station.getSrid());
+		assertEquals(locationX, station.getLocationX());
+		assertEquals(locationY, station.getLocationY());
+		assertEquals(locationSrid, station.getLocationSrid());
 		assertEquals(1, station.getMeasurementTypes().size());
 		assertEquals(mt1, station.getMeasurementTypes().getFirst());
 

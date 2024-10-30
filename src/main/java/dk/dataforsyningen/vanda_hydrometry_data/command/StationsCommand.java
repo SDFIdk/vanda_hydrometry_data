@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
+import dk.dataforsyningen.vanda_hydrometry_data.model.StationModelMapper;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
@@ -66,7 +67,7 @@ public class StationsCommand implements CommandInterface {
 	public void mapData() {
 		if (data != null) {
 			stations = Arrays.stream(data) //make the array of stations responses into a Stream<DmpHydroApiResponsesStationResponse>
-					.map(response -> VandaHUtility.stationFrom(response)) //map the stream of stations into a Stream<Stations>
+					.map(response -> StationModelMapper.from(response)) //map the stream of stations into a Stream<Stations>
 					.collect(Collectors.toCollection(ArrayList::new)); //convert to List<Stations>
 		}
 	}

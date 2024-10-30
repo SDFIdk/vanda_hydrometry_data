@@ -18,11 +18,11 @@ public class Station {
 	
 	String stationOwnerName = null;
 	
-	Double x;
+	Double locationX;
 	
-	Double y;
+	Double locationY;
 	
-	String srid;
+	String locationSrid;
 	
 	String locationType = null;
 	
@@ -40,7 +40,7 @@ public class Station {
 	}
 
 	public void setStationUid(String stationUid) {
-		this.stationUid = (stationUid == null || stationUid.isEmpty() ? null : stationUid);
+		this.stationUid = stationUid;
 	}
 
 	public String getStationId() {
@@ -56,7 +56,7 @@ public class Station {
 	}
 
 	public void setOperatorStationId(String operatorStationId) {
-		this.operatorStationId = (operatorStationId == null || operatorStationId.isEmpty() ? null : operatorStationId);
+		this.operatorStationId = operatorStationId;
 	}
 
 	public String getOldStationNumber() {
@@ -64,7 +64,7 @@ public class Station {
 	}
 
 	public void setOldStationNumber(String oldStationNumber) {
-		this.oldStationNumber = (oldStationNumber == null || oldStationNumber.isEmpty() ? null : oldStationNumber);
+		this.oldStationNumber = oldStationNumber;
 	}
 
 	public String getName() {
@@ -80,31 +80,31 @@ public class Station {
 	}
 
 	public void setStationOwnerName(String stationOwnerName) {
-		this.stationOwnerName = (stationOwnerName == null || stationOwnerName.isEmpty() ? null : stationOwnerName);
+		this.stationOwnerName = stationOwnerName;
 	}
 
-	public Double getX() {
-		return x;
+	public Double getLocationX() {
+		return locationX;
 	}
 
-	public void setX(Double x) {
-		this.x = x;
+	public void setLocationX(Double x) {
+		this.locationX = x;
 	}
 
-	public Double getY() {
-		return y;
+	public Double getLocationY() {
+		return locationY;
 	}
 
-	public void setY(Double y) {
-		this.y = y;
+	public void setLocationY(Double y) {
+		this.locationY = y;
 	}
 
-	public String getSrid() {
-		return srid;
+	public String getLocationSrid() {
+		return locationSrid;
 	}
 
-	public void setSrid(String srid) {
-		this.srid = srid;
+	public void setLocationSrid(String srid) {
+		this.locationSrid = srid;
 	}
 
 	public String getDescription() {
@@ -112,7 +112,7 @@ public class Station {
 	}
 
 	public void setDescription(String description) {
-		this.description = (description == null || description.isEmpty() ? null : description);
+		this.description = description;
 	}
 
 	public OffsetDateTime getCreated() {
@@ -144,7 +144,7 @@ public class Station {
 	}
 
 	public void setLocationType(String locationType) {
-		this.locationType = (locationType == null || locationType.isEmpty() ? null : locationType);
+		this.locationType = locationType;
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class Station {
 				",\n\toldStationNumber=" + oldStationNumber + 
 				",\n\tname=" + name + 
 				",\n\tstationOwnerName=" + stationOwnerName + 
-				",\n\tlocation= [x=" + x + ", y=" + y + ", srid=" + srid + "]" +
+				",\n\tlocation= [x=" + locationX + ", y=" + locationY + ", srid=" + locationSrid + "]" +
 				",\n\tlocationType=" + locationType +
 				",\n\tdescription=" + description + 
 				",\n\tcreated=" + created + 
@@ -167,7 +167,7 @@ public class Station {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, created, description, x, y, srid, locationType, oldStationNumber, 
+		return Objects.hash(name, created, description, locationX, locationY, locationSrid, locationType, oldStationNumber, 
 				operatorStationId, stationId, stationOwnerName, stationUid, updated);
 	}
 
@@ -186,7 +186,7 @@ public class Station {
 				&& Objects.equals(name, other.name) 
 				&& Objects.equals(locationType, other.locationType) 
 				&& Objects.equals(description, other.description) 
-				&& Objects.equals(srid, other.srid) && Objects.equals(x, other.x) && Objects.equals(y, other.y)
+				&& Objects.equals(locationSrid, other.locationSrid) && Objects.equals(locationX, other.locationX) && Objects.equals(locationY, other.locationY)
 				&& Objects.equals(oldStationNumber, other.oldStationNumber)
 				&& Objects.equals(operatorStationId, other.operatorStationId)
 				&& Objects.equals(created, other.created)
