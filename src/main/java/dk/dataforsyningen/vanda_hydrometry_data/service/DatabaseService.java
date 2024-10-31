@@ -38,9 +38,9 @@ public class DatabaseService {
 	/* STATION */
 	
 	public List<Station> getAllStations() {
-		List<Station> stationsAndMeasurementTypes = stationDao.getAllStations();
+		List<Station> stationsAndMeasurementTypes = stationDao.readAllStations();
 		
-		//merge on same station
+		//merge (the measurement types) on same station
 		HashMap<String, Station> stations = new HashMap<>();
 		for(Station s : stationsAndMeasurementTypes) {
 			if (!stations.containsKey(s.getStationId())) {
@@ -57,10 +57,10 @@ public class DatabaseService {
 		return new ArrayList<Station>(stations.values());
 	}
 	
-	public List<Station> getAllStationsByMeasurementType(int examinationTypeSc) {
-		List<Station> stationsAndMeasurementTypes = stationDao.findStationByExaminationTypeSc(examinationTypeSc);
+	public List<Station> getAllStationsByExaminationType(int examinationTypeSc) {
+		List<Station> stationsAndMeasurementTypes = stationDao.readStationByExaminationTypeSc(examinationTypeSc);
 		
-		//merge on same station
+		//merge (measurement types) on same station
 		HashMap<String, Station> stations = new HashMap<>();
 		for(Station s : stationsAndMeasurementTypes) {
 			if (!stations.containsKey(s.getStationId())) {
@@ -78,9 +78,9 @@ public class DatabaseService {
 	}
 	
 	public Station getStation(String id) {
-		List<Station> stationsAndMeasurementTypes = stationDao.findStationByStationId(id);
+		List<Station> stationsAndMeasurementTypes = stationDao.readStationByStationId(id);
 		
-		//merge into one station
+		//merge (measurement types) into the station
 		Station station = null;
 		for(Station s : stationsAndMeasurementTypes) {
 			if (station == null) {
@@ -98,17 +98,18 @@ public class DatabaseService {
 	}
 	
 	public boolean isMeasurementSupported(String stationId, int examinationTypeSc) {
-		return stationDao.isExaminationTypeScSupported(stationId, examinationTypeSc) > 0;
+		return stationDao.isExaminationTypeScSupported(stationId, examinationTypeSc);
 	}
 	
 	/**
-	 * Inserts stations if it does not exist or updates it otherwise.
+	 * Inserts stations (and related measurement type and the relations) from the given list 
+	 * if they do not exist or update them otherwise.
 	 * @param stations list
 	 */
 	@Transactional
 	public void saveStations(List<Station> stations) {
 		//add/update station
-		stationDao.addStations(stations);
+		stationDao.insertStations(stations);
 		
 		//save measurement types
 		addMeasurementTypes(stations.stream().flatMap(station -> station.getMeasurementTypes().stream()).collect(Collectors.toList()));
@@ -118,20 +119,21 @@ public class DatabaseService {
 				station -> {
 					ArrayList<MeasurementType> measurementTypes = station.getMeasurementTypes();
 					if (measurementTypes != null) {
-						stationDao.addStationMeasurementTypeRelations(measurementTypes.stream().map(mt -> station.getStationId()).toList(), measurementTypes);
+						stationDao.insertStationMeasurementTypeRelations(measurementTypes.stream().map(mt -> station.getStationId()).toList(), measurementTypes);
 					}
 				}
 				);
 	}
 	
 	/**
-	 * Insert station if it does not exist or updates it otherwise.
+	 * Insert station (and related measurement type and the relations) 
+	 * if it does not exist or updates it otherwise.
 	 * @param station
 	 */
 	@Transactional
 	public void saveStation(Station station) {
 		//add/update station
-		stationDao.addStation(station);
+		stationDao.insertStation(station);
 		
 		//save measurement types
 		addMeasurementTypes(station.getMeasurementTypes());
@@ -139,17 +141,17 @@ public class DatabaseService {
 		//save station <-> measurement_type relation if it does not exist
 		ArrayList<MeasurementType> measurementTypes = station.getMeasurementTypes();
 		if (measurementTypes != null) {
-			stationDao.addStationMeasurementTypeRelations(measurementTypes.stream().map(mt -> station.getStationId()).toList(), measurementTypes);
+			stationDao.insertStationMeasurementTypeRelations(measurementTypes.stream().map(mt -> station.getStationId()).toList(), measurementTypes);
 		}
 	}
 	
 	public void deleteStation(String id) {
-		stationDao.deleteRelationToMeasurementTypeByStationId(id);
+		stationDao.deleteRelationToMeasurementTypeByStation(id);
 		stationDao.deleteStation(id);
 	}
 	
 	public void deleteStationMeasurementTypeRelation(String id) {
-		stationDao.deleteRelationToMeasurementTypeByStationId(id);
+		stationDao.deleteRelationToMeasurementTypeByStation(id);
 	}
 	
 	public int countStations() {
@@ -158,8 +160,20 @@ public class DatabaseService {
 
 	/* MEASUREMENT */
 	
-	public List<Measurement> getAllMeasurements() {
-		return measurementDao.getAllMeasurements();
+	/**
+	 * Get measurement history, i.e. all records related to the requested measurement
+	 * 
+	 * @param stationId
+	 * @param measurementPointNumber
+	 * @param measurementTypeId
+	 * @param measurementDatetime
+	 * @return list of measurement history for the given measurement
+	 */
+	public List<Measurement> getMeasurementHistory(String stationId,
+			int measurementPointNumber,
+			int examinationTypeSc,
+			OffsetDateTime measurementDatetime) {
+		return measurementDao.readMeasurementHistory(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
 	}
 
 	/**
@@ -175,76 +189,79 @@ public class DatabaseService {
 			int measurementPointNumber,
 			int examinationTypeSc,
 			OffsetDateTime measurementDatetime) {
-		return measurementDao.findCurrentMeasurement(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
+		return measurementDao.readCurrentMeasurement(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
 	}
 	
 	/**
-	 * Inserts measurements if they do not exist or updates them otherwise.
+	 * Inserts a new active (is_current = true) record in the given measurements' histories 
+	 * and deactivate (is_current=false) their older records.
+	 * 
 	 * @param measurements list
 	 */
 	@Transactional
 	public void saveMeasurements(List<Measurement> measurements) {
-		//do an update in case they exist
-		measurementDao.updateMeasurements(measurements);
+		//deactivate their history
+		measurementDao.inactivateMeasurementsHistory(measurements);
 		
-		//add the measurements if they are missing
-		measurementDao.addMeasurements(measurements);
+		//add the active record for the list of measurements
+		measurementDao.insertMeasurements(measurements);
 	}
 	
 	/**
-	 * Tries to update the result of a measurement if the measurement exists in which case it returns null.
-	 * 
-	 * If it does not exist it will be inserted and the measurement returned.
+	 * Inserts a new active (is_current = true) record in the given measurement's history 
+	 * and deactivate (is_current=false) its older records.
 	 * 
 	 * @param measurement
 	 * @return inserted measurement or null
 	 */
 	@Transactional
 	public Measurement saveMeasurement(Measurement measurement) {
-		//do an update in case it exists
-		measurementDao.updateMeasurement(measurement);
+		//deactivate its history
+		measurementDao.inactivateMeasurementHistory(measurement);
 				
-		//add the measurement if is is missing
-		return measurementDao.addMeasurement(measurement);
+		//add the active record for the measurement
+		return measurementDao.insertMeasurement(measurement);
 	}
 	
 	public void deleteMeasurement(String stationId, int measurementPointNumber,
 			int examinationTypeSc,
 			OffsetDateTime measurementDatetime
 			) {
-		measurementDao.deleteMeasurement(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
+		measurementDao.deleteMeasurementWithHistory(stationId, measurementPointNumber, examinationTypeSc, measurementDatetime);
 	}
 	
-	public int countMeasurements() {
-		return measurementDao.count();
+	public void deleteMeasurementForStation(String stationId) {
+		measurementDao.deleteMeasurementsForStation(stationId);
+	}
+	
+	public int countAllMeasurements() {
+		return measurementDao.countAll();
 	}
 	
 	/* MEASUREMENT TYPE */
 	
 	public List<MeasurementType> getAllMeasurementTypes() {
-		return measurementTypeDao.getAllMeasurementTypes();
+		return measurementTypeDao.readAllMeasurementTypes();
 	}
 	
 	public MeasurementType getMeasurementType(int examinationTypeSc) {
-		return measurementTypeDao.findMeasurementTypeById(examinationTypeSc);
+		return measurementTypeDao.readMeasurementTypeByExaminationType(examinationTypeSc);
 	}
 	
 	/**
 	 * Inserts (if it does not exist) or updates the measurement type.
 	 * @param measurementType
 	 */
-	@Transactional
 	public void addMeasurementType(MeasurementType measurementType) {
-		measurementTypeDao.addMeasurementType(measurementType);
+		measurementTypeDao.insertMeasurementType(measurementType);
 	}
 	
 	/**
 	 * Inserts (if it does not exist) or update the measurement from the given list.
 	 * @param measurementTypes list
 	 */
-	@Transactional
 	public void addMeasurementTypes(List<MeasurementType> measurementTypes) {
-		measurementTypeDao.addMeasurementTypes(measurementTypes);
+		measurementTypeDao.insertMeasurementTypes(measurementTypes);
 	}
 	
 	public void deleteMeasurementType(int examinationTypeSc) {

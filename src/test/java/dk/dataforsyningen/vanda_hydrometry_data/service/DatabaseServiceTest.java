@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
@@ -30,7 +29,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 @SpringBootTest
 public class DatabaseServiceTest {
 
-	private final String stationId = "S1234567";
+	private final String stationId = "S1234567"; //should be fake
 	private final String stationName = "name";
 	private final String stationOwner = "owner";
 	private final String stationDescription = "description";
@@ -64,6 +63,9 @@ public class DatabaseServiceTest {
 	private final double result1 = 12.34;
 	private final double result1b = 11.99;
 	private final double result2 = 56.78;
+	private final double resultElevationCorrected1 = 123.0;
+	private final double resultElevationCorrected1b = 122.9;
+	private final double resultElevationCorrected2 = 230.5;
 	
 	Station station1;
 	Station station2;
@@ -134,6 +136,7 @@ public class DatabaseServiceTest {
 		m1.setIsCurrent(true);
 		m1.setMeasurementPointNumber(measurementPoint1);
 		m1.setResult(result1);
+		m1.setResultElevationCorrected(resultElevationCorrected1);
 		m1.setExaminationTypeSc(mtExamTypeSc1);
 		m1.setMeasurementDateTime(OffsetDateTime.now());
 		
@@ -142,6 +145,7 @@ public class DatabaseServiceTest {
 		m2.setIsCurrent(true);
 		m2.setMeasurementPointNumber(measurementPoint2);
 		m2.setResult(result2);
+		m2.setResultElevationCorrected(resultElevationCorrected2);
 		m2.setExaminationTypeSc(0);
 		m2.setMeasurementDateTime(OffsetDateTime.now());
 	}
@@ -157,6 +161,8 @@ public class DatabaseServiceTest {
 		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
 		
 		testDeleteMeasurement();
+		
+		testDeleteMeasurementByStation();
 		
 		testDeleteMeasurementType();
 		
@@ -185,6 +191,7 @@ public class DatabaseServiceTest {
 		
 		//can only delete measurement_type if relation station/measurement type is not present
 		dbService.deleteStationMeasurementTypeRelation(station1.getStationId());
+		testDeleteMeasurementByStation();
 		
 		testDeleteMeasurementType();
 		
@@ -346,12 +353,31 @@ public class DatabaseServiceTest {
 		}
 	}
 	
+	private void testDeleteMeasurementByStation() {
+		dbService.deleteMeasurementForStation(stationId);
+	}
+	
 	private void testAddMeasurement() {
-		int nr1 = dbService.countMeasurements();
+		int nr1 = dbService.countAllMeasurements();
 		
 		m1 = dbService.saveMeasurement(m1);
 		//System.out.println("Inserted 1st measurement: " + m1);
 		date1 = m1.getMeasurementDateTime();
+		
+		List<Measurement> mHistory = dbService.getMeasurementHistory(stationId, measurementPoint1, 
+				mtExamTypeSc1, date1);
+		assertEquals(1, mHistory.size());
+		assertEquals(m1.getStationId(), mHistory.getFirst().getStationId());
+		assertEquals(m1.getMeasurementDateTime(), mHistory.getFirst().getMeasurementDateTime());
+		assertEquals(m1.getResult(), mHistory.getFirst().getResult());
+		assertEquals(m1.getResultElevationCorrected(), mHistory.getFirst().getResultElevationCorrected());
+		
+		Measurement mDb = dbService.getMeasurement(m1.getStationId(), m1.getMeasurementPointNumber(), 
+				m1.getExaminationTypeSc(), date1);
+		assertEquals(mHistory.getFirst().getStationId(), mDb.getStationId());
+		assertEquals(mHistory.getFirst().getMeasurementDateTime(), mDb.getMeasurementDateTime());
+		assertEquals(mHistory.getFirst().getResult(), mDb.getResult());
+		assertEquals(mHistory.getFirst().getResultElevationCorrected(), mDb.getResultElevationCorrected());
 		
 		Exception ex = assertThrows(UnableToExecuteStatementException.class, () -> {
 			dbService.saveMeasurement(m2);
@@ -363,27 +389,50 @@ public class DatabaseServiceTest {
 		//System.out.println("Inserted 2nd measurement: " + m2);
 		date2 = m2.getMeasurementDateTime();
 		
-		int nr2 = dbService.countMeasurements();
+		mHistory = dbService.getMeasurementHistory(stationId, measurementPoint2, 
+				mtExamTypeSc2, date2);
+		assertEquals(1, mHistory.size());
+		assertEquals(m2.getStationId(), mHistory.getFirst().getStationId());
+		assertEquals(m2.getMeasurementDateTime(), mHistory.getFirst().getMeasurementDateTime());
+		assertEquals(m2.getResult(), mHistory.getFirst().getResult());
+		assertEquals(m2.getResultElevationCorrected(), mHistory.getFirst().getResultElevationCorrected());
+		
+		mDb = dbService.getMeasurement(m2.getStationId(), m2.getMeasurementPointNumber(), 
+				m2.getExaminationTypeSc(), date2);
+		assertEquals(mHistory.getFirst().getStationId(), mDb.getStationId());
+		assertEquals(mHistory.getFirst().getMeasurementDateTime(), mDb.getMeasurementDateTime());
+		assertEquals(mHistory.getFirst().getResult(), mDb.getResult());
+		assertEquals(mHistory.getFirst().getResultElevationCorrected(), mDb.getResultElevationCorrected());
+		
+		int nr2 = dbService.countAllMeasurements();
 		assertEquals(nr1 + 2, nr2);
 	}
 
 	private void testUpdateMeasurement() {
-		int nr1 = dbService.countMeasurements();
+		int nr1 = dbService.countAllMeasurements();
 		
 		m1.setResult(result1b);
-		Measurement m = dbService.saveMeasurement(m1);
-		assertNull(m); //the measurement already exists so it is updated
+		m1.setResultElevationCorrected(resultElevationCorrected1b);
+		dbService.saveMeasurement(m1);
 		
-		m = dbService.getMeasurement(stationId, measurementPoint1, mtExamTypeSc1, date1);
+		List<Measurement> mHistory = dbService.getMeasurementHistory(stationId, measurementPoint1, 
+				mtExamTypeSc1, date1);
+		assertEquals(2, mHistory.size());
+		assertNotNull(mHistory.getFirst().getCreated());
+		assertNotNull(mHistory.getLast().getCreated());
+		assertTrue(!mHistory.getFirst().getIsCurrent() && mHistory.getLast().getIsCurrent()); //one record is active the other one not
+		assertTrue(mHistory.getFirst().getCreated().isBefore(mHistory.getLast().getCreated()));
+		assertTrue(mHistory.getFirst().getResult().doubleValue() != mHistory.getLast().getResult().doubleValue());
+		assertTrue(mHistory.getFirst().getResultElevationCorrected().doubleValue() != mHistory.getLast().getResultElevationCorrected().doubleValue());
+		
+		Measurement m = dbService.getMeasurement(stationId, measurementPoint1, mtExamTypeSc1, date1);
 		//System.out.println("Updated measurement: " + m);
 		
 		assertEquals(result1b, m.getResult());
-		assertNotNull(m.getCreated());
-		assertNotNull(m.getUpdated());
-		assertTrue(m.getCreated().isBefore(m.getUpdated()));
+		assertEquals(resultElevationCorrected1b, m.getResultElevationCorrected());
 		
-		int nr2 = dbService.countMeasurements();
-		assertEquals(nr1, nr2);
+		int nr2 = dbService.countAllMeasurements();
+		assertEquals(nr1 + 1, nr2);
 	}
 	
 	@Test

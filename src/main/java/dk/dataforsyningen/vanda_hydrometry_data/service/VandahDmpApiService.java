@@ -199,7 +199,7 @@ public class VandahDmpApiService {
 		
 		if ("all".equalsIgnoreCase(stationId)) { //for all stations
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStationsByMeasurementType(WaterLevelsCommand.EXAMINATION_TYPE_SC);
+			List<Station> stations = dbService.getAllStationsByExaminationType(WaterLevelsCommand.EXAMINATION_TYPE_SC);
 			
 			for(Station station : stations) {
 				output.addAll(Arrays.asList(getWaterLevelsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
@@ -297,7 +297,7 @@ public class VandahDmpApiService {
 		
 		if ("all".equalsIgnoreCase(stationId)) { //for all stations
 			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStationsByMeasurementType(WaterFlowsCommand.EXAMINATION_TYPE_SC);
+			List<Station> stations = dbService.getAllStationsByExaminationType(WaterFlowsCommand.EXAMINATION_TYPE_SC);
 			
 			for(Station station : stations) {
 				output.addAll(Arrays.asList(getWaterFlowsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));

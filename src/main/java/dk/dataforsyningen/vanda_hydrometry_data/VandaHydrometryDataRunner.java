@@ -97,7 +97,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 					if (config.isOneCmdPerStation() && "all".equalsIgnoreCase(config.getStationId())) { //execute command for all relevant stations
 						List<Station> stations =  commandBean.getExaminationTypeSc() == 0 ? 
 									databaseService.getAllStations() 
-									: databaseService.getAllStationsByMeasurementType(commandBean.getExaminationTypeSc());
+									: databaseService.getAllStationsByExaminationType(commandBean.getExaminationTypeSc());
 						for(Station station : stations) {
 							config.setStationId(station.getStationId());
 							commandController.execute(commandBean);

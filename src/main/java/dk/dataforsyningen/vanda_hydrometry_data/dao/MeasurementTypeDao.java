@@ -6,7 +6,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.mapper.MeasurementTypeMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
-import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlBatch;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
@@ -18,6 +17,11 @@ import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 @LogSqlFactory
 public interface MeasurementTypeDao {
 
+	/**
+	 * Reads all measurement types
+	 * 
+	 * @return list of measurement types
+	 */
 	@SqlQuery("""
 			select
 				examination_type_sc,
@@ -28,8 +32,13 @@ public interface MeasurementTypeDao {
 				unit
 			from hydrometry.measurement_type
 			""")
-	List<MeasurementType> getAllMeasurementTypes();
+	List<MeasurementType> readAllMeasurementTypes();
 	
+	/**
+	 * Read measurement type with the given examination type Sc
+	 * @param examinationTypeSc
+	 * @return measurement type
+	 */
 	@SqlQuery("""
 			select
 				examination_type_sc,
@@ -41,8 +50,13 @@ public interface MeasurementTypeDao {
 			from hydrometry.measurement_type
 			where examination_type_sc = :examinationTypeSc
 			""")
-	MeasurementType findMeasurementTypeById(@Bind int examinationTypeSc);
+	MeasurementType readMeasurementTypeByExaminationType(@Bind int examinationTypeSc);
 	
+	/**
+	 * Insert (or update if exists) the given measurement type
+	 * 
+	 * @param measurementType
+	 */
 	@SqlUpdate("""
 			insert into hydrometry.measurement_type
 			(parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
@@ -52,9 +66,12 @@ public interface MeasurementTypeDao {
 					examination_type = EXCLUDED.examination_type,
 					unit = EXCLUDED.unit
 			""")
-	@GetGeneratedKeys
-	String addMeasurementType(@BindBean MeasurementType measurementType);
+	void insertMeasurementType(@BindBean MeasurementType measurementType);
 	
+	/**
+	 * Inserts (or updates if exists) the measurement types from the given list
+	 * @param list of measurementTypes
+	 */
 	@SqlBatch("""
 			insert into hydrometry.measurement_type
 			(parameter_sc, parameter, examination_type_sc, examination_type, unit_sc, unit)
@@ -64,12 +81,20 @@ public interface MeasurementTypeDao {
 					examination_type = EXCLUDED.examination_type,
 					unit = EXCLUDED.unit
 			""")
-	@GetGeneratedKeys
-	List<String> addMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
+	void insertMeasurementTypes(@BindBean List<MeasurementType> measurementTypes);
 	
+	/**
+	 * Deletes the measurement type with the given examination type sc
+	 * 
+	 * @param examinationTypeSc
+	 */
 	@SqlUpdate("delete from hydrometry.measurement_type where examination_type_sc = :examinationTypeSc")
 	void deleteMeasurementType(@Bind int examinationTypeSc);
 	
+	/**
+	 * Counts all measurement types from the db
+	 * @return the number of records
+	 */
 	@SqlQuery("select count(*) from hydrometry.measurement_type")
 	int count();
 }

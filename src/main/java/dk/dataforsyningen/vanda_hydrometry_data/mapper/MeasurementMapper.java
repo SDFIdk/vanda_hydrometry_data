@@ -23,7 +23,6 @@ public class MeasurementMapper implements RowMapper<Measurement> {
 		m.setIsCurrent(rs.getBoolean("is_current"));
 		m.setMeasurementDateTime(VandaHUtility.toOffsetDate(rs.getTimestamp("measurement_date_time"), true));
 		m.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
-		m.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));
 		m.setVandaEventTimestamp(VandaHUtility.toOffsetDate(rs.getTimestamp("vanda_event_timestamp"), true));
 		m.setExaminationTypeSc((Integer)rs.getObject("examination_type_sc"));
 		m.setMeasurementPointNumber(rs.getInt("measurement_point_number"));
