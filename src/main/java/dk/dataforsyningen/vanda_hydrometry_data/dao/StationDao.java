@@ -14,7 +14,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.components.LogSqlFactory;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 
-@RegisterRowMapper(StationMapper.class)
 @LogSqlFactory
 public interface StationDao {
 	
@@ -48,6 +47,7 @@ public interface StationDao {
 				left join hydrometry.measurement_type mt
 				on smt.examination_type_sc = mt.examination_type_sc
 			""")
+	@RegisterRowMapper(StationMapper.class)
 	List<Station> readAllStations();
 	
 	/**
@@ -82,6 +82,7 @@ public interface StationDao {
 				on smt.examination_type_sc = mt.examination_type_sc 
 			where s.station_id = :stationId
 			""")
+	@RegisterRowMapper(StationMapper.class)
 	List<Station> readStationByStationId(@Bind String stationId);
 	
 	/**
@@ -116,6 +117,7 @@ public interface StationDao {
 				on smt.examination_type_sc = mt.examination_type_sc 
 			where mt.examination_type_sc = :examinationTypeSc
 			""")
+	@RegisterRowMapper(StationMapper.class)
 	List<Station> readStationByExaminationTypeSc(@Bind int examinationTypeSc);
 	
 	/**
@@ -131,6 +133,7 @@ public interface StationDao {
 			where smt.station_id = :stationId 
 				and smt.examination_type_sc = :examinationTypeSc
 			""")
+	@RegisterRowMapper(StationMapper.class)
 	boolean isExaminationTypeScSupported(@Bind String stationId, @Bind int examinationTypeSc);
 
 	/**

@@ -13,7 +13,6 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import dk.dataforsyningen.vanda_hydrometry_data.components.LogSqlFactory;
 import dk.dataforsyningen.vanda_hydrometry_data.model.MeasurementType;
 
-@RegisterRowMapper(MeasurementTypeMapper.class)
 @LogSqlFactory
 public interface MeasurementTypeDao {
 
@@ -32,6 +31,7 @@ public interface MeasurementTypeDao {
 				unit
 			from hydrometry.measurement_type
 			""")
+	@RegisterRowMapper(MeasurementTypeMapper.class)
 	List<MeasurementType> readAllMeasurementTypes();
 	
 	/**
@@ -50,6 +50,7 @@ public interface MeasurementTypeDao {
 			from hydrometry.measurement_type
 			where examination_type_sc = :examinationTypeSc
 			""")
+	@RegisterRowMapper(MeasurementTypeMapper.class)
 	MeasurementType readMeasurementTypeByExaminationType(@Bind int examinationTypeSc);
 	
 	/**

@@ -14,7 +14,6 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import dk.dataforsyningen.vanda_hydrometry_data.components.LogSqlFactory;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;
 
-@RegisterRowMapper(MeasurementMapper.class)
 @LogSqlFactory
 public interface MeasurementDao {
 	
@@ -37,6 +36,7 @@ public interface MeasurementDao {
 				and measurement_date_time = :measurementDateTime
 			order by created
 			""")
+	@RegisterRowMapper(MeasurementMapper.class)
 	List<Measurement> readMeasurementHistory(@Bind String stationId,
 			@Bind int measurementPointNumber,
 			@Bind int examinationTypeSc,
@@ -62,6 +62,7 @@ public interface MeasurementDao {
 				and measurement_date_time = :measurementDateTime
 				and is_current = true
 			""")
+	@RegisterRowMapper(MeasurementMapper.class)
 	Measurement readCurrentMeasurement(@Bind String stationId,
 			@Bind int measurementPointNumber,
 			@Bind int examinationTypeSc,
