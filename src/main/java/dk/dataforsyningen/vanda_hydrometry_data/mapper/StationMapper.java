@@ -22,7 +22,7 @@ public class StationMapper implements RowMapper<Station> {
 		station.setStationOwnerName(rs.getString("station_owner_name"));
 		station.setLocationX((Double) rs.getObject("location_x"));
 		station.setLocationY((Double) rs.getObject("location_y"));
-		station.setLocationSrid(rs.getString("location_srid"));
+		station.setLocationSrid((Integer)rs.getObject("location_srid"));
 		station.setLocationType(rs.getString("location_type"));
 		station.setDescription(rs.getString("description"));
 		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));

@@ -22,7 +22,7 @@ public class Station {
 	
 	Double locationY;
 	
-	String locationSrid;
+	Integer locationSrid;
 	
 	String locationType = null;
 	
@@ -99,11 +99,11 @@ public class Station {
 		this.locationY = y;
 	}
 
-	public String getLocationSrid() {
+	public Integer getLocationSrid() {
 		return locationSrid;
 	}
 
-	public void setLocationSrid(String srid) {
+	public void setLocationSrid(Integer srid) {
 		this.locationSrid = srid;
 	}
 

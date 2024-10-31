@@ -252,4 +252,24 @@ public class VandaHUtility {
 				: dateToOfssetDateTimeLocalZone(new Date(ts.getTime()));
 	}
 	
+	public static int toInt(String s) {
+		int v = 0;
+		if (s != null) {
+			try {
+				v = Integer.parseInt(s);
+			} catch (NumberFormatException e) {}
+		}
+		return v;
+	}
+	
+	public static double toDouble(String s) {
+		double v = 0;
+		if (s != null) {
+			try {
+				v = Double.parseDouble(s);
+			} catch (NumberFormatException e) {}
+		}
+		return v;
+	}
+	
 }

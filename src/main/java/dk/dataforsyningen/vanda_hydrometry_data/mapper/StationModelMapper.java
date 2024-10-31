@@ -2,6 +2,7 @@ package dk.dataforsyningen.vanda_hydrometry_data.mapper;
 
 import java.util.ArrayList;
 
+import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
@@ -15,16 +16,16 @@ public class StationModelMapper {
 		Station station = new Station();
 		
 		station.setStationId(response.getStationId());
-		station.setStationUid(response.getStationUid() != null ? response.getStationUid().toString() : null);
-		station.setOperatorStationId(response.getOperatorStationId());
-		station.setOldStationNumber(response.getOldStationNumber());
-		station.setName(response.getName());
-		station.setStationOwnerName(response.getStationOwnerName());
+		station.setStationUid(response.getStationUid() != null ? MapperHelper.validate(response.getStationUid().toString()) : null);
+		station.setOperatorStationId(MapperHelper.validate(response.getOperatorStationId()));
+		station.setOldStationNumber(MapperHelper.validate(response.getOldStationNumber()));
+		station.setName(MapperHelper.validate(response.getName()));
+		station.setStationOwnerName(MapperHelper.validate(response.getStationOwnerName()));
 		station.setLocationX(response.getLocation() != null ? response.getLocation().getX() : null);
 		station.setLocationY(response.getLocation() != null ? response.getLocation().getY() : null);
-		station.setLocationSrid(response.getLocation() != null ? response.getLocation().getSrid() : null);
-		station.setLocationType(response.getLocationType());
-		station.setDescription(response.getDescription());
+		station.setLocationSrid(response.getLocation() != null && response.getLocation().getSrid() != null ? VandaHUtility.toInt(response.getLocation().getSrid()) : null);
+		station.setLocationType(MapperHelper.validate(response.getLocationType()));
+		station.setDescription(MapperHelper.validate(response.getDescription()));
 		station.setMeasurementTypes(new ArrayList<>());
 		if (response.getMeasurementPoints() != null) {
 			for(DmpHydroApiResponsesStationResponseMeasurementPoint mp : response.getMeasurementPoints()) {

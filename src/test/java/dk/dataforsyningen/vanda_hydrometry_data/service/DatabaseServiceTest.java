@@ -39,7 +39,7 @@ public class DatabaseServiceTest {
 	private final String stationOldNumber = "12345678";
 	private final double locationX = 12.34;
 	private final double locationY = 56.78;
-	private final String locationSrid = "25832";
+	private final int locationSrid = 25832;
 	
 	private final int mtParamSc1 = 1233;
 	private final String mtParam1 = "WaterLevel";
