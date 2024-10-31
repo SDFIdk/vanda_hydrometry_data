@@ -14,18 +14,17 @@ public class StationMapper implements RowMapper<Station> {
 
 	@Override
 	public Station map(ResultSet rs, StatementContext ctx) throws SQLException {
-		ValidateHelper validateHelper = new ValidateHelper();
 		Station station = new Station();
 		
-		station.setStationId(validateHelper.validate(rs.getString("station_id")));
-		station.setOldStationNumber(validateHelper.validate(rs.getString("old_station_number")));
-		station.setName(validateHelper.validate(rs.getString("name")));
-		station.setStationOwnerName(validateHelper.validate(rs.getString("station_owner_name")));
+		station.setStationId(rs.getString("station_id"));
+		station.setOldStationNumber(rs.getString("old_station_number"));
+		station.setName(rs.getString("name"));
+		station.setStationOwnerName(rs.getString("station_owner_name"));
 		station.setLocationX((Double) rs.getObject("location_x"));
 		station.setLocationY((Double) rs.getObject("location_y"));
 		station.setLocationSrid(rs.getString("location_srid"));
-		station.setLocationType(validateHelper.validate(rs.getString("location_type")));
-		station.setDescription(validateHelper.validate(rs.getString("description")));
+		station.setLocationType(rs.getString("location_type"));
+		station.setDescription(rs.getString("description"));
 		station.setCreated(VandaHUtility.toOffsetDate(rs.getTimestamp("created"), false));
 		station.setUpdated(VandaHUtility.toOffsetDate(rs.getTimestamp("updated"), false));
 		

@@ -13,11 +13,10 @@ public class MeasurementMapper implements RowMapper<Measurement> {
 
 	@Override
 	public Measurement map(ResultSet rs, StatementContext ctx) throws SQLException {
-		ValidateHelper validateHelper = new ValidateHelper();
 
 		Measurement m = new Measurement();
 		
-		m.setStationId(validateHelper.validate(rs.getString("station_id")));
+		m.setStationId(rs.getString("station_id"));
 		m.setResult((Double) rs.getObject("result"));
 		m.setResultElevationCorrected((Double) rs.getObject("result_elevation_corrected"));
 		m.setIsCurrent(rs.getBoolean("is_current"));
