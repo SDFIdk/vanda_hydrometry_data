@@ -13,19 +13,12 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
 import java.time.OffsetDateTime;
+
 /**
  * DmpHydroApiResponsesResultResponse
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesResultResponse {
   @JsonProperty("measurementPointNumber")
   private Integer measurementPointNumber = null;
@@ -96,7 +89,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Measurement point number
    * @return measurementPointNumber
   **/
-  @Schema(description = "Measurement point number")
   public Integer getMeasurementPointNumber() {
     return measurementPointNumber;
   }
@@ -114,7 +106,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Measurement point type stancode
    * @return measurementPointTypeSc
   **/
-  @Schema(description = "Measurement point type stancode")
   public Integer getMeasurementPointTypeSc() {
     return measurementPointTypeSc;
   }
@@ -132,7 +123,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Measurement point type name
    * @return measurementPointType
   **/
-  @Schema(description = "Measurement point type name")
   public String getMeasurementPointType() {
     return measurementPointType;
   }
@@ -150,7 +140,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Parameter stancode
    * @return parameterSc
   **/
-  @Schema(description = "Parameter stancode")
   public Integer getParameterSc() {
     return parameterSc;
   }
@@ -168,7 +157,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Parameter name
    * @return parameter
   **/
-  @Schema(description = "Parameter name")
   public String getParameter() {
     return parameter;
   }
@@ -186,7 +174,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Examination type stancode
    * @return examinationTypeSc
   **/
-  @Schema(description = "Examination type stancode")
   public Integer getExaminationTypeSc() {
     return examinationTypeSc;
   }
@@ -204,7 +191,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Examination type name
    * @return examinationType
   **/
-  @Schema(description = "Examination type name")
   public String getExaminationType() {
     return examinationType;
   }
@@ -222,7 +208,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Measurement date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example &#x27;2023-09-21T14:34Z&#x27;.
    * @return measurementDateTime
   **/
-  @Schema(description = "Measurement date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
   public OffsetDateTime getMeasurementDateTime() {
     return measurementDateTime;
   }
@@ -240,7 +225,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Measurement result
    * @return result
   **/
-  @Schema(description = "Measurement result")
   public Double getResult() {
     return result;
   }
@@ -258,7 +242,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Elevation corrected result. Only available for Water Level examination
    * @return resultElevationCorrected
   **/
-  @Schema(description = "Elevation corrected result. Only available for Water Level examination")
   public Double getResultElevationCorrected() {
     return resultElevationCorrected;
   }
@@ -276,7 +259,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Unit stancode
    * @return unitSc
   **/
-  @Schema(description = "Unit stancode")
   public Integer getUnitSc() {
     return unitSc;
   }
@@ -294,7 +276,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Unit name
    * @return unit
   **/
-  @Schema(description = "Unit name")
   public String getUnit() {
     return unit;
   }
@@ -312,7 +293,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Id of the logger that provided the measurement result
    * @return loggerId
   **/
-  @Schema(description = "Id of the logger that provided the measurement result")
   public String getLoggerId() {
     return loggerId;
   }
@@ -330,7 +310,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Formula id
    * @return formulaId
   **/
-  @Schema(description = "Formula id")
   public String getFormulaId() {
     return formulaId;
   }
@@ -348,7 +327,6 @@ public class DmpHydroApiResponsesResultResponse {
    * The timestamp when the result was delivered/created. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example &#x27;2023-09-21T14:34Z&#x27;.
    * @return createdTimestamp
   **/
-  @Schema(description = "The timestamp when the result was delivered/created. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.")
   public OffsetDateTime getCreatedTimestamp() {
     return createdTimestamp;
   }
@@ -366,7 +344,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Reason stancode
    * @return reasonSc
   **/
-  @Schema(description = "Reason stancode")
   public Integer getReasonSc() {
     return reasonSc;
   }
@@ -384,7 +361,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Reason name
    * @return reason
   **/
-  @Schema(description = "Reason name")
   public String getReason() {
     return reason;
   }
@@ -402,7 +378,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Vegetation index
    * @return vegetationIndex
   **/
-  @Schema(description = "Vegetation index")
   public Integer getVegetationIndex() {
     return vegetationIndex;
   }
@@ -420,7 +395,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Reference point text
    * @return refPointText
   **/
-  @Schema(description = "Reference point text")
   public String getRefPointText() {
     return refPointText;
   }
@@ -438,7 +412,6 @@ public class DmpHydroApiResponsesResultResponse {
    * Distance to fix point in meter (m)
    * @return distToFixPointM
   **/
-  @Schema(description = "Distance to fix point in meter (m)")
   public Double getDistToFixPointM() {
     return distToFixPointM;
   }

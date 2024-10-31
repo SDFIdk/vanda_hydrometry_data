@@ -13,20 +13,13 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * DmpHydroApiResponsesMeasurementResultResponse
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesMeasurementResultResponse {
   @JsonProperty("stationId")
   private String stationId = null;
@@ -49,7 +42,6 @@ public class DmpHydroApiResponsesMeasurementResultResponse {
    * A 8-digit station id
    * @return stationId
   **/
-  @Schema(description = "A 8-digit station id")
   public String getStationId() {
     return stationId;
   }
@@ -67,7 +59,6 @@ public class DmpHydroApiResponsesMeasurementResultResponse {
    * Operator station id
    * @return operatorStationId
   **/
-  @Schema(description = "Operator station id")
   public String getOperatorStationId() {
     return operatorStationId;
   }
@@ -85,7 +76,6 @@ public class DmpHydroApiResponsesMeasurementResultResponse {
    * Station name
    * @return stationName
   **/
-  @Schema(description = "Station name")
   public String getStationName() {
     return stationName;
   }
@@ -111,7 +101,6 @@ public class DmpHydroApiResponsesMeasurementResultResponse {
    * Measurement results
    * @return results
   **/
-  @Schema(description = "Measurement results")
   public List<DmpHydroApiResponsesResultResponse> getResults() {
     return results;
   }

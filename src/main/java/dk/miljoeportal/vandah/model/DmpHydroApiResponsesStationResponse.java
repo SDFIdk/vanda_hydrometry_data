@@ -13,22 +13,14 @@
 package dk.miljoeportal.vandah.model;
 
 import java.util.Objects;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesLocationResponse;
-import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponseMeasurementPoint;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 /**
  * DmpHydroApiResponsesStationResponse
  */
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2024-09-27T10:11:34.799092956+02:00[Europe/Copenhagen]")
-
 public class DmpHydroApiResponsesStationResponse {
   @JsonProperty("stationUid")
   private UUID stationUid = null;
@@ -87,7 +79,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Vanda station GUID id
    * @return stationUid
   **/
-  @Schema(description = "Vanda station GUID id")
   public UUID getStationUid() {
     return stationUid;
   }
@@ -105,7 +96,6 @@ public class DmpHydroApiResponsesStationResponse {
    * A 8-digits station id
    * @return stationId
   **/
-  @Schema(description = "A 8-digits station id")
   public String getStationId() {
     return stationId;
   }
@@ -123,7 +113,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Operator station id
    * @return operatorStationId
   **/
-  @Schema(description = "Operator station id")
   public String getOperatorStationId() {
     return operatorStationId;
   }
@@ -141,7 +130,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Old station number
    * @return oldStationNumber
   **/
-  @Schema(description = "Old station number")
   public String getOldStationNumber() {
     return oldStationNumber;
   }
@@ -159,7 +147,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Location type name
    * @return locationType
   **/
-  @Schema(description = "Location type name")
   public String getLocationType() {
     return locationType;
   }
@@ -177,7 +164,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Location type stancode
    * @return locationTypeSc
   **/
-  @Schema(description = "Location type stancode")
   public Integer getLocationTypeSc() {
     return locationTypeSc;
   }
@@ -195,7 +181,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Station owner cvr number
    * @return stationOwnerCvr
   **/
-  @Schema(description = "Station owner cvr number")
   public String getStationOwnerCvr() {
     return stationOwnerCvr;
   }
@@ -213,7 +198,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Station owner name
    * @return stationOwnerName
   **/
-  @Schema(description = "Station owner name")
   public String getStationOwnerName() {
     return stationOwnerName;
   }
@@ -231,7 +215,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Operator cvr number
    * @return operatorCvr
   **/
-  @Schema(description = "Operator cvr number")
   public String getOperatorCvr() {
     return operatorCvr;
   }
@@ -249,7 +232,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Operator name
    * @return operatorName
   **/
-  @Schema(description = "Operator name")
   public String getOperatorName() {
     return operatorName;
   }
@@ -267,7 +249,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Station name
    * @return name
   **/
-  @Schema(description = "Station name")
   public String getName() {
     return name;
   }
@@ -285,7 +266,6 @@ public class DmpHydroApiResponsesStationResponse {
    * DGU number of Groundwater station
    * @return dguNumber
   **/
-  @Schema(description = "DGU number of Groundwater station")
   public String getDguNumber() {
     return dguNumber;
   }
@@ -303,7 +283,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Station description
    * @return description
   **/
-  @Schema(description = "Station description")
   public String getDescription() {
     return description;
   }
@@ -321,7 +300,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Logger id
    * @return loggerId
   **/
-  @Schema(description = "Logger id")
   public String getLoggerId() {
     return loggerId;
   }
@@ -339,7 +317,6 @@ public class DmpHydroApiResponsesStationResponse {
    * Get location
    * @return location
   **/
-  @Schema(description = "")
   public DmpHydroApiResponsesLocationResponse getLocation() {
     return location;
   }
@@ -365,7 +342,6 @@ public class DmpHydroApiResponsesStationResponse {
    * A list of measurement points data in station
    * @return measurementPoints
   **/
-  @Schema(description = "A list of measurement points data in station")
   public List<DmpHydroApiResponsesStationResponseMeasurementPoint> getMeasurementPoints() {
     return measurementPoints;
   }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
-import dk.dataforsyningen.vanda_hydrometry_data.model.StationModelMapper;
+import dk.dataforsyningen.vanda_hydrometry_data.mapper.StationModelMapper;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
