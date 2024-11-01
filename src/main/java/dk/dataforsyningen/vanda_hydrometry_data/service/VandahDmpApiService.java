@@ -181,8 +181,8 @@ public class VandahDmpApiService {
 				.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
 				// Stop the while loop
 				running = 0;
-			} catch (ResourceAccessException exception) {
-				VandaHUtility.logAndPrint(log, Level.WARN, false, "GOAWAY received. Try again.");
+			} catch (ResourceAccessException | InternalException exception) {
+				VandaHUtility.logAndPrint(log, Level.WARN, false, "Exception received. Try again." + exception.getMessage());
 				running--;
 				if (running > 0) {
 					try {
@@ -298,8 +298,8 @@ public class VandahDmpApiService {
 						.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
 				// Stop the while loop
 				running = 0;
-			} catch (ResourceAccessException exception) {
-				VandaHUtility.logAndPrint(log, Level.WARN, false, "GOAWAY received. Try again.");
+			} catch (ResourceAccessException | InternalException exception) {
+				VandaHUtility.logAndPrint(log, Level.WARN, false, "Exception received. Try again." + exception.getMessage());
 				running--;
 				if (running > 0) {
 					try {
