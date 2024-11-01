@@ -13,6 +13,7 @@ import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
@@ -160,18 +161,38 @@ public class VandahDmpApiService {
 		if (!isEmpty(to)) { vandahApiUrl.append(del + "to=" + to); del = "&"; }
 		if (!isEmpty(createdAfter)) { vandahApiUrl.append(del + "createdAfter=" + createdAfter); del = "&"; }
 		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }		
-		
-		VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
-		
-		DmpHydroApiResponsesMeasurementResultResponse[] results = restClient.get().uri(vandahApiUrl.toString())
-		.accept(MediaType.APPLICATION_JSON)
-		.retrieve()
-		.onStatus(status -> status.value() >= 400, (request, response) -> {
-			VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water levels: [" + response.getStatusCode() + "] " + response.getStatusText());
-			String message = VandaHUtility.valueFromJson(response, "message");
-			throw new InternalException("Error retrieving water levels: " + message);
-		})
-		.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
+
+		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
+
+		// Max try two times
+		int running = 2;
+		while (running > 0) {
+			try {
+				VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
+
+				results = restClient.get().uri(vandahApiUrl.toString())
+				.accept(MediaType.APPLICATION_JSON)
+				.retrieve()
+				.onStatus(status -> status.value() >= 400, (request, response) -> {
+					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water levels: [" + response.getStatusCode() + "] " + response.getStatusText());
+					String message = VandaHUtility.valueFromJson(response, "message");
+					throw new InternalException("Error retrieving water levels: " + message);
+				})
+				.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
+				// Stop the while loop
+				running = 0;
+			} catch (ResourceAccessException exception) {
+				VandaHUtility.logAndPrint(log, Level.WARN, false, "GOAWAY received. Try again.");
+				running--;
+				if (running > 0) {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException exception1) {
+						// do nothing
+					}
+				}
+			}
+		}
 		
 		return results;
 	}
@@ -257,21 +278,40 @@ public class VandahDmpApiService {
 		if (!isEmpty(to)) { vandahApiUrl.append(del + "to=" + to); del = "&"; }
 		if (!isEmpty(createdAfter)) { vandahApiUrl.append(del + "createdAfter=" + createdAfter); del = "&"; }
 		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
-		
-		VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
-		
-		DmpHydroApiResponsesMeasurementResultResponse[] results = restClient.get().uri(vandahApiUrl.toString())
-		.accept(MediaType.APPLICATION_JSON)
-		.retrieve()
-		.onStatus(status -> status.value() >= 400, (request, response) -> {
-			VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water flows: [" + response.getStatusCode() + "] " + response.getStatusText());
-			String message = VandaHUtility.valueFromJson(response, "message");
-			throw new InternalException("Error retrieving water flows: " + message);
-		})
-		.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
-		
+
+		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
+
+		// Max try two times
+		int running = 2;
+		while (running > 0) {
+			try {
+				VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
+
+				results = restClient.get().uri(vandahApiUrl.toString())
+						.accept(MediaType.APPLICATION_JSON)
+						.retrieve()
+						.onStatus(status -> status.value() >= 400, (request, response) -> {
+							VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water flows: [" + response.getStatusCode() + "] " + response.getStatusText());
+							String message = VandaHUtility.valueFromJson(response, "message");
+							throw new InternalException("Error retrieving water flows: " + message);
+						})
+						.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
+				// Stop the while loop
+				running = 0;
+			} catch (ResourceAccessException exception) {
+				VandaHUtility.logAndPrint(log, Level.WARN, false, "GOAWAY received. Try again.");
+				running--;
+				if (running > 0) {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException exception1) {
+						// do nothing
+					}
+				}
+			}
+		}
+
 		return results;
-		
 	}
 	
 	/**
