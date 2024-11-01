@@ -41,6 +41,7 @@ public class StationsCommandTest {
 	private static String desc1 = "Description 01";
 	private static double x1 = 11.23;
 	private static double y1 = 12.34;
+	private static String srid1 = "25832";
 	
 	private static UUID uuid2 = UUID.fromString("11111111-2222-3333-4444-bbbbbbbbbbbb");
 	private static String id2 = "20000001";
@@ -51,7 +52,8 @@ public class StationsCommandTest {
 	private static String desc2 = "Description 02";
 	private static double x2 = 21.23;
 	private static double y2 = 22.34;
-	
+	private static String srid2 = "25832";
+
 	private int mtParamSc = 1233;
 	private Integer mtExamTypeSc = 25;
 	private static String date1 = "2024-09-25T09:15:00.001Z";
@@ -84,6 +86,7 @@ public class StationsCommandTest {
 		DmpHydroApiResponsesLocationResponse location = new DmpHydroApiResponsesLocationResponse();
 		location.setX(x1);
 		location.setY(y1);
+		location.setSrid(srid1);
 		station1.setLocation(location);
 		
 		DmpHydroApiResponsesStationResponse station2 = new DmpHydroApiResponsesStationResponse();
@@ -97,6 +100,7 @@ public class StationsCommandTest {
 		location = new DmpHydroApiResponsesLocationResponse();
 		location.setX(x2);
 		location.setY(y2);
+		location.setSrid(srid2);
 		station2.setLocation(location);
 		
 		data[0] = station1;
