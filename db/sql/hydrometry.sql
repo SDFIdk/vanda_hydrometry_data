@@ -1,4 +1,4 @@
-CREATE EXTENSION postgis;
+CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE SCHEMA hydrometry;
 SET search_path TO hydrometry, public;
 
