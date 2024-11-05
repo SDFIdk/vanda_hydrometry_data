@@ -1,5 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
-CREATE SCHEMA hydrometry;
+CREATE SCHEMA IF NOT EXISTS hydrometry;
 SET search_path TO hydrometry, public;
 
 CREATE TABLE station
