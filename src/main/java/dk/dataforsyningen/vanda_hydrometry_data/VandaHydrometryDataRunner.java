@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import org.springframework.web.client.RestClient;
 import dk.dataforsyningen.vanda_hydrometry_data.command.CommandInterface;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
@@ -28,7 +26,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 @Component
 public class VandaHydrometryDataRunner implements CommandLineRunner {
 
-	private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataRunner.class);
+	private static Logger logger = LoggerFactory.getLogger(VandaHydrometryDataRunner.class);
 	
 	@Autowired
 	RestClient restClient;
@@ -51,15 +49,15 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		log.debug("Application start ...");
+		logger.debug("Application start ...");
 		
 		if (config.getVandahDmpApiUrl() == null) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "There is no API URL defined in the properties file.");
+			logger.warn("There is no API URL defined in the properties file.");
 			return;
 		}
 		
-		log.info("Using DMP API URL: " + config.getVandahDmpApiUrl() );
-		log.debug(config.toString());
+		logger.info("Using DMP API URL: " + config.getVandahDmpApiUrl() );
+		logger.debug(config.toString());
 		
 		commandLineArgsParser.parse(args);
 		
@@ -67,25 +65,25 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 		
 		// No command => display help
 		if (cmds.size() == 0) {
-			VandaHUtility.logAndPrint(null, null, true, "Vanda Hydrometry Data\n=====================\nUsage parameters: COMMAND [--options[=value]]");
-			VandaHUtility.logAndPrint(null, null, true, "Commands:\n");
+			System.out.println("Vanda Hydrometry Data\n=====================\nUsage parameters: COMMAND [--options[=value]]");
+			System.out.println("Commands:\n");
 			
 			Map<String, CommandInterface> allCommands = commandController.getAllCommandBeans();
 			if (allCommands != null) {
 				for(String command : allCommands.keySet()) {
 					commandController.showHelp(command, true);
-					VandaHUtility.logAndPrint(null, null, true, "For more details use: " + command + " --help\n");
+					System.out.println("For more details use: " + command + " --help\n");
 				}
 			}
 			
-			VandaHUtility.logAndPrint(null, null, true, "Use the option --displayRawData to display the API results at the console.");
-			VandaHUtility.logAndPrint(null, null, true, "Use the option --displayData to display the mapped data at the console.");
-			VandaHUtility.logAndPrint(null, null, true, "Use the option --verbose to display more info at the console.");
-			VandaHUtility.logAndPrint(null, null, true, "Use the option --saveDb to save the results in the defined database.");
+			System.out.println("Use the option --displayRawData to display the API results at the console.");
+			System.out.println("Use the option --displayData to display the mapped data at the console.");
+			System.out.println("Use the option --verbose to display more info at the console.");
+			System.out.println("Use the option --saveDb to save the results in the defined database.");
 		
 		// Too many commands
 		} else if (cmds.size() > 1) {
-			VandaHUtility.logAndPrint(log, Level.WARN, false, "Too many commands requested.");
+			logger.warn("Too many commands requested.");
 		
 		}  else { //only one command
 			String cmd = cmds.get(0);
@@ -114,16 +112,15 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 						commandController.execute(commandBean);
 					}
 				} catch (Exception ex) {
-					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error executing command '" + cmd + "'", ex);
+					logger.error("Error executing command '" + cmd + "'", ex);
 					System.exit(1);
 				}
 			} else {
-	    		VandaHUtility.logAndPrint(log, Level.ERROR, false, "No execution bean was regsitered for the given command: " + cmd);
+				logger.error("No execution bean was regsitered for the given command: " + cmd);
 	    	}
 		}
 		
-		log.debug("Application ended.");
-		
+		logger.debug("Application ended.");	
 	}
 	
 }

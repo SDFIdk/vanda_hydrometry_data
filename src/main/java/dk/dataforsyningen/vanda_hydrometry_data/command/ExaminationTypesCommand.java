@@ -20,7 +20,7 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 @CommandQualifier(command = "examinationtypes")
 public class ExaminationTypesCommand  implements CommandInterface {
 	
-	private static final Logger log = LoggerFactory.getLogger(ExaminationTypesCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
 	
 	private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
 	
@@ -43,14 +43,16 @@ public class ExaminationTypesCommand  implements CommandInterface {
 
 	@Override
 	public int saveData() {
-		VandaHUtility.logAndPrint(log, Level.WARN, false, "Save to DB is not relevant for this data");
+		logger.warn("Save to DB is not relevant for this data");
 		return 0;
 	}
 
 	@Override
 	public void displayData(boolean raw) {
 		if (raw && data != null) {
-			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
+			if (config.isVerbose()) {
+    			System.out.println("Number of items: " + data.length);
+			}
 			for(DmpHydroApiResponsesExaminationTypeResponse item : data) {
 				System.out.println(item);
 			}

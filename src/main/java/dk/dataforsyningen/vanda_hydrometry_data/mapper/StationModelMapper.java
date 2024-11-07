@@ -14,7 +14,7 @@ import org.slf4j.event.Level;
 
 public class StationModelMapper {
 
-	private static final Logger log = LoggerFactory.getLogger(StationModelMapper.class);
+	private static final Logger logger = LoggerFactory.getLogger(StationModelMapper.class);
 
 	public static Station from(DmpHydroApiResponsesStationResponse response) {
 		if (response == null) return null;
@@ -40,14 +40,14 @@ public class StationModelMapper {
 					if (response.getLocation().getX() != null) {
 						station.setLocationX(response.getLocation().getX());
 					} else {
-						VandaHUtility.logAndPrint(log, Level.ERROR, false, "X coordinate is null for stationId: " + station.getStationId());
+						logger.error("X coordinate is null for stationId: " + station.getStationId());
 						throw new NullPointerException("X coordinate is null for stationId: " + station.getStationId());
 					}
 
 					if (response.getLocation().getY() != null) {
 						station.setLocationY(response.getLocation().getY());
 					} else {
-						VandaHUtility.logAndPrint(log, Level.ERROR, false, "Y coordinate is null for stationId: " + station.getStationId());
+						logger.error("Y coordinate is null for stationId: " + station.getStationId());
 						throw new NullPointerException("Y coordinate is null for stationId: " + station.getStationId());
 					}
 				}

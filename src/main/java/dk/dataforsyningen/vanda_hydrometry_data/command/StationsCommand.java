@@ -26,7 +26,7 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 @CommandQualifier(command = "stations")
 public class StationsCommand implements CommandInterface {
 
-	private static final Logger log = LoggerFactory.getLogger(StationsCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(StationsCommand.class);
 	
 	private DmpHydroApiResponsesStationResponse[] data;
 	
@@ -83,13 +83,17 @@ public class StationsCommand implements CommandInterface {
 	@Override
 	public void displayData(boolean raw) {
 		if (raw && data != null) {
-			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of items: " + data.length);
+			if (config.isVerbose()) {
+    			System.out.println("Number of items: " + data.length);
+			}
 			for(DmpHydroApiResponsesStationResponse item : data) {
 				System.out.println(item);
 			}
 		}
 		if (!raw && stations != null) {
-			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Number of stations: " + stations.size());
+			if (config.isVerbose()) {
+    			System.out.println("Number of stations: " + stations.size());
+			}
 			for(Station item : stations) {
 				System.out.println(item);
 			}
