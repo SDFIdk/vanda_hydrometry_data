@@ -2,9 +2,6 @@ package dk.dataforsyningen.vanda_hydrometry_data.service;
 
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
@@ -17,10 +14,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
-import dk.dataforsyningen.vanda_hydrometry_data.command.WaterFlowsCommand;
-import dk.dataforsyningen.vanda_hydrometry_data.command.WaterLevelsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
-import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
@@ -46,8 +40,6 @@ public class VandahDmpApiService {
 	@Autowired
 	VandaHydrometryDataConfig config;
 	
-	@Autowired
-	private DatabaseService dbService;
 	
 	public DmpHydroApiResponsesStationResponse[] getAllStations() {
 
@@ -126,81 +118,11 @@ public class VandahDmpApiService {
 		
 	}
 	
-	/**
-	 * Call to API.
-	 * 
-	 * @param stationId - should be set to an actual station ID
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return
-	 */
-	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevelsForStation(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format
-			) {
-		
-		if (isEmpty(stationId) && isEmpty(operatorStationId)) {
-			throw new InvalidParameterException("Station id or Operator station id must be specified.");
-		}
-
-		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + WATER_LEVELS + "?");
-		if (!isEmpty(stationId)) { vandahApiUrl.append(del + "stationId=" + stationId); del = "&"; }
-		if (!isEmpty(operatorStationId)) { vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); del = "&"; }
-		if (!isEmpty(measurementPointNumber)) { vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); del = "&"; }
-		if (!isEmpty(from)) { vandahApiUrl.append(del + "from=" + from); del = "&"; }
-		if (!isEmpty(to)) { vandahApiUrl.append(del + "to=" + to); del = "&"; }
-		if (!isEmpty(createdAfter)) { vandahApiUrl.append(del + "createdAfter=" + createdAfter); del = "&"; }
-		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }		
-
-		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
-
-		// Max try two times
-		int running = 2;
-		while (running > 0) {
-			try {
-				VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
-
-				results = restClient.get().uri(vandahApiUrl.toString())
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water levels: [" + response.getStatusCode() + "] " + response.getStatusText());
-					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving water levels: " + message);
-				})
-				.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
-				// Stop the while loop
-				running = 0;
-			} catch (ResourceAccessException | InternalException exception) {
-				VandaHUtility.logAndPrint(log, Level.WARN, false, "Exception received. Try again." + exception.getMessage());
-				running--;
-				if (running > 0) {
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException exception1) {
-						// do nothing
-					}
-				}
-			}
-		}
-		
-		return results;
-	}
 	
 	/**
 	 * Retrieves water levels.
 	 * 
-	 * @param stationId can be "all", comma separated values, or an actual station Id
+	 * @param stationId 
 	 * @param operatorStationId
 	 * @param measurementPointNumber
 	 * @param from
@@ -218,34 +140,37 @@ public class VandahDmpApiService {
 			OffsetDateTime createdAfter,
 			String format) {
 		
-		if ("all".equalsIgnoreCase(stationId)) { //for all stations
-			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStationsByExaminationType(WaterLevelsCommand.EXAMINATION_TYPE_SC);
-			
-			for(Station station : stations) {
-				output.addAll(Arrays.asList(getWaterLevelsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
-			}
-			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
-		} else if (stationId != null && stationId.indexOf(",") != -1) { //for selected stations
-			String[] stationIds = stationId.split(",");
-			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			
-			for(String sId : stationIds) {
-				if (dbService.isMeasurementSupported(sId, WaterLevelsCommand.EXAMINATION_TYPE_SC)) {
-					output.addAll(Arrays.asList(getWaterLevelsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
-				}
-			}
-			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
-			
-			
-		} else { //for one station
-			return getWaterLevelsForStation(stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-		}
+		return getWaterMeasurementsForStation(WATER_LEVELS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
 	}
 	
 	
 	/**
-	 * Call to API
+	 * Retrieves water flows.
+	 * 
+	 * @param stationId 
+	 * @param operatorStationId
+	 * @param measurementPointNumber
+	 * @param from
+	 * @param to
+	 * @param createdAfter
+	 * @param format
+	 * @return array of results
+	 */
+	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(
+			String stationId, 
+			String operatorStationId,
+			Integer measurementPointNumber,
+			OffsetDateTime from,
+			OffsetDateTime to,
+			OffsetDateTime createdAfter,
+			String format) {
+		
+		return getWaterMeasurementsForStation(WATER_FLOWS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
+	}
+	
+	
+	/**
+	 * Call the API for both WATER_LEVELS and WATER_FLOWS
 	 * 
 	 * @param stationId should be set to actual station Id
 	 * @param operatorStationId
@@ -256,7 +181,8 @@ public class VandahDmpApiService {
 	 * @param format
 	 * @return
 	 */
-	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlowsForStation(
+	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterMeasurementsForStation(
+			String endpoint,
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
@@ -270,7 +196,7 @@ public class VandahDmpApiService {
 		}
 		
 		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + WATER_FLOWS + "?");
+		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + endpoint + "?");
 		if (!isEmpty(stationId)) { vandahApiUrl.append(del + "stationId=" + stationId); del = "&"; }
 		if (!isEmpty(operatorStationId)) { vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); del = "&"; }
 		if (!isEmpty(measurementPointNumber)) { vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); del = "&"; }
@@ -291,9 +217,9 @@ public class VandahDmpApiService {
 						.accept(MediaType.APPLICATION_JSON)
 						.retrieve()
 						.onStatus(status -> status.value() >= 400, (request, response) -> {
-							VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving water flows: [" + response.getStatusCode() + "] " + response.getStatusText());
+							VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving " + endpoint + ": [" + response.getStatusCode() + "] " + response.getStatusText());
 							String message = VandaHUtility.valueFromJson(response, "message");
-							throw new InternalException("Error retrieving water flows: " + message);
+							throw new InternalException("Error retrieving " + endpoint + ": " + message);
 						})
 						.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
 				// Stop the while loop
@@ -313,52 +239,8 @@ public class VandahDmpApiService {
 
 		return results;
 	}
+
 	
-	/**
-	 * Retrieves water levels.
-	 * 
-	 * @param stationId can be "all", comma separated values, or an actual station Id
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return array of results
-	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
-		
-		if ("all".equalsIgnoreCase(stationId)) { //for all stations
-			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			List<Station> stations = dbService.getAllStationsByExaminationType(WaterFlowsCommand.EXAMINATION_TYPE_SC);
-			
-			for(Station station : stations) {
-				output.addAll(Arrays.asList(getWaterFlowsForStation(station.getStationId(), operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
-			}
-			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
-			
-		} else if (stationId != null && stationId.indexOf(",") != -1) { //for selected stations
-			String[] stationIds = stationId.split(",");
-			ArrayList<DmpHydroApiResponsesMeasurementResultResponse> output = new ArrayList<>();
-			
-			for(String sId : stationIds) {
-				if (dbService.isMeasurementSupported(sId, WaterFlowsCommand.EXAMINATION_TYPE_SC)) {
-					output.addAll(Arrays.asList(getWaterFlowsForStation(sId, operatorStationId, measurementPointNumber, from, to, createdAfter, format)));
-				}
-			}
-			return output.toArray(new DmpHydroApiResponsesMeasurementResultResponse[output.size()]);
-			
-		} else { //for one station
-			return getWaterFlowsForStation(stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-		}
-	}
 	
 	private boolean isEmpty(Object obj) {
 		return obj == null || (obj instanceof String && ((String) obj).isEmpty());
