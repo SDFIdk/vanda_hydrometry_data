@@ -128,7 +128,6 @@ public class VandaHydrometryDataRunnerTest {
 		ids.add(st2);
 		
 		config.setStationId("all");
-		config.setOneCmdPerStation(true);
 				
 		when(databaseService.getAllStations()).thenReturn(ids);
 		doNothing().when(commandController).execute(any());
@@ -155,7 +154,6 @@ public class VandaHydrometryDataRunnerTest {
 		ids.add(st2);
 		
 		config.setStationId("10000001,10000002");
-		config.setOneCmdPerStation(true);
 		doNothing().when(commandController).execute(any());
 		when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 		
