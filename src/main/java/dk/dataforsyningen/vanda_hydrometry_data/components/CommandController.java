@@ -34,19 +34,13 @@ public class CommandController {
 	 * @param command
 	 */
     public void execute(CommandInterface commandBean) {
-    	if (config.isVerbose()) {
-    		System.out.println("Execute command: " + commandBean.getClass().getSimpleName());
-    	} else {
-    		logger.info("Execute command: " + commandBean.getClass().getSimpleName());
-    	}
+   		logger.info("Execute command: " + commandBean.getClass().getSimpleName());
     	
 		if (config.isHelp()) {
 			showHelp(commandBean, false);
 		} else {
     		int nr = commandBean.getData();
-    		if (config.isVerbose()) {
-    			System.out.println("Read (" + nr + ") items.");
-    		}
+    		logger.info("Read (" + nr + ") items.");
     		
     		commandBean.mapData();
     		
@@ -56,9 +50,7 @@ public class CommandController {
     		
     		if (config.isSaveDb()) {
     			nr = commandBean.saveData();
-    			if (config.isVerbose()) {
-        			System.out.println("Save (" + nr + ") items to DB.");
-    			}
+    			logger.info("Save (" + nr + ") items to DB.");
     		}
 		}
     }

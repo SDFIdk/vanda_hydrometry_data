@@ -52,10 +52,7 @@ public class VandaHydrometryDataConfig {
 
 	@Value("${help:#{null}}")
 	private String help; //boolean
-	
-	@Value("${verbose:#{null}}")
-	private String verbose;  //boolean
-	
+		
 	@Value("${displaydata:#{null}}")
 	private String displayData;  //boolean
 	
@@ -101,11 +98,7 @@ public class VandaHydrometryDataConfig {
 	public boolean isHelp() {
 		return help != null;
 	}
-	
-	public boolean isVerbose() {
-		return verbose != null;
-	}
-	
+		
 	public boolean isDisplayData() {
 		return displayData != null;
 	}
@@ -199,7 +192,6 @@ public class VandaHydrometryDataConfig {
 		sb.append("Configuration \"param: (input_value) parssed_value\" :\n");
 		
 		sb.append("\tHelp: ").append("(" + help + ") "); try { sb.append(isHelp()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
-		sb.append("\tVerbose: ").append("(" + verbose + ") "); try { sb.append(isVerbose()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
 		sb.append("\tDisplayRawData: ").append("(" + displayRawData + ") "); try { sb.append(isDisplayRawData()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
 		sb.append("\tDisplayData: ").append("(" + displayData + ") "); try { sb.append(isDisplayData()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");
 		sb.append("\tSaveDb: ").append("(" + saveDb + ") "); try { sb.append(isSaveDb()); } catch (Exception ex) { sb.append(" N/A due to invalid params"); } sb.append("\n");

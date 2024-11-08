@@ -91,12 +91,6 @@ In order to display the mapped data in the console (or redirect the output into 
 
 	stations --displayData	
 	
-### More output
-
-In order to display more details about the execution of the program or warnings in the console use the parameter "verbose". 
-
-	stations --verbose
-
 ### Help
 
 Running the application without parameters will display the help info. For more details on a command use the option --help. Example:
@@ -109,25 +103,25 @@ Running the application without parameters will display the help info. For more 
 Get all station, display them on the screen:
 
 ```
-java -jar vanda-hydrometry-data.jar stations --verbose --displayData
+java -jar vanda-hydrometry-data.jar stations --displayData
 ```
 
 Get all station, save them in the database (insert or update) and display the summary on the screen:
 
 ```
-java -jar vanda-hydrometry-data.jar stations --verbose --saveDb
+java -jar vanda-hydrometry-data.jar stations --saveDb
 ```
 
 Get all water levels measurements between 2 dates for all stations saved into the db, then save the measurements into the DB:
 
 ```
-java -jar vanda-hydrometry-data.jar waterlevels --stationId=all --verbose --saveDb --from=2024-10-01Z --to=2024-10-31Z
+java -jar vanda-hydrometry-data.jar waterlevels --stationId=all --saveDb --from=2024-10-01Z --to=2024-10-31Z
 ```
 
 Get all water flows measurements between 2 dates for 2 stations and siplay the results on the screen:
 
 ```
-java -jar vanda-hydrometry-data.jar waterflows --stationId=10000001,10000002 --verbose --displayData --from=2024-10-01Z --to=2024-10-2Z
+java -jar vanda-hydrometry-data.jar waterflows --stationId=10000001,10000002 --displayData --from=2024-10-01Z --to=2024-10-2Z
 ```
 
 

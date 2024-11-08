@@ -35,7 +35,7 @@ public class VandaHydrometryDataConfigTest {
 	@Nested
 	@ContextConfiguration
 	@TestPropertySource(
-			properties = {"help", "VERBoSE", "stationid=99999999", "parameterSc=1234", "examinationtypesc=25"}
+			properties = {"help", "stationid=99999999", "parameterSc=1234", "examinationtypesc=25"}
 			)
 	public class VandaHydrometryDataConfigTest1 {
 		
@@ -45,7 +45,6 @@ public class VandaHydrometryDataConfigTest {
 		@Test
 		public void testParams() {
 			assertTrue(config.isHelp());
-			assertTrue(config.isVerbose());
 			assertFalse(config.isSaveDb());
 			assertEquals("99999999", config.getStationId());
 			assertEquals(1234, config.getParameterSc());

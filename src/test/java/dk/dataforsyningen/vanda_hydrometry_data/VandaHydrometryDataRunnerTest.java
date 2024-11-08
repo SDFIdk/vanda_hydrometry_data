@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.Logger;
+import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -86,7 +87,8 @@ public class VandaHydrometryDataRunnerTest {
 		args[0] = "command1";
 		args[1] = "command2";
 		
-		Field loggerField = runner.getClass().getDeclaredField("logger"); 
+		Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+		Field loggerField = runnerClass.getDeclaredField("logger"); 
 		loggerField.setAccessible(true);
 		loggerField.set(runner, mock(Logger.class));
 		Logger log = (Logger) loggerField.get(runner);
@@ -104,7 +106,8 @@ public class VandaHydrometryDataRunnerTest {
 		
 		when(commandService.getCommandBean(args[0])).thenReturn(null);
 		
-		Field loggerField = runner.getClass().getDeclaredField("logger"); 
+		Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+		Field loggerField = runnerClass.getDeclaredField("logger"); 
 		loggerField.setAccessible(true);
 		loggerField.set(runner, mock(Logger.class));
 		Logger log = (Logger) loggerField.get(runner);

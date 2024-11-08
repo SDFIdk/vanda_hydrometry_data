@@ -83,17 +83,15 @@ public class StationsCommand implements CommandInterface {
 	@Override
 	public void displayData(boolean raw) {
 		if (raw && data != null) {
-			if (config.isVerbose()) {
-    			System.out.println("Number of items: " + data.length);
-			}
+   			logger.info("Number of items: " + data.length);
+
 			for(DmpHydroApiResponsesStationResponse item : data) {
 				System.out.println(item);
 			}
 		}
 		if (!raw && stations != null) {
-			if (config.isVerbose()) {
-    			System.out.println("Number of stations: " + stations.size());
-			}
+			logger.info("Number of stations: " + stations.size());
+
 			for(Station item : stations) {
 				System.out.println(item);
 			}

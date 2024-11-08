@@ -31,7 +31,7 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	public static final int EXAMINATION_TYPE_SC = 25;
 	
-	private static final Logger log = LoggerFactory.getLogger(WaterLevelsCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(WaterLevelsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
 
@@ -113,18 +113,16 @@ public class WaterLevelsCommand implements CommandInterface {
 	@Override
 	public void displayData(boolean raw) {
 		if (raw && data != null) {
-			if (config.isVerbose()) {
-    			System.out.println("Number of items: " + data.length);
-			}
+			logger.info("Number of items: " + data.length);
+
 			for(DmpHydroApiResponsesMeasurementResultResponse item : data) {
 				System.out.println(item);
 			}
 		}
 		if (!raw && measurements != null && measurementTypes != null) {
-			if (config.isVerbose()) {
-    			System.out.println("Number of measurements: " + measurements.size());
-    			System.out.println("Number of measurementTypes: " + measurementTypes.size());
-			}
+			logger.info("Number of measurements: " + measurements.size());
+			logger.info("Number of measurementTypes: " + measurementTypes.size());
+
 			for(Measurement item : measurements) {
 				System.out.println(item);
 			}

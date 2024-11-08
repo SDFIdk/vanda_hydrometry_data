@@ -45,11 +45,7 @@ public class VandahDmpApiService {
 
 		String vandahApiUrl = config.getVandahDmpApiUrl() + STATIONS_PATH;
 		
-		if (config.isVerbose()) {
-    		System.out.println("Call: " + vandahApiUrl);
-		} else {
-			logger.info("Call: " + vandahApiUrl);
-		}
+		logger.info("Call: " + vandahApiUrl);
 				
 		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl)
 				.accept(MediaType.APPLICATION_JSON)
@@ -88,11 +84,7 @@ public class VandahDmpApiService {
 		if (!isEmpty(withResultsCreatedAfter)) { vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); del = "&"; }
 		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
 		
-		if (config.isVerbose()) {
-    		System.out.println("Call: " + vandahApiUrl.toString());
-		} else {
-			logger.info("Call: " + vandahApiUrl.toString());
-		}
+		logger.info("Call: " + vandahApiUrl.toString());
 		
 		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl.toString())
 				.accept(MediaType.APPLICATION_JSON)
@@ -110,11 +102,7 @@ public class VandahDmpApiService {
 	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes() {
 		String vandahApiUrl = config.getVandahDmpApiUrl() + EXAMINATION_TYPES;
 		
-		if (config.isVerbose()) {
-    		System.out.println("Call: " + vandahApiUrl);
-		} else {
-			logger.info("Call: " + vandahApiUrl);
-		}
+		logger.info("Call: " + vandahApiUrl);
 		
 		DmpHydroApiResponsesExaminationTypeResponse[] types = restClient.get().uri(vandahApiUrl)
 				.accept(MediaType.APPLICATION_JSON)
@@ -223,11 +211,7 @@ public class VandahDmpApiService {
 		int running = 2;
 		while (running > 0) {
 			try {
-				if (config.isVerbose()) {
-		    		System.out.println("Call: " + vandahApiUrl);
-				} else {
-					logger.info("Call: " + vandahApiUrl);
-				}
+				logger.info("Call: " + vandahApiUrl);
 
 				results = restClient.get().uri(vandahApiUrl.toString())
 						.accept(MediaType.APPLICATION_JSON)
