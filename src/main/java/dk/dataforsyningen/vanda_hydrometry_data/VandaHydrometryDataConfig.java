@@ -33,23 +33,6 @@ public class VandaHydrometryDataConfig {
 	
 	/* Option values from the command line */
 	
-	/*
-		help,
-		savedb,
-		verbose,
-		display,
-		stationid,
-		examinationtypesc,
-		parametersc,
-		operatorstationid,
-		withresultsafter,
-		withresultscreatedafter,
-		measurementpointnumber,
-		from,
-		to,
-		createdafter
-	*/
-
 	@Value("${help:#{null}}")
 	private String help; //boolean
 		
@@ -66,7 +49,7 @@ public class VandaHydrometryDataConfig {
 	private String stationId;
 	
 	@Value("${examinationtypesc:#{null}}")
-	private String examinationTypeSc;  //int[]
+	private String examinationTypeSc;  //int
 	
 	@Value("${parametersc:#{null}}")
 	private String parameterSc; //Integer
