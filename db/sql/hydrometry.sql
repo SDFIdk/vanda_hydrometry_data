@@ -30,10 +30,10 @@ COMMENT ON COLUMN station.description IS 'Description of the station that can co
 CREATE TABLE measurement_type
 (
  examination_type_sc      int NOT NULL,
- examination_type         varchar(20) NOT NULL,
- "parameter"              varchar(20) NOT NULL,
+ examination_type         varchar(100) NOT NULL,
+ "parameter"              varchar(100) NOT NULL,
  parameter_sc             int NOT NULL,
- unit                     varchar(4) NOT NULL,
+ unit                     varchar(5) NOT NULL,
  unit_sc                  int NOT NULL,
  CONSTRAINT PK_3 PRIMARY KEY ( examination_type_sc )
 );
