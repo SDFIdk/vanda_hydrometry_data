@@ -1,22 +1,25 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-
-import org.slf4j.event.Level;
+import org.slf4j.Logger;
+import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +28,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import dk.dataforsyningen.vanda_hydrometry_data.command.StationsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
@@ -64,11 +66,18 @@ public class VandaHydrometryDataRunnerTest {
 	public void runTestNoParams() throws Exception {
 		
 		String[] args = new String[0];
+			
+		final PrintStream oldStdout = System.out;
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(bo));
+        
+        runner.run(args);
+        
+        bo.flush();
+        System.setOut(oldStdout);
+        String allWrittenLines = new String(bo.toByteArray()); 
+        assertTrue(allWrittenLines.contains("Commands:\n"));
 		
-		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
-			runner.run(args);
-			mockedStatic.verify(() -> VandaHUtility.logAndPrint(null, null, true, "Commands:\n"), times(1));
-		}
 	}
 	
 	@Test
@@ -78,10 +87,15 @@ public class VandaHydrometryDataRunnerTest {
 		args[0] = "command1";
 		args[1] = "command2";
 		
-		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
-			runner.run(args);
-			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.WARN), eq(false), eq("Too many commands requested.")), times(1));
-		}
+		Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+		Field loggerField = runnerClass.getDeclaredField("logger"); 
+		loggerField.setAccessible(true);
+		loggerField.set(runner, mock(Logger.class));
+		Logger log = (Logger) loggerField.get(runner);
+	
+		runner.run(args);
+		
+		verify(log, times(1)).warn(eq("Too many commands requested."));
 	}
 	
 	@Test
@@ -92,10 +106,15 @@ public class VandaHydrometryDataRunnerTest {
 		
 		when(commandService.getCommandBean(args[0])).thenReturn(null);
 		
-		try (MockedStatic<VandaHUtility> mockedStatic = mockStatic(VandaHUtility.class)) {
-			runner.run(args);
-			mockedStatic.verify(() -> VandaHUtility.logAndPrint(any(), eq(Level.ERROR), eq(false), eq("No execution bean was regsitered for the given command: command1")), times(1));
-		}
+		Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+		Field loggerField = runnerClass.getDeclaredField("logger"); 
+		loggerField.setAccessible(true);
+		loggerField.set(runner, mock(Logger.class));
+		Logger log = (Logger) loggerField.get(runner);
+		
+		runner.run(args);
+		
+		verify(log, times(1)).error(eq("No execution bean was regsitered for the given command: command1"));
 	}
 	
 	@Test

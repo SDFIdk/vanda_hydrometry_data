@@ -27,7 +27,7 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 @Service
 public class VandahDmpApiService {
 	
-	private static final Logger log = LoggerFactory.getLogger(VandahDmpApiService.class);
+	private static final Logger logger = LoggerFactory.getLogger(VandahDmpApiService.class);
 	
 	private final String STATIONS_PATH = "stations";
 	private final String EXAMINATION_TYPES = "config/examination-types";
@@ -45,13 +45,13 @@ public class VandahDmpApiService {
 
 		String vandahApiUrl = config.getVandahDmpApiUrl() + STATIONS_PATH;
 		
-		VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl); 
+		logger.info("Call: " + vandahApiUrl);
 				
 		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
+					logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
 					throw new InternalException("Error retrieving stations: " + message);
 				})
@@ -84,13 +84,13 @@ public class VandahDmpApiService {
 		if (!isEmpty(withResultsCreatedAfter)) { vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); del = "&"; }
 		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
 		
-		VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl.toString());
+		logger.info("Call: " + vandahApiUrl.toString());
 		
 		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl.toString())
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
+					logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
 					throw new InternalException("Error retrieving stations: " + message);
 				})
@@ -102,13 +102,13 @@ public class VandahDmpApiService {
 	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes() {
 		String vandahApiUrl = config.getVandahDmpApiUrl() + EXAMINATION_TYPES;
 		
-		VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
+		logger.info("Call: " + vandahApiUrl);
 		
 		DmpHydroApiResponsesExaminationTypeResponse[] types = restClient.get().uri(vandahApiUrl)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving examination types: [" + response.getStatusCode() + "] " + response.getStatusText());
+					logger.error("Error retrieving examination types: [" + response.getStatusCode() + "] " + response.getStatusText());
 					String message = VandaHUtility.valueFromJson(response, "message");
 					throw new InternalException("Error retrieving examination types: " + message);
 				})
@@ -211,13 +211,13 @@ public class VandahDmpApiService {
 		int running = 2;
 		while (running > 0) {
 			try {
-				VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Call: " + vandahApiUrl);
+				logger.info("Call: " + vandahApiUrl);
 
 				results = restClient.get().uri(vandahApiUrl.toString())
 						.accept(MediaType.APPLICATION_JSON)
 						.retrieve()
 						.onStatus(status -> status.value() >= 400, (request, response) -> {
-							VandaHUtility.logAndPrint(log, Level.ERROR, false, "Error retrieving " + endpoint + ": [" + response.getStatusCode() + "] " + response.getStatusText());
+							logger.error("Error retrieving " + endpoint + ": [" + response.getStatusCode() + "] " + response.getStatusText());
 							String message = VandaHUtility.valueFromJson(response, "message");
 							throw new InternalException("Error retrieving " + endpoint + ": " + message);
 						})
@@ -225,7 +225,7 @@ public class VandahDmpApiService {
 				// Stop the while loop
 				running = 0;
 			} catch (ResourceAccessException | InternalException exception) {
-				VandaHUtility.logAndPrint(log, Level.WARN, false, "Exception received. Try again." + exception.getMessage());
+				logger.warn("Exception received. Try again..." + exception.getMessage());
 				running--;
 				if (running > 0) {
 					try {

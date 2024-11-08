@@ -20,7 +20,7 @@ import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 @Component
 public class CommandController {
 	
-	private static final Logger log = LoggerFactory.getLogger(CommandController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommandController.class);
 	
 	@Autowired
 	private CommandService commandService;
@@ -34,13 +34,13 @@ public class CommandController {
 	 * @param command
 	 */
     public void execute(CommandInterface commandBean) {
-    	VandaHUtility.logAndPrint(log, Level.INFO, config.isVerbose(), "Execute command: " + commandBean.getClass().getSimpleName());
+   		logger.info("Execute command: " + commandBean.getClass().getSimpleName());
     	
 		if (config.isHelp()) {
 			showHelp(commandBean, false);
 		} else {
     		int nr = commandBean.getData();
-    		VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Read (" + nr + ") items.");
+    		logger.info("Read (" + nr + ") items.");
     		
     		commandBean.mapData();
     		
@@ -50,7 +50,7 @@ public class CommandController {
     		
     		if (config.isSaveDb()) {
     			nr = commandBean.saveData();
-    			VandaHUtility.logAndPrint(null, null, config.isVerbose(), "Save (" + nr + ") items to DB.");
+    			logger.info("Save (" + nr + ") items to DB.");
     		}
 		}
     }
