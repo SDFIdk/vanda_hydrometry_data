@@ -33,7 +33,7 @@ CREATE TABLE measurement_type
  examination_type         varchar(100) NOT NULL,
  "parameter"              varchar(100) NOT NULL,
  parameter_sc             int NOT NULL,
- unit                     varchar(5) NOT NULL,
+ unit                     varchar(20) NOT NULL,
  unit_sc                  int NOT NULL,
  CONSTRAINT PK_3 PRIMARY KEY ( examination_type_sc )
 );
