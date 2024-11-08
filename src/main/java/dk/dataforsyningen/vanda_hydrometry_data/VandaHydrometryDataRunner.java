@@ -78,7 +78,6 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
 			
 			System.out.println("Use the option --displayRawData to display the API results at the console.");
 			System.out.println("Use the option --displayData to display the mapped data at the console.");
-			System.out.println("Use the option --verbose to display more info at the console.");
 			System.out.println("Use the option --saveDb to save the results in the defined database.");
 		
 		// Too many commands
