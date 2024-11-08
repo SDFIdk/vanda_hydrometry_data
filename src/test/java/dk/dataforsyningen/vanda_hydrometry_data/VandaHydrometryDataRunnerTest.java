@@ -66,12 +66,14 @@ public class VandaHydrometryDataRunnerTest {
 		
 		String[] args = new String[0];
 			
+		final PrintStream oldStdout = System.out;
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
         System.setOut(new PrintStream(bo));
         
         runner.run(args);
         
         bo.flush();
+        System.setOut(oldStdout);
         String allWrittenLines = new String(bo.toByteArray()); 
         assertTrue(allWrittenLines.contains("Commands:\n"));
 		
@@ -88,7 +90,7 @@ public class VandaHydrometryDataRunnerTest {
 		loggerField.setAccessible(true);
 		loggerField.set(runner, mock(Logger.class));
 		Logger log = (Logger) loggerField.get(runner);
-		
+	
 		runner.run(args);
 		
 		verify(log, times(1)).warn(eq("Too many commands requested."));
