@@ -145,7 +145,7 @@ public class VandahDmpApiService {
 	
 	
 	/**
-	 * Retrieves water flows.
+	 * Retrieves stream discharge.
 	 * 
 	 * @param stationId 
 	 * @param operatorStationId
@@ -156,7 +156,7 @@ public class VandahDmpApiService {
 	 * @param format
 	 * @return array of results
 	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterFlows(
+	public DmpHydroApiResponsesMeasurementResultResponse[] getStreamDischarge(
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
@@ -170,7 +170,7 @@ public class VandahDmpApiService {
 	
 	
 	/**
-	 * Call the API for both WATER_LEVELS and WATER_FLOWS
+	 * Call the API for the given endpoint
 	 * 
 	 * @param stationId should be set to actual station Id
 	 * @param operatorStationId

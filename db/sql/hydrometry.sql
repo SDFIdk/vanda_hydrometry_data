@@ -38,7 +38,7 @@ CREATE TABLE measurement_type
  CONSTRAINT PK_3 PRIMARY KEY ( examination_type_sc )
 );
 
-COMMENT ON TABLE measurement_type IS 'Contains information about the measurement types like Water Level, Water Flow, etc.';
+COMMENT ON TABLE measurement_type IS 'Contains information about the measurement types like Water Level, Stream Discharge, etc.';
 COMMENT ON COLUMN measurement_type.examination_type_sc IS 'The stancode of the examination type and the key in the table';
 COMMENT ON COLUMN measurement_type.examination_type IS 'The name of the examination type, for example "Vandføring" or "Vandstand"';
 COMMENT ON COLUMN measurement_type.parameter IS 'The parameter of the measurement, for example "Vandføring" or "Vandstand"';

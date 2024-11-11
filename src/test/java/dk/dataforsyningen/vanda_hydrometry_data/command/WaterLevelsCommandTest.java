@@ -39,7 +39,7 @@ public class WaterLevelsCommandTest {
 	private static int mp1 = 1;
 	private static int mp2 = 2;
 	
-	//stand
+	//water level
 	private static int paramSc1 = 1233;
 	private static String param1 = "Vandstand";
 	private static int examTSc1 = 25;
@@ -47,7 +47,7 @@ public class WaterLevelsCommandTest {
 	private static int unitSc1 = 19;
 	private static String unit1 = "cm";
 	
-	//flow
+	//stream discharge
 	private static int paramSc2 = 1155;
 	private static String param2 = "Vandføring";
 	private static int examTSc2 = 27;

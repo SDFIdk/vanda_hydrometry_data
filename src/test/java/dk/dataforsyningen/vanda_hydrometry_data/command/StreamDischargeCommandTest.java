@@ -25,10 +25,10 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultRespons
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesResultResponse;
 
 /**
- * This tests WateFlowsCommand functions but also the model data objects creation
+ * This tests StreamDischargeCommand functions but also the model data objects creation
  */
 @SpringBootTest
-public class WaterFlowsCommandTest {
+public class StreamDischargeCommandTest {
 
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
 	
@@ -39,7 +39,7 @@ public class WaterFlowsCommandTest {
 	private static int mp1 = 1;
 	private static int mp2 = 2;
 	
-	//stand
+	//water level
 	private static int paramSc1 = 1233;
 	private static String param1 = "Vandstand";
 	private static int examTSc1 = 25;
@@ -47,7 +47,7 @@ public class WaterFlowsCommandTest {
 	private static int unitSc1 = 19;
 	private static String unit1 = "cm";
 	
-	//flow
+	//stream discharge
 	private static int paramSc2 = 1155;
 	private static String param2 = "Vandføring";
 	private static int examTSc2 = 27;
@@ -74,7 +74,7 @@ public class WaterFlowsCommandTest {
 	private DatabaseService dbService;
 	
 	@InjectMocks
-	private WaterFlowsCommand cmd = new WaterFlowsCommand(); 
+	private StreamDischargeCommand cmd = new StreamDischargeCommand(); 
 	
 	@BeforeEach
 	public void setUp() {
@@ -156,14 +156,14 @@ public class WaterFlowsCommandTest {
 		when(config.getTo()).thenReturn(OffsetDateTime.parse(date2));
 		when(config.getCreatedAfter()).thenReturn(OffsetDateTime.parse(date3));
 		
-		when(vandahService.getWaterFlows(any(),any(),any(),any(),any(),any(),any())).thenReturn(data);
+		when(vandahService.getStreamDischarge(any(),any(),any(),any(),any(),any(),any())).thenReturn(data);
 	}
 	
 	@Test
 	public void testGetData() {
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getWaterFlows(id1, opId1, mp1, OffsetDateTime.parse(date1), OffsetDateTime.parse(date2), OffsetDateTime.parse(date3), null);
+		verify(vandahService, times(1)).getStreamDischarge(id1, opId1, mp1, OffsetDateTime.parse(date1), OffsetDateTime.parse(date2), OffsetDateTime.parse(date3), null);
 		
 		assertEquals(4, nr); //4 measurements for 2 for each 2 station
 	}
