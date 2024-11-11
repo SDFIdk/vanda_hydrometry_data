@@ -6,7 +6,6 @@ import java.time.OffsetDateTime;
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -74,15 +73,42 @@ public class VandahDmpApiService {
 		
 		String del = "";
 		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + STATIONS_PATH + "?");
-		if (!isEmpty(stationId)) { vandahApiUrl.append(del + "stationId=" + stationId ); del = "&"; }
-		if (!isEmpty(operatorStationId)) { vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); del = "&"; }
-		if (!isEmpty(stationOwnerCvr)) { vandahApiUrl.append(del + "stationOwnerCvr=" + stationOwnerCvr); del = "&"; }
-		if (!isEmpty(operatorCvr)) { vandahApiUrl.append(del + "operatorCvr=" + operatorCvr); del = "&"; }
-		if (!isEmpty(parameterSc)) { vandahApiUrl.append(del + "parameterSc=" + parameterSc); del = "&"; }
-		if (!isEmpty(examinationTypeSc)) { vandahApiUrl.append(del + "examinationTypeSc=" + examinationTypeSc); del = "&"; }
-		if (!isEmpty(withResultsAfter)) { vandahApiUrl.append(del + "withResultsAfter=" + withResultsAfter); del = "&"; }
-		if (!isEmpty(withResultsCreatedAfter)) { vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); del = "&"; }
-		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
+		if (!isEmpty(stationId)) { 
+			vandahApiUrl.append(del + "stationId=" + stationId ); 
+			del = "&"; 
+		}
+		if (!isEmpty(operatorStationId)) { 
+			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
+			del = "&"; 
+		}
+		if (!isEmpty(stationOwnerCvr)) { 
+			vandahApiUrl.append(del + "stationOwnerCvr=" + stationOwnerCvr); 
+			del = "&"; 
+		}
+		if (!isEmpty(operatorCvr)) { 
+			vandahApiUrl.append(del + "operatorCvr=" + operatorCvr); 
+			del = "&"; 
+		}
+		if (!isEmpty(parameterSc)) { 
+			vandahApiUrl.append(del + "parameterSc=" + parameterSc); 
+			del = "&"; 
+		}
+		if (!isEmpty(examinationTypeSc)) { 
+			vandahApiUrl.append(del + "examinationTypeSc=" + examinationTypeSc); 
+			del = "&"; 
+		}
+		if (!isEmpty(withResultsAfter)) { 
+			vandahApiUrl.append(del + "withResultsAfter=" + withResultsAfter); 
+			del = "&"; 
+		}
+		if (!isEmpty(withResultsCreatedAfter)) { 
+			vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); 
+			del = "&"; 
+		}
+		if (!isEmpty(format)) { 
+			vandahApiUrl.append(del + "format=" + format); 
+			del = "&"; 
+		}
 		
 		logger.info("Call: " + vandahApiUrl.toString());
 		
@@ -197,13 +223,34 @@ public class VandahDmpApiService {
 		
 		String del = "";
 		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + endpoint + "?");
-		if (!isEmpty(stationId)) { vandahApiUrl.append(del + "stationId=" + stationId); del = "&"; }
-		if (!isEmpty(operatorStationId)) { vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); del = "&"; }
-		if (!isEmpty(measurementPointNumber)) { vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); del = "&"; }
-		if (!isEmpty(from)) { vandahApiUrl.append(del + "from=" + from); del = "&"; }
-		if (!isEmpty(to)) { vandahApiUrl.append(del + "to=" + to); del = "&"; }
-		if (!isEmpty(createdAfter)) { vandahApiUrl.append(del + "createdAfter=" + createdAfter); del = "&"; }
-		if (!isEmpty(format)) { vandahApiUrl.append(del + "format=" + format); del = "&"; }
+		if (!isEmpty(stationId)) { 
+			vandahApiUrl.append(del + "stationId=" + stationId); 
+			del = "&"; 
+		}
+		if (!isEmpty(operatorStationId)) { 
+			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
+			del = "&"; 
+		}
+		if (!isEmpty(measurementPointNumber)) { 
+			vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); 
+			del = "&"; 
+		}
+		if (!isEmpty(from)) { 
+			vandahApiUrl.append(del + "from=" + from); 
+			del = "&"; 
+		}
+		if (!isEmpty(to)) { 
+			vandahApiUrl.append(del + "to=" + to); 
+			del = "&"; 
+		}
+		if (!isEmpty(createdAfter)) { 
+			vandahApiUrl.append(del + "createdAfter=" + createdAfter); 
+			del = "&"; 
+		}
+		if (!isEmpty(format)) { 
+			vandahApiUrl.append(del + "format=" + format); 
+			del = "&"; 
+		}
 
 		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
 
