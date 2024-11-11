@@ -39,7 +39,7 @@ Retrieve a single or a subset of stations from DMP depending on extra criteria t
 
 Returns current results of water level (ExaminationType 25) measurements.
 
-	waterLevels --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	waterlevels --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 - **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided. Use "all" (for ex. --stationId=all) to read data for all stations saved in the database. Use comma separated values (f.ex. --stationId=10000002,10000003) to read data for selected stations.
 - **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -52,7 +52,7 @@ Returns current results of water level (ExaminationType 25) measurements.
 
 Returns current results of stream discharge (ExaminationType 27) measurements. On DMP API the endpoint is called water-flows.
 
-	streamDischarge --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	streamdischarge --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 - **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided. Use "all" (for ex. --stationId=all) to read data for all stations saved in the database. Use comma separated values (f.ex. --stationId=10000002,10000003) to read data for selected stations.
 - **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -66,7 +66,7 @@ Returns current results of stream discharge (ExaminationType 27) measurements. O
 
 Returns the examination types with mapping and constraints.
 
-	examinationTypes
+	examinationtypes
 
 	
 ### Save to DB
@@ -121,28 +121,13 @@ java -jar vanda-hydrometry-data.jar waterlevels --stationId=all --saveDb --from=
 Get all stream discharge measurements between 2 dates for 2 stations and siplay the results on the screen:
 
 ```
-java -jar vanda-hydrometry-data.jar streamDischarge --stationId=10000001,10000002 --displayData --from=2024-10-01Z --to=2024-10-2Z
+java -jar vanda-hydrometry-data.jar streamdischarge --stationId=10000001,10000002 --displayData --from=2024-10-01Z --to=2024-10-2Z
 ```
 
-
-## Development
-
-In order to re-generate sources (the data model) from DMP API, enable the plugin in pom.xml by setting **skip** to **false**.
-
-```
-	<plugin>
-		<groupId>io.swagger.codegen.v3</groupId>
-		<artifactId>swagger-codegen-maven-plugin</artifactId>
-		<version>3.0.61</version>
-		<configuration>
-			<skip>false</skip>
-		</configuration>
-	...
-```
 
 ## Configuration
 
-The following configurations can be adjusted in different configuration files:  _application.properties_ ,  _logback.xml_ :
+The following configurations can be adjusted in  _application.properties_ :
 
 - **Postgres database connection info**
 
@@ -171,20 +156,3 @@ The following configurations can be adjusted in different configuration files:  
 	dmp.vandah.api.url=https://vandah.test.miljoeportal.dk/api/
 ```
 
-- **Execution for multiple stations**
-
-  If there is the need to execute a command for several stations one could use the option "--stationId". For exmple: "--stationId=all" or "--stationId=00000001,00000002". This property sets the mode the command will be executed.
-  
-  If this is set to "true" then the requested command (not API calls) is executed several times for each required station. Saving happens after each station. This is slower but less memory usage. 
-  
-  If this is set to "false" then the command is executed once for all required stations. Saving happens once for the entire data at the end. This is faster but more memory consuming. 
-  
-  Individual API calls will be made for each station in any case.
-
-```
-	vanda-hydrometry-data.one-command-per-station=true
-```
-
-- **Logging**
-
-  The file logback.xml defines the configuration for logging. It enables the logging into rolling files, their name and format.
