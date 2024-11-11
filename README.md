@@ -48,11 +48,11 @@ Returns current results of water level (ExaminationType 25) measurements.
 - **to** to measurement date time to include in the response. Return results on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered. 
 - **createdAfter** return results that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component "Z" (Zulu) is not provided, the system's time zone is considered.
 
-### Read water flows
+### Read stream discharge
 
-Returns current results of water flow (ExaminationType 27) measurements.
+Returns current results of stream discharge (ExaminationType 27) measurements. On DMP API the endpoint is called water-flows.
 
-	waterFlow --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
+	streamDischarge --stationId=string [--operatorStationId=string] [--measurementPointNumber=number] [--from=date] [--to=date] [--createdAfter=date]
 	
 - **stationId** (_required_) is a 8 digits number to identify a single station. Either stationId or operatorStationId must be provided. Use "all" (for ex. --stationId=all) to read data for all stations saved in the database. Use comma separated values (f.ex. --stationId=10000002,10000003) to read data for selected stations.
 - **operatorStationId** the id of the stations' operator. Either stationId or operatorStationId must be provided.
@@ -118,10 +118,10 @@ Get all water levels measurements between 2 dates for all stations saved into th
 java -jar vanda-hydrometry-data.jar waterlevels --stationId=all --saveDb --from=2024-10-01Z --to=2024-10-31Z
 ```
 
-Get all water flows measurements between 2 dates for 2 stations and siplay the results on the screen:
+Get all stream discharge measurements between 2 dates for 2 stations and siplay the results on the screen:
 
 ```
-java -jar vanda-hydrometry-data.jar waterflows --stationId=10000001,10000002 --displayData --from=2024-10-01Z --to=2024-10-2Z
+java -jar vanda-hydrometry-data.jar streamDischarge --stationId=10000001,10000002 --displayData --from=2024-10-01Z --to=2024-10-2Z
 ```
 
 

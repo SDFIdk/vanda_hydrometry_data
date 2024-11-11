@@ -21,17 +21,17 @@ import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 
 /**
- * Command to retrieve the water flows.
+ * Command to retrieve the stream discharge (endpoint: water-flows).
  * 
  * @author Radu Dudici
  */
 @Component
-@CommandQualifier(command = "waterflows")
-public class WaterFlowsCommand implements CommandInterface {
+@CommandQualifier(command = "streamdischarge")
+public class StreamDischargeCommand implements CommandInterface {
 	
 	public static final int EXAMINATION_TYPE_SC = 27;
 
-	private static final Logger logger = LoggerFactory.getLogger(WaterFlowsCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(StreamDischargeCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
 	
@@ -50,7 +50,7 @@ public class WaterFlowsCommand implements CommandInterface {
 
 	@Override
 	public int getData() {
-		data = vandahService.getWaterFlows(config.getStationId(),
+		data = vandahService.getStreamDischarge(config.getStationId(),
 				config.getOperatorStationId(),
 				config.getMeasurementPointNumber(),
 				config.getFrom(),
@@ -134,7 +134,7 @@ public class WaterFlowsCommand implements CommandInterface {
 
 	@Override
 	public void showShortHelp() {
-		System.out.println(VandaHUtility.BOLD_ON + "waterFlows" + VandaHUtility.FORMAT_OFF + " : Retrieves current results of water flows (ExaminationType 27) measurements.");
+		System.out.println(VandaHUtility.BOLD_ON + "streamDischarge" + VandaHUtility.FORMAT_OFF + " : Retrieves current results of stream discharge (ExaminationType 27) measurements.");
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import dk.dataforsyningen.vanda_hydrometry_data.command.CommandInterface;
 import dk.dataforsyningen.vanda_hydrometry_data.command.StationsCommand;
-import dk.dataforsyningen.vanda_hydrometry_data.command.WaterFlowsCommand;
+import dk.dataforsyningen.vanda_hydrometry_data.command.StreamDischargeCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.command.WaterLevelsCommand;
 
 @SpringBootTest
@@ -31,7 +31,7 @@ public class CommandServiceTest {
 			if ("waterlevels".equals(cmd) && cmds.get(cmd) instanceof WaterLevelsCommand) {
 				found++;
 			}
-			if ("waterflows".equals(cmd) && cmds.get(cmd) instanceof WaterFlowsCommand) {
+			if ("streamdischarge".equals(cmd) && cmds.get(cmd) instanceof StreamDischargeCommand) {
 				found++;
 			}
 			if ("stations".equals(cmd) && cmds.get(cmd) instanceof StationsCommand) {
