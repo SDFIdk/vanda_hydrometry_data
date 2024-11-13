@@ -52,9 +52,12 @@ public class StationsCommand implements CommandInterface {
 				config.getParameterSc(), 
 				config.getExaminationTypeSc(), 
 				config.getWithResultsAfter(), 
-				config.getWithResultsCreatedAfter());
-		
-		return data != null ? data.length : 0;
+                config.getWithResultsCreatedAfter());
+
+		if (data != null && data.length > 0) {
+			return data.length;
+		}
+		return 0;
 	}
 
 	@Override
