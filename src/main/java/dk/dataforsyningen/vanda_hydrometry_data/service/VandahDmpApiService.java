@@ -34,9 +34,6 @@ public class VandahDmpApiService {
 	@Autowired
 	RestClient restClient;
 	
-	@Autowired
-	VandaHydrometryDataConfig config;
-	
 	public DmpHydroApiResponsesStationResponse[] getStations(
 			String vandahApiUrl,
 			String stationId, 
@@ -87,7 +84,6 @@ public class VandahDmpApiService {
 				.body(DmpHydroApiResponsesExaminationTypeResponse[].class);
 				
 		return types;
-		
 	}
 		
 	
