@@ -65,7 +65,12 @@ public class StreamDischargeCommand implements CommandInterface {
 		int nr = 0;
 		if (data != null) {
 			for(DmpHydroApiResponsesMeasurementResultResponse station : data) {
-				nr += (station.getResults() != null ? station.getResults().size() : 0);
+				if (station.getResults() != null) {
+					nr += station.getResults().size();
+				}
+				else {
+					nr = 0;
+				}
 			}
 		}
 		
@@ -109,7 +114,12 @@ public class StreamDischargeCommand implements CommandInterface {
 			//save the measurements
 			dbService.saveMeasurements(measurements);
 		}
-		return measurements != null ? measurements.size() : 0;
+
+		if (measurements != null) {
+			return measurements.size();
+		}
+
+		return 0;
 	}
 
 	@Override

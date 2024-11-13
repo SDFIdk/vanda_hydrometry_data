@@ -57,6 +57,7 @@ public class StationsCommand implements CommandInterface {
 		if (data != null && data.length > 0) {
 			return data.length;
 		}
+
 		return 0;
 	}
 
@@ -74,7 +75,11 @@ public class StationsCommand implements CommandInterface {
 		if (data != null) {
 			dbService.saveStations(stations);
 		}
-		return data != null ? data.length : 0;
+
+		if (data != null && data.length > 0) {
+			return data.length;
+		}
+		return 0;
 	}
 
 	@Override

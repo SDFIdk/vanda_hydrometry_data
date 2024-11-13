@@ -35,7 +35,12 @@ public class ExaminationTypesCommand  implements CommandInterface {
 	@Override
 	public int getData() {
 		data = vandahService.getExaminationTypes(config.getVandahDmpApiUrl() + ENDPOINT);
-		return data != null ? data.length : 0;
+
+		if (data != null && data.length > 0) {
+			return data.length;
+		}
+
+		return 0;
 	}
 
 	@Override
