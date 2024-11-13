@@ -272,7 +272,7 @@ public class VandahDmpApiService {
 				// Stop the while loop
 				running = 0;
 			} catch (ResourceAccessException | InternalException exception) {
-				logger.warn("Exception received. Try again..." + exception.getMessage());
+				logger.warn("Exception received: " + exception + "Try again..." + exception.getMessage());
 				running--;
 				if (running > 0) {
 					try {
