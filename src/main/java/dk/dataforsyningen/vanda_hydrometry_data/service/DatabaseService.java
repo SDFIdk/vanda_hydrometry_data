@@ -166,7 +166,6 @@ public class DatabaseService {
      *
      * @param stationId
      * @param measurementPointNumber
-     * @param measurementTypeId
      * @param measurementDatetime
      * @return list of measurement history for the given measurement
      */
@@ -182,7 +181,6 @@ public class DatabaseService {
      *
      * @param stationId
      * @param measurementPointNumber
-     * @param measurementTypeId
      * @param measurementDatetime
      * @return Measurement
      */
