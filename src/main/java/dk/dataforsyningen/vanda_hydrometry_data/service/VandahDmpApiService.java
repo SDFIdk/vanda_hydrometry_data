@@ -40,13 +40,10 @@ public class VandahDmpApiService {
 			String vandahApiUrl,
 			String stationId, 
 			String operatorStationId,
-			String stationOwnerCvr,
-			String operatorCvr,
 			Integer parameterSc,
 			Integer examinationTypeSc,
 			OffsetDateTime withResultsAfter,
-			OffsetDateTime withResultsCreatedAfter,
-			String format
+			OffsetDateTime withResultsCreatedAfter
 			) {
 		
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl);
@@ -55,12 +52,6 @@ public class VandahDmpApiService {
 		}
 		if (!isEmpty(operatorStationId)) { 
 			uriBuilder.queryParam("operatorStationId", operatorStationId); 
-		}
-		if (!isEmpty(stationOwnerCvr)) { 
-			uriBuilder.queryParam("stationOwnerCvr", stationOwnerCvr); 
-		}
-		if (!isEmpty(operatorCvr)) { 
-			uriBuilder.queryParam("operatorCvr", operatorCvr); 
 		}
 		if (!isEmpty(parameterSc)) { 
 			uriBuilder.queryParam("parameterSc", parameterSc); 
@@ -73,9 +64,6 @@ public class VandahDmpApiService {
 		}
 		if (!isEmpty(withResultsCreatedAfter)) { 
 			uriBuilder.queryParam("withResultsCreatedAfter", withResultsCreatedAfter.toString()); 
-		}
-		if (!isEmpty(format)) { 
-			uriBuilder.queryParam("format", format); 
 		}
 		
         URI uri = uriBuilder.build().toUri();
@@ -134,8 +122,8 @@ public class VandahDmpApiService {
 			Integer measurementPointNumber,
 			OffsetDateTime from,
 			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
+			OffsetDateTime createdAfter
+			) {
 		
 		if (isEmpty(stationId) && isEmpty(operatorStationId)) {
 			throw new InvalidParameterException("Station id or Operator station id must be specified.");
@@ -159,9 +147,6 @@ public class VandahDmpApiService {
 		}
 		if (!isEmpty(createdAfter)) { 
 			uriBuilder.queryParam("createdAfter", createdAfter.toString()); 
-		}
-		if (!isEmpty(format)) { 
-			uriBuilder.queryParam("format", format); 
 		}
 		
         URI uri = uriBuilder.build().toUri();
