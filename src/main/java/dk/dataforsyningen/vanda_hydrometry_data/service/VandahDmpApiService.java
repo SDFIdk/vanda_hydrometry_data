@@ -101,7 +101,6 @@ public class VandahDmpApiService {
 	 * @param from
 	 * @param to
 	 * @param createdAfter
-	 * @param format
 	 * @return
 	 */
 	public DmpHydroApiResponsesMeasurementResultResponse[] getMeasurementsForStation(
