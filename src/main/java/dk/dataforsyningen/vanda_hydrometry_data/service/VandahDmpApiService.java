@@ -57,7 +57,7 @@ public class VandahDmpApiService {
 		
         URI uri = uriBuilder.build().toUri();
 				
-		logger.info("Call: " + uri.toString());
+		logger.info("Call: " + uri);
 		
 		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(uri)
 				.accept(MediaType.APPLICATION_JSON)
@@ -134,13 +134,13 @@ public class VandahDmpApiService {
 		int running = 2;
 		while (running > 0) {
 			try {
-				logger.info("Call: " + uri.toString());
+				logger.info("Call: " + uri);
 
 				results = restClient.get().uri(uri)
 						.accept(MediaType.APPLICATION_JSON)
 						.retrieve()
 						.onStatus(status -> status.value() >= 400, (request, response) -> {
-							logger.error("Error response from " + uri.toString() + ": [" + response.getStatusCode() + "] " + response.getStatusText());
+							logger.error("Error response from " + uri + ": [" + response.getStatusCode() + "] " + response.getStatusText());
 							String message = VandaHUtility.valueFromJson(response, "message");
 							throw new InternalException("Error retrieving data: " + message);
 						})
