@@ -68,9 +68,6 @@ public class StreamDischargeCommand implements CommandInterface {
 				if (station.getResults() != null) {
 					nr += station.getResults().size();
 				}
-				else {
-					nr = 0;
-				}
 			}
 		}
 		
