@@ -30,6 +30,8 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultRespons
 public class StreamDischargeCommand implements CommandInterface {
 	
 	public static final int EXAMINATION_TYPE_SC = 27;
+	
+	private final String ENDPOINT = "water-flows";
 
 	private static final Logger logger = LoggerFactory.getLogger(StreamDischargeCommand.class);
 	
@@ -50,20 +52,22 @@ public class StreamDischargeCommand implements CommandInterface {
 
 	@Override
 	public int getData() {
-		data = vandahService.getStreamDischarge(config.getStationId(),
+		data = vandahService.getMeasurementsForStation(config.getVandahDmpApiUrl() + ENDPOINT,
+				config.getStationId(),
 				config.getOperatorStationId(),
 				config.getMeasurementPointNumber(),
 				config.getFrom(),
 				config.getTo(),
-				config.getCreatedAfter(),
-				null
+				config.getCreatedAfter()
 				);
 		
 		//count measurements
 		int nr = 0;
 		if (data != null) {
 			for(DmpHydroApiResponsesMeasurementResultResponse station : data) {
-				nr += (station.getResults() != null ? station.getResults().size() : 0);
+				if (station.getResults() != null) {
+					nr += station.getResults().size();
+				}
 			}
 		}
 		
@@ -107,7 +111,12 @@ public class StreamDischargeCommand implements CommandInterface {
 			//save the measurements
 			dbService.saveMeasurements(measurements);
 		}
-		return measurements != null ? measurements.size() : 0;
+
+		if (measurements != null) {
+			return measurements.size();
+		}
+
+		return 0;
 	}
 
 	@Override

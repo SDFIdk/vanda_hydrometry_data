@@ -20,6 +20,8 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 @CommandQualifier(command = "examinationtypes")
 public class ExaminationTypesCommand  implements CommandInterface {
 	
+	private final String ENDPOINT = "config/examination-types";
+	
 	private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
 	
 	private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
@@ -32,8 +34,13 @@ public class ExaminationTypesCommand  implements CommandInterface {
 	
 	@Override
 	public int getData() {
-		data = vandahService.getExaminationTypes();
-		return data != null ? data.length : 0;
+		data = vandahService.getExaminationTypes(config.getVandahDmpApiUrl() + ENDPOINT);
+
+		if (data != null && data.length > 0) {
+			return data.length;
+		}
+
+		return 0;
 	}
 
 	@Override

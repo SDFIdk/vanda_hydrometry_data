@@ -1,7 +1,9 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import java.net.URI;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
@@ -27,92 +30,33 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 public class VandahDmpApiService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VandahDmpApiService.class);
-	
-	private final String STATIONS_PATH = "stations";
-	private final String EXAMINATION_TYPES = "config/examination-types";
-	private final String WATER_FLOWS = "water-flows";
-	private final String WATER_LEVELS = "water-levels";
-	
+		
 	@Autowired
 	RestClient restClient;
 	
-	@Autowired
-	VandaHydrometryDataConfig config;
-	
-	
-	public DmpHydroApiResponsesStationResponse[] getAllStations() {
-
-		String vandahApiUrl = config.getVandahDmpApiUrl() + STATIONS_PATH;
-		
-		logger.info("Call: " + vandahApiUrl);
-				
-		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl)
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
-					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving stations: " + message);
-				})
-				.body(DmpHydroApiResponsesStationResponse[].class);
-				
-		return stations;
-	}
-	
 	public DmpHydroApiResponsesStationResponse[] getStations(
+			String vandahApiUrl,
 			String stationId, 
 			String operatorStationId,
-			String stationOwnerCvr,
-			String operatorCvr,
 			Integer parameterSc,
 			Integer examinationTypeSc,
 			OffsetDateTime withResultsAfter,
-			OffsetDateTime withResultsCreatedAfter,
-			String format
+			OffsetDateTime withResultsCreatedAfter
 			) {
 		
-		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + STATIONS_PATH + "?");
-		if (!isEmpty(stationId)) { 
-			vandahApiUrl.append(del + "stationId=" + stationId ); 
-			del = "&"; 
-		}
-		if (!isEmpty(operatorStationId)) { 
-			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
-			del = "&"; 
-		}
-		if (!isEmpty(stationOwnerCvr)) { 
-			vandahApiUrl.append(del + "stationOwnerCvr=" + stationOwnerCvr); 
-			del = "&"; 
-		}
-		if (!isEmpty(operatorCvr)) { 
-			vandahApiUrl.append(del + "operatorCvr=" + operatorCvr); 
-			del = "&"; 
-		}
-		if (!isEmpty(parameterSc)) { 
-			vandahApiUrl.append(del + "parameterSc=" + parameterSc); 
-			del = "&"; 
-		}
-		if (!isEmpty(examinationTypeSc)) { 
-			vandahApiUrl.append(del + "examinationTypeSc=" + examinationTypeSc); 
-			del = "&"; 
-		}
-		if (!isEmpty(withResultsAfter)) { 
-			vandahApiUrl.append(del + "withResultsAfter=" + withResultsAfter); 
-			del = "&"; 
-		}
-		if (!isEmpty(withResultsCreatedAfter)) { 
-			vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); 
-			del = "&"; 
-		}
-		if (!isEmpty(format)) { 
-			vandahApiUrl.append(del + "format=" + format); 
-			del = "&"; 
-		}
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl)
+				.queryParamIfPresent("stationId", Optional.ofNullable(stationId))
+				.queryParamIfPresent("operatorStationId", Optional.ofNullable(operatorStationId))
+				.queryParamIfPresent("parameterSc", Optional.ofNullable(parameterSc))
+				.queryParamIfPresent("examinationTypeSc", Optional.ofNullable(examinationTypeSc))
+				.queryParamIfPresent("withResultsAfter", Optional.ofNullable(withResultsAfter))
+				.queryParamIfPresent("withResultsCreatedAfter", Optional.ofNullable(withResultsCreatedAfter));
 		
-		logger.info("Call: " + vandahApiUrl.toString());
+        URI uri = uriBuilder.build().toUri();
+				
+		logger.info("Call: " + uri);
 		
-		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl.toString())
+		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(uri)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
@@ -125,8 +69,7 @@ public class VandahDmpApiService {
 		return stations;
 	}
 	
-	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes() {
-		String vandahApiUrl = config.getVandahDmpApiUrl() + EXAMINATION_TYPES;
+	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes(String vandahApiUrl) {
 		
 		logger.info("Call: " + vandahApiUrl);
 		
@@ -141,116 +84,45 @@ public class VandahDmpApiService {
 				.body(DmpHydroApiResponsesExaminationTypeResponse[].class);
 				
 		return types;
-		
 	}
-	
+		
 	
 	/**
-	 * Retrieves water levels.
+	 * Call the API for the given endpoint to retrieve measurements
 	 * 
-	 * @param stationId 
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return array of results
-	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
-		
-		return getWaterMeasurementsForStation(WATER_LEVELS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-	}
-	
-	
-	/**
-	 * Retrieves stream discharge.
-	 * 
-	 * @param stationId 
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return array of results
-	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getStreamDischarge(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
-		
-		return getWaterMeasurementsForStation(WATER_FLOWS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-	}
-	
-	
-	/**
-	 * Call the API for the given endpoint
-	 * 
+	 * @param vandahApiUrl the URL base
 	 * @param stationId should be set to actual station Id
 	 * @param operatorStationId
 	 * @param measurementPointNumber
 	 * @param from
 	 * @param to
 	 * @param createdAfter
-	 * @param format
 	 * @return
 	 */
-	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterMeasurementsForStation(
-			String endpoint,
+	public DmpHydroApiResponsesMeasurementResultResponse[] getMeasurementsForStation(
+			String vandahApiUrl,
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
 			OffsetDateTime from,
 			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
+			OffsetDateTime createdAfter
+			) {
 		
 		if (isEmpty(stationId) && isEmpty(operatorStationId)) {
 			throw new InvalidParameterException("Station id or Operator station id must be specified.");
 		}
 		
-		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + endpoint + "?");
-		if (!isEmpty(stationId)) { 
-			vandahApiUrl.append(del + "stationId=" + stationId); 
-			del = "&"; 
-		}
-		if (!isEmpty(operatorStationId)) { 
-			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
-			del = "&"; 
-		}
-		if (!isEmpty(measurementPointNumber)) { 
-			vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); 
-			del = "&"; 
-		}
-		if (!isEmpty(from)) { 
-			vandahApiUrl.append(del + "from=" + from); 
-			del = "&"; 
-		}
-		if (!isEmpty(to)) { 
-			vandahApiUrl.append(del + "to=" + to); 
-			del = "&"; 
-		}
-		if (!isEmpty(createdAfter)) { 
-			vandahApiUrl.append(del + "createdAfter=" + createdAfter); 
-			del = "&"; 
-		}
-		if (!isEmpty(format)) { 
-			vandahApiUrl.append(del + "format=" + format); 
-			del = "&"; 
-		}
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder
+				.fromUriString(vandahApiUrl)
+				.queryParamIfPresent("stationId", Optional.of(stationId))
+				.queryParamIfPresent("operatorStationId", Optional.ofNullable(operatorStationId))
+				.queryParamIfPresent("measurementPointNumber", Optional.ofNullable(measurementPointNumber))
+				.queryParamIfPresent("from", Optional.ofNullable(from))
+				.queryParamIfPresent("to", Optional.ofNullable(to))
+				.queryParamIfPresent("createdAfter", Optional.ofNullable(createdAfter));
+		
+        URI uri = uriBuilder.build().toUri();
 
 		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
 
@@ -258,15 +130,15 @@ public class VandahDmpApiService {
 		int running = 2;
 		while (running > 0) {
 			try {
-				logger.info("Call: " + vandahApiUrl);
+				logger.info("Call: " + uri);
 
-				results = restClient.get().uri(vandahApiUrl.toString())
+				results = restClient.get().uri(uri)
 						.accept(MediaType.APPLICATION_JSON)
 						.retrieve()
 						.onStatus(status -> status.value() >= 400, (request, response) -> {
-							logger.error("Error retrieving " + endpoint + ": [" + response.getStatusCode() + "] " + response.getStatusText());
+							logger.error("Error response from " + uri + ": [" + response.getStatusCode() + "] " + response.getStatusText());
 							String message = VandaHUtility.valueFromJson(response, "message");
-							throw new InternalException("Error retrieving " + endpoint + ": " + message);
+							throw new InternalException("Error retrieving data: " + message);
 						})
 						.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
 				// Stop the while loop
@@ -286,11 +158,12 @@ public class VandahDmpApiService {
 
 		return results;
 	}
+	
+	private boolean isEmpty(String validate) {
+		if (validate == null || validate.isEmpty() || validate.isBlank()) {
+			return true;
+		}
 
-	
-	
-	private boolean isEmpty(Object obj) {
-		return obj == null || (obj instanceof String && ((String) obj).isEmpty());
+		return false;
 	}
-
 }

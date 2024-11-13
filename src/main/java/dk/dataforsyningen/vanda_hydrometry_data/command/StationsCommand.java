@@ -26,6 +26,8 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 @CommandQualifier(command = "stations")
 public class StationsCommand implements CommandInterface {
 
+	private final String ENDPOINT = "stations";
+	
 	private static final Logger logger = LoggerFactory.getLogger(StationsCommand.class);
 	
 	private DmpHydroApiResponsesStationResponse[] data;
@@ -43,24 +45,20 @@ public class StationsCommand implements CommandInterface {
 	
 	@Override
 	public int getData() {
-		boolean getAllStations = config.getStationId() == null 
-				&& config.getOperatorStationId() == null
-				&& config.getParameterSc() == null
-				&& config.getWithResultsAfter() == null
-				&& config.getWithResultsCreatedAfter() == null
-				&& config.getExaminationTypeSc() == null;
 		
-		if (getAllStations) {
-			data = vandahService.getAllStations();
-		} else {
-			data = vandahService.getStations(config.getStationId(), 
-					config.getOperatorStationId(), 
-					null, null, config.getParameterSc(), 
-					config.getExaminationTypeSc(), 
-					config.getWithResultsAfter(), 
-					config.getWithResultsCreatedAfter(), null);
+		data = vandahService.getStations(config.getVandahDmpApiUrl() + ENDPOINT, 
+				config.getStationId(), 
+				config.getOperatorStationId(), 
+				config.getParameterSc(), 
+				config.getExaminationTypeSc(), 
+				config.getWithResultsAfter(), 
+                config.getWithResultsCreatedAfter());
+
+		if (data != null && data.length > 0) {
+			return data.length;
 		}
-		return data != null ? data.length : 0;
+
+		return 0;
 	}
 
 	@Override
@@ -77,7 +75,11 @@ public class StationsCommand implements CommandInterface {
 		if (data != null) {
 			dbService.saveStations(stations);
 		}
-		return data != null ? data.length : 0;
+
+		if (data != null && data.length > 0) {
+			return data.length;
+		}
+		return 0;
 	}
 
 	@Override

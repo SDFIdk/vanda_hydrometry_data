@@ -3,6 +3,8 @@ package dk.dataforsyningen.vanda_hydrometry_data.command;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -106,9 +108,7 @@ public class StationsCommandTest {
 		data[0] = station1;
 		data[1] = station2;
 		
-		when(vandahService.getAllStations()).thenReturn(data);
-		
-		when(vandahService.getStations(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(data);
+		when(vandahService.getStations(any(), any(), any(), any(), any(), any(), any())).thenReturn(data);
 		
 		when(config.getStationId()).thenReturn(id1);
 		when(config.getOperatorStationId()).thenReturn(opId1);
@@ -122,7 +122,7 @@ public class StationsCommandTest {
 	public void testGetData() {
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getStations(id1, opId1, null, null, mtParamSc, mtExamTypeSc, OffsetDateTime.parse(date1), OffsetDateTime.parse(date2),null);
+		verify(vandahService, times(1)).getStations(any(), eq(id1), eq(opId1), eq(mtParamSc), eq(mtExamTypeSc), eq(OffsetDateTime.parse(date1)), eq(OffsetDateTime.parse(date2)));
 		
 		assertEquals(2, nr); //2 station
 	}
@@ -139,7 +139,7 @@ public class StationsCommandTest {
 		
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getAllStations();
+		verify(vandahService, times(1)).getStations(any(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull());
 		
 		assertEquals(2, nr); //2 station
 	}
