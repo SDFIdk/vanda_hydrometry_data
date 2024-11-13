@@ -3,6 +3,7 @@ package dk.dataforsyningen.vanda_hydrometry_data.service;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import org.apache.logging.log4j.util.InternalException;
 import org.slf4j.Logger;
@@ -46,25 +47,13 @@ public class VandahDmpApiService {
 			OffsetDateTime withResultsCreatedAfter
 			) {
 		
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl);
-		if (!isEmpty(stationId)) { 
-			uriBuilder.queryParam("stationId", stationId); 
-		}
-		if (!isEmpty(operatorStationId)) { 
-			uriBuilder.queryParam("operatorStationId", operatorStationId); 
-		}
-		if (!isEmpty(parameterSc)) { 
-			uriBuilder.queryParam("parameterSc", parameterSc); 
-		}
-		if (!isEmpty(examinationTypeSc)) { 
-			uriBuilder.queryParam("examinationTypeSc", examinationTypeSc); 
-		}
-		if (!isEmpty(withResultsAfter)) { 
-			uriBuilder.queryParam("withResultsAfter", withResultsAfter.toString()); 
-		}
-		if (!isEmpty(withResultsCreatedAfter)) { 
-			uriBuilder.queryParam("withResultsCreatedAfter", withResultsCreatedAfter.toString()); 
-		}
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl)
+				.queryParamIfPresent("stationId", Optional.ofNullable(stationId))
+				.queryParamIfPresent("operatorStationId", Optional.ofNullable(operatorStationId))
+				.queryParamIfPresent("parameterSc", Optional.ofNullable(parameterSc))
+				.queryParamIfPresent("examinationTypeSc", Optional.ofNullable(examinationTypeSc))
+				.queryParamIfPresent("withResultsAfter", Optional.ofNullable(withResultsAfter))
+				.queryParamIfPresent("withResultsCreatedAfter", Optional.ofNullable(withResultsCreatedAfter));
 		
         URI uri = uriBuilder.build().toUri();
 				
@@ -129,25 +118,14 @@ public class VandahDmpApiService {
 			throw new InvalidParameterException("Station id or Operator station id must be specified.");
 		}
 		
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl);
-		if (!isEmpty(stationId)) { 
-			uriBuilder.queryParam("stationId", stationId); 
-		}
-		if (!isEmpty(operatorStationId)) { 
-			uriBuilder.queryParam("operatorStationId", operatorStationId); 
-		}
-		if (!isEmpty(measurementPointNumber)) { 
-			uriBuilder.queryParam("measurementPointNumber", measurementPointNumber); 
-		}
-		if (!isEmpty(from)) { 
-			uriBuilder.queryParam("from", from.toString()); 
-		}
-		if (!isEmpty(to)) { 
-			uriBuilder.queryParam("to", to.toString()); 
-		}
-		if (!isEmpty(createdAfter)) { 
-			uriBuilder.queryParam("createdAfter", createdAfter.toString()); 
-		}
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder
+				.fromUriString(vandahApiUrl)
+				.queryParamIfPresent("stationId", Optional.of(stationId))
+				.queryParamIfPresent("operatorStationId", Optional.ofNullable(operatorStationId))
+				.queryParamIfPresent("measurementPointNumber", Optional.ofNullable(measurementPointNumber))
+				.queryParamIfPresent("from", Optional.ofNullable(from))
+				.queryParamIfPresent("to", Optional.ofNullable(to))
+				.queryParamIfPresent("createdAfter", Optional.ofNullable(createdAfter));
 		
         URI uri = uriBuilder.build().toUri();
 
