@@ -49,10 +49,10 @@ public class StationsCommand implements CommandInterface {
 		data = vandahService.getStations(config.getVandahDmpApiUrl() + ENDPOINT, 
 				config.getStationId(), 
 				config.getOperatorStationId(), 
-				null, null, config.getParameterSc(), 
+				config.getParameterSc(), 
 				config.getExaminationTypeSc(), 
 				config.getWithResultsAfter(), 
-				config.getWithResultsCreatedAfter(), null);
+				config.getWithResultsCreatedAfter());
 		
 		return data != null ? data.length : 0;
 	}

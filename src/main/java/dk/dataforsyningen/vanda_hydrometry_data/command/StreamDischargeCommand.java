@@ -58,8 +58,7 @@ public class StreamDischargeCommand implements CommandInterface {
 				config.getMeasurementPointNumber(),
 				config.getFrom(),
 				config.getTo(),
-				config.getCreatedAfter(),
-				null
+				config.getCreatedAfter()
 				);
 		
 		//count measurements

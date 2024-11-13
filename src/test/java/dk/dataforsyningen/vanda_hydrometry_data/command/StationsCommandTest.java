@@ -108,7 +108,7 @@ public class StationsCommandTest {
 		data[0] = station1;
 		data[1] = station2;
 		
-		when(vandahService.getStations(any(), any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(data);
+		when(vandahService.getStations(any(), any(), any(), any(), any(), any(), any())).thenReturn(data);
 		
 		when(config.getStationId()).thenReturn(id1);
 		when(config.getOperatorStationId()).thenReturn(opId1);
@@ -122,7 +122,7 @@ public class StationsCommandTest {
 	public void testGetData() {
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getStations(any(), eq(id1), eq(opId1), isNull(), isNull(), eq(mtParamSc), eq(mtExamTypeSc), eq(OffsetDateTime.parse(date1)), eq(OffsetDateTime.parse(date2)), isNull());
+		verify(vandahService, times(1)).getStations(any(), eq(id1), eq(opId1), eq(mtParamSc), eq(mtExamTypeSc), eq(OffsetDateTime.parse(date1)), eq(OffsetDateTime.parse(date2)));
 		
 		assertEquals(2, nr); //2 station
 	}
@@ -139,7 +139,7 @@ public class StationsCommandTest {
 		
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getStations(any(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull());
+		verify(vandahService, times(1)).getStations(any(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull());
 		
 		assertEquals(2, nr); //2 station
 	}

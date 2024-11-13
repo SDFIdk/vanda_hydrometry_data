@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -158,14 +157,14 @@ public class StreamDischargeCommandTest {
 		when(config.getTo()).thenReturn(OffsetDateTime.parse(date2));
 		when(config.getCreatedAfter()).thenReturn(OffsetDateTime.parse(date3));
 		
-		when(vandahService.getMeasurementsForStation(any(),any(),any(),any(),any(),any(),any(),any())).thenReturn(data);
+		when(vandahService.getMeasurementsForStation(any(),any(),any(),any(),any(),any(),any())).thenReturn(data);
 	}
 	
 	@Test
 	public void testGetData() {
 		int nr = cmd.getData(); //read mock data
 		
-		verify(vandahService, times(1)).getMeasurementsForStation(any(), eq(id1), eq(opId1), eq(mp1), eq(OffsetDateTime.parse(date1)), eq(OffsetDateTime.parse(date2)), eq(OffsetDateTime.parse(date3)), isNull());
+		verify(vandahService, times(1)).getMeasurementsForStation(any(), eq(id1), eq(opId1), eq(mp1), eq(OffsetDateTime.parse(date1)), eq(OffsetDateTime.parse(date2)), eq(OffsetDateTime.parse(date3)));
 		
 		assertEquals(4, nr); //4 measurements for 2 for each 2 station
 	}
