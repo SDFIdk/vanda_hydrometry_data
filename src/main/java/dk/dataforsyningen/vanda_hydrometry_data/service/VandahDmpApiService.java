@@ -162,11 +162,12 @@ public class VandahDmpApiService {
 
 		return results;
 	}
+	
+	private boolean isEmpty(String validate) {
+		if (validate == null || validate.isEmpty() || validate.isBlank()) {
+			return true;
+		}
 
-	
-	
-	private boolean isEmpty(Object obj) {
-		return obj == null || (obj instanceof String && ((String) obj).isEmpty());
+		return false;
 	}
-
 }
