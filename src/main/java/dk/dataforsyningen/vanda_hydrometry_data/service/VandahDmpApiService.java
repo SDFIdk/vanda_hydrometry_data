@@ -1,5 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import java.net.URI;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
 import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
@@ -27,39 +29,15 @@ import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
 public class VandahDmpApiService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VandahDmpApiService.class);
-	
-	private final String STATIONS_PATH = "stations";
-	private final String EXAMINATION_TYPES = "config/examination-types";
-	private final String WATER_FLOWS = "water-flows";
-	private final String WATER_LEVELS = "water-levels";
-	
+		
 	@Autowired
 	RestClient restClient;
 	
 	@Autowired
 	VandaHydrometryDataConfig config;
 	
-	
-	public DmpHydroApiResponsesStationResponse[] getAllStations() {
-
-		String vandahApiUrl = config.getVandahDmpApiUrl() + STATIONS_PATH;
-		
-		logger.info("Call: " + vandahApiUrl);
-				
-		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl)
-				.accept(MediaType.APPLICATION_JSON)
-				.retrieve()
-				.onStatus(status -> status.value() >= 400, (request, response) -> {
-					logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " + response.getStatusText());
-					String message = VandaHUtility.valueFromJson(response, "message");
-					throw new InternalException("Error retrieving stations: " + message);
-				})
-				.body(DmpHydroApiResponsesStationResponse[].class);
-				
-		return stations;
-	}
-	
 	public DmpHydroApiResponsesStationResponse[] getStations(
+			String vandahApiUrl,
 			String stationId, 
 			String operatorStationId,
 			String stationOwnerCvr,
@@ -71,48 +49,40 @@ public class VandahDmpApiService {
 			String format
 			) {
 		
-		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + STATIONS_PATH + "?");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl);
 		if (!isEmpty(stationId)) { 
-			vandahApiUrl.append(del + "stationId=" + stationId ); 
-			del = "&"; 
+			uriBuilder.queryParam("stationId", stationId); 
 		}
 		if (!isEmpty(operatorStationId)) { 
-			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
-			del = "&"; 
+			uriBuilder.queryParam("operatorStationId", operatorStationId); 
 		}
 		if (!isEmpty(stationOwnerCvr)) { 
-			vandahApiUrl.append(del + "stationOwnerCvr=" + stationOwnerCvr); 
-			del = "&"; 
+			uriBuilder.queryParam("stationOwnerCvr", stationOwnerCvr); 
 		}
 		if (!isEmpty(operatorCvr)) { 
-			vandahApiUrl.append(del + "operatorCvr=" + operatorCvr); 
-			del = "&"; 
+			uriBuilder.queryParam("operatorCvr", operatorCvr); 
 		}
 		if (!isEmpty(parameterSc)) { 
-			vandahApiUrl.append(del + "parameterSc=" + parameterSc); 
-			del = "&"; 
+			uriBuilder.queryParam("parameterSc", parameterSc); 
 		}
 		if (!isEmpty(examinationTypeSc)) { 
-			vandahApiUrl.append(del + "examinationTypeSc=" + examinationTypeSc); 
-			del = "&"; 
+			uriBuilder.queryParam("examinationTypeSc", examinationTypeSc); 
 		}
 		if (!isEmpty(withResultsAfter)) { 
-			vandahApiUrl.append(del + "withResultsAfter=" + withResultsAfter); 
-			del = "&"; 
+			uriBuilder.queryParam("withResultsAfter", withResultsAfter.toString()); 
 		}
 		if (!isEmpty(withResultsCreatedAfter)) { 
-			vandahApiUrl.append(del + "withResultsCreatedAfter=" + withResultsCreatedAfter); 
-			del = "&"; 
+			uriBuilder.queryParam("withResultsCreatedAfter", withResultsCreatedAfter.toString()); 
 		}
 		if (!isEmpty(format)) { 
-			vandahApiUrl.append(del + "format=" + format); 
-			del = "&"; 
+			uriBuilder.queryParam("format", format); 
 		}
 		
-		logger.info("Call: " + vandahApiUrl.toString());
+        URI uri = uriBuilder.build().toUri();
+				
+		logger.info("Call: " + uri.toString());
 		
-		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(vandahApiUrl.toString())
+		DmpHydroApiResponsesStationResponse[] stations = restClient.get().uri(uri)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.onStatus(status -> status.value() >= 400, (request, response) -> {
@@ -125,8 +95,7 @@ public class VandahDmpApiService {
 		return stations;
 	}
 	
-	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes() {
-		String vandahApiUrl = config.getVandahDmpApiUrl() + EXAMINATION_TYPES;
+	public DmpHydroApiResponsesExaminationTypeResponse[] getExaminationTypes(String vandahApiUrl) {
 		
 		logger.info("Call: " + vandahApiUrl);
 		
@@ -143,61 +112,12 @@ public class VandahDmpApiService {
 		return types;
 		
 	}
-	
-	
-	/**
-	 * Retrieves water levels.
-	 * 
-	 * @param stationId 
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return array of results
-	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getWaterLevels(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
 		
-		return getWaterMeasurementsForStation(WATER_LEVELS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-	}
-	
 	
 	/**
-	 * Retrieves stream discharge.
+	 * Call the API for the given endpoint to retrieve measurements
 	 * 
-	 * @param stationId 
-	 * @param operatorStationId
-	 * @param measurementPointNumber
-	 * @param from
-	 * @param to
-	 * @param createdAfter
-	 * @param format
-	 * @return array of results
-	 */
-	public DmpHydroApiResponsesMeasurementResultResponse[] getStreamDischarge(
-			String stationId, 
-			String operatorStationId,
-			Integer measurementPointNumber,
-			OffsetDateTime from,
-			OffsetDateTime to,
-			OffsetDateTime createdAfter,
-			String format) {
-		
-		return getWaterMeasurementsForStation(WATER_FLOWS, stationId, operatorStationId, measurementPointNumber, from, to, createdAfter, format);
-	}
-	
-	
-	/**
-	 * Call the API for the given endpoint
-	 * 
+	 * @param vandahApiUrl the URL base
 	 * @param stationId should be set to actual station Id
 	 * @param operatorStationId
 	 * @param measurementPointNumber
@@ -207,8 +127,8 @@ public class VandahDmpApiService {
 	 * @param format
 	 * @return
 	 */
-	private DmpHydroApiResponsesMeasurementResultResponse[] getWaterMeasurementsForStation(
-			String endpoint,
+	public DmpHydroApiResponsesMeasurementResultResponse[] getMeasurementsForStation(
+			String vandahApiUrl,
 			String stationId, 
 			String operatorStationId,
 			Integer measurementPointNumber,
@@ -221,36 +141,30 @@ public class VandahDmpApiService {
 			throw new InvalidParameterException("Station id or Operator station id must be specified.");
 		}
 		
-		String del = "";
-		StringBuilder vandahApiUrl = new StringBuilder(config.getVandahDmpApiUrl() + endpoint + "?");
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(vandahApiUrl);
 		if (!isEmpty(stationId)) { 
-			vandahApiUrl.append(del + "stationId=" + stationId); 
-			del = "&"; 
+			uriBuilder.queryParam("stationId", stationId); 
 		}
 		if (!isEmpty(operatorStationId)) { 
-			vandahApiUrl.append(del + "operatorStationId=" + operatorStationId); 
-			del = "&"; 
+			uriBuilder.queryParam("operatorStationId", operatorStationId); 
 		}
 		if (!isEmpty(measurementPointNumber)) { 
-			vandahApiUrl.append(del + "measurementPointNumber=" + measurementPointNumber); 
-			del = "&"; 
+			uriBuilder.queryParam("measurementPointNumber", measurementPointNumber); 
 		}
 		if (!isEmpty(from)) { 
-			vandahApiUrl.append(del + "from=" + from); 
-			del = "&"; 
+			uriBuilder.queryParam("from", from.toString()); 
 		}
 		if (!isEmpty(to)) { 
-			vandahApiUrl.append(del + "to=" + to); 
-			del = "&"; 
+			uriBuilder.queryParam("to", to.toString()); 
 		}
 		if (!isEmpty(createdAfter)) { 
-			vandahApiUrl.append(del + "createdAfter=" + createdAfter); 
-			del = "&"; 
+			uriBuilder.queryParam("createdAfter", createdAfter.toString()); 
 		}
 		if (!isEmpty(format)) { 
-			vandahApiUrl.append(del + "format=" + format); 
-			del = "&"; 
+			uriBuilder.queryParam("format", format); 
 		}
+		
+        URI uri = uriBuilder.build().toUri();
 
 		DmpHydroApiResponsesMeasurementResultResponse[] results = null;
 
@@ -258,15 +172,15 @@ public class VandahDmpApiService {
 		int running = 2;
 		while (running > 0) {
 			try {
-				logger.info("Call: " + vandahApiUrl);
+				logger.info("Call: " + uri.toString());
 
-				results = restClient.get().uri(vandahApiUrl.toString())
+				results = restClient.get().uri(uri)
 						.accept(MediaType.APPLICATION_JSON)
 						.retrieve()
 						.onStatus(status -> status.value() >= 400, (request, response) -> {
-							logger.error("Error retrieving " + endpoint + ": [" + response.getStatusCode() + "] " + response.getStatusText());
+							logger.error("Error response from " + uri.toString() + ": [" + response.getStatusCode() + "] " + response.getStatusText());
 							String message = VandaHUtility.valueFromJson(response, "message");
-							throw new InternalException("Error retrieving " + endpoint + ": " + message);
+							throw new InternalException("Error retrieving data: " + message);
 						})
 						.body(DmpHydroApiResponsesMeasurementResultResponse[].class);
 				// Stop the while loop

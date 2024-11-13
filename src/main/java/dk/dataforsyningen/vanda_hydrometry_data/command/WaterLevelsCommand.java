@@ -31,6 +31,8 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	public static final int EXAMINATION_TYPE_SC = 25;
 	
+	private final String ENDPOINT = "water-levels";
+	
 	private static final Logger logger = LoggerFactory.getLogger(WaterLevelsCommand.class);
 	
 	private DmpHydroApiResponsesMeasurementResultResponse[] data;
@@ -50,7 +52,8 @@ public class WaterLevelsCommand implements CommandInterface {
 
 	@Override
 	public int getData() {
-		data = vandahService.getWaterLevels(config.getStationId(),
+		data = vandahService.getMeasurementsForStation(config.getVandahDmpApiUrl() + ENDPOINT,
+				config.getStationId(),
 				config.getOperatorStationId(),
 				config.getMeasurementPointNumber(),
 				config.getFrom(),
