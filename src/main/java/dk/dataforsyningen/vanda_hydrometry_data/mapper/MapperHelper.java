@@ -9,20 +9,21 @@ public class MapperHelper {
 
     /**
      * Checks for null, is empty "" or is blank " "
+     *
      * @param s input string
      * @return validated string
      */
     public static String validateString(String s) {
         if (s == null || s.isEmpty() || s.isBlank()) {
             return null;
-        }
-        else {
+        } else {
             return s;
         }
     }
 
     /**
      * Convert Srid to an Integer
+     *
      * @param srid String
      * @return an Integer or null
      */
