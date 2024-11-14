@@ -9,21 +9,21 @@ import org.springframework.web.client.RestClient;
 
 /**
  * The main startup class of the application.
- * 
+ *
  * @author Radu Dudici
  */
 @SpringBootApplication
 public class VandaHydrometryDataApplication {
-	
-	private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataApplication.class);
-	
-	public static void main(String[] args) {
-		SpringApplication.run(VandaHydrometryDataApplication.class, args);
-	}
-	
-	@Bean
-	public RestClient restClient() {
-		return RestClient.create();
-	}
+
+    private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataApplication.class);
+
+    public static void main(String[] args) {
+        SpringApplication.run(VandaHydrometryDataApplication.class, args);
+    }
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.create();
+    }
 
 }
