@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class VandaHydrometryDataRunner implements CommandLineRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(VandaHydrometryDataRunner.class);
+    private static Logger logger = LoggerFactory.getLogger(VandaHydrometryDataRunner.class);
 
     @Autowired
     RestClient restClient;
