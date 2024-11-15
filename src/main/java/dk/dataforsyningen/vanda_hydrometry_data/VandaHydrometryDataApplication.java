@@ -15,15 +15,15 @@ import org.springframework.web.client.RestClient;
 @SpringBootApplication
 public class VandaHydrometryDataApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataApplication.class);
+  private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataApplication.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(VandaHydrometryDataApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(VandaHydrometryDataApplication.class, args);
+  }
 
-    @Bean
-    public RestClient restClient() {
-        return RestClient.create();
-    }
+  @Bean
+  public RestClient restClient() {
+    return RestClient.create();
+  }
 
 }

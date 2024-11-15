@@ -18,54 +18,55 @@ import org.springframework.stereotype.Component;
 @CommandQualifier(command = "examinationtypes")
 public class ExaminationTypesCommand implements CommandInterface {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
-    private final String ENDPOINT = "config/examination-types";
-    @Autowired
-    VandahDmpApiService vandahService;
-    private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
-    @Autowired
-    private VandaHydrometryDataConfig config;
+  private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
+  private final String ENDPOINT = "config/examination-types";
+  @Autowired
+  VandahDmpApiService vandahService;
+  private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
+  @Autowired
+  private VandaHydrometryDataConfig config;
 
-    @Override
-    public int getData() {
-        data = vandahService.getExaminationTypes(config.getVandahDmpApiUrl() + ENDPOINT);
+  @Override
+  public int getData() {
+    data = vandahService.getExaminationTypes(config.getVandahDmpApiUrl() + ENDPOINT);
 
-        if (data != null && data.length > 0) {
-            return data.length;
-        }
-
-        return 0;
+    if (data != null && data.length > 0) {
+      return data.length;
     }
 
-    @Override
-    public void mapData() {
-        //nothing to map
-    }
+    return 0;
+  }
 
-    @Override
-    public int saveData() {
-        logger.warn("Save to DB is not relevant for this data");
-        return 0;
-    }
+  @Override
+  public void mapData() {
+    //nothing to map
+  }
 
-    @Override
-    public void displayData(boolean raw) {
-        if (raw && data != null) {
-            logger.info("Number of items: " + data.length);
-            for (DmpHydroApiResponsesExaminationTypeResponse item : data) {
-                System.out.println(item);
-            }
-        }
-    }
+  @Override
+  public int saveData() {
+    logger.warn("Save to DB is not relevant for this data");
+    return 0;
+  }
 
-    @Override
-    public void showShortHelp() {
-        System.out.println(VandaHUtility.BOLD_ON + "examinationTypes" + VandaHUtility.FORMAT_OFF + " : retrieves the examination types with mapping and constraints.");
-
+  @Override
+  public void displayData(boolean raw) {
+    if (raw && data != null) {
+      logger.info("Number of items: " + data.length);
+      for (DmpHydroApiResponsesExaminationTypeResponse item : data) {
+        System.out.println(item);
+      }
     }
+  }
 
-    @Override
-    public void showHelp() {
-        showShortHelp();
-    }
+  @Override
+  public void showShortHelp() {
+    System.out.println(VandaHUtility.BOLD_ON + "examinationTypes" + VandaHUtility.FORMAT_OFF +
+        " : retrieves the examination types with mapping and constraints.");
+
+  }
+
+  @Override
+  public void showHelp() {
+    showShortHelp();
+  }
 }

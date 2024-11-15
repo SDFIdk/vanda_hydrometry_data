@@ -3,6 +3,7 @@ package dk.dataforsyningen.vanda_hydrometry_data;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementTypeDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.StationDao;
+import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgis.PostgisPlugin;
 import org.jdbi.v3.postgres.PostgresPlugin;
@@ -17,58 +18,56 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
-import javax.sql.DataSource;
-
 /**
  * Configure the JDBI object with values from properties file.
  */
 @Configuration
 public class DatabaseConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
+  private static final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
-    /**
-     * The SQL data source that Jdbi will connect to. https://jdbi.org/#_spring_5
-     *
-     * @return DataSource
-     */
-    @Bean(name = "vandaHydroDataDS")
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource dataSource() {
-        return new DriverManagerDataSource();
-    }
+  /**
+   * The SQL data source that Jdbi will connect to. https://jdbi.org/#_spring_5
+   *
+   * @return DataSource
+   */
+  @Bean(name = "vandaHydroDataDS")
+  @Primary
+  @ConfigurationProperties(prefix = "spring.datasource")
+  public DataSource dataSource() {
+    return new DriverManagerDataSource();
+  }
 
-    /**
-     * Creates the JDBI object
-     *
-     * @param ds
-     * @return jdbi bean
-     */
-    @Bean
-    public Jdbi jdbi(@Qualifier("vandaHydroDataDS") DataSource ds) {
+  /**
+   * Creates the JDBI object
+   *
+   * @param ds
+   * @return jdbi bean
+   */
+  @Bean
+  public Jdbi jdbi(@Qualifier("vandaHydroDataDS") DataSource ds) {
 
-        TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);
-        Jdbi jdbi = Jdbi.create(proxy)
-                .installPlugin(new PostgresPlugin())
-                .installPlugin(new PostgisPlugin())
-                .installPlugin(new SqlObjectPlugin());
+    TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);
+    Jdbi jdbi = Jdbi.create(proxy)
+        .installPlugin(new PostgresPlugin())
+        .installPlugin(new PostgisPlugin())
+        .installPlugin(new SqlObjectPlugin());
 
-        return jdbi;
-    }
+    return jdbi;
+  }
 
-    @Bean
-    public StationDao stationDao(Jdbi jdbi) {
-        return jdbi.onDemand(StationDao.class);
-    }
+  @Bean
+  public StationDao stationDao(Jdbi jdbi) {
+    return jdbi.onDemand(StationDao.class);
+  }
 
-    @Bean
-    public MeasurementDao measurementDao(Jdbi jdbi) {
-        return jdbi.onDemand(MeasurementDao.class);
-    }
+  @Bean
+  public MeasurementDao measurementDao(Jdbi jdbi) {
+    return jdbi.onDemand(MeasurementDao.class);
+  }
 
-    @Bean
-    public MeasurementTypeDao measurementTypeDao(Jdbi jdbi) {
-        return jdbi.onDemand(MeasurementTypeDao.class);
-    }
+  @Bean
+  public MeasurementTypeDao measurementTypeDao(Jdbi jdbi) {
+    return jdbi.onDemand(MeasurementTypeDao.class);
+  }
 }

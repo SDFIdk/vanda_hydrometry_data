@@ -13,7 +13,6 @@
 package dk.miljoeportal.vandah.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -21,225 +20,242 @@ import java.util.Objects;
  * DmpHydroApiResponsesStationResponseMeasurementPointExamination
  */
 public class DmpHydroApiResponsesStationResponseMeasurementPointExamination {
-    @JsonProperty("parameter")
-    private String parameter = null;
+  @JsonProperty("parameter")
+  private String parameter = null;
 
-    @JsonProperty("parameterSc")
-    private Integer parameterSc = null;
+  @JsonProperty("parameterSc")
+  private Integer parameterSc = null;
 
-    @JsonProperty("examinationType")
-    private String examinationType = null;
+  @JsonProperty("examinationType")
+  private String examinationType = null;
 
-    @JsonProperty("examinationTypeSc")
-    private Integer examinationTypeSc = null;
+  @JsonProperty("examinationTypeSc")
+  private Integer examinationTypeSc = null;
 
-    @JsonProperty("unit")
-    private String unit = null;
+  @JsonProperty("unit")
+  private String unit = null;
 
-    @JsonProperty("unitSc")
-    private Integer unitSc = null;
+  @JsonProperty("unitSc")
+  private Integer unitSc = null;
 
-    @JsonProperty("firstResult")
-    private OffsetDateTime firstResult = null;
+  @JsonProperty("firstResult")
+  private OffsetDateTime firstResult = null;
 
-    @JsonProperty("latestResult")
-    private OffsetDateTime latestResult = null;
+  @JsonProperty("latestResult")
+  private OffsetDateTime latestResult = null;
 
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination parameter(String parameter) {
-        this.parameter = parameter;
-        return this;
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination parameter(
+      String parameter) {
+    this.parameter = parameter;
+    return this;
+  }
+
+  /**
+   * Parameter name
+   *
+   * @return parameter
+   **/
+  public String getParameter() {
+    return parameter;
+  }
+
+  public void setParameter(String parameter) {
+    this.parameter = parameter;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination parameterSc(
+      Integer parameterSc) {
+    this.parameterSc = parameterSc;
+    return this;
+  }
+
+  /**
+   * Parameter stancode
+   *
+   * @return parameterSc
+   **/
+  public Integer getParameterSc() {
+    return parameterSc;
+  }
+
+  public void setParameterSc(Integer parameterSc) {
+    this.parameterSc = parameterSc;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationType(
+      String examinationType) {
+    this.examinationType = examinationType;
+    return this;
+  }
+
+  /**
+   * Examination type name
+   *
+   * @return examinationType
+   **/
+  public String getExaminationType() {
+    return examinationType;
+  }
+
+  public void setExaminationType(String examinationType) {
+    this.examinationType = examinationType;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationTypeSc(
+      Integer examinationTypeSc) {
+    this.examinationTypeSc = examinationTypeSc;
+    return this;
+  }
+
+  /**
+   * Examination type stancode
+   *
+   * @return examinationTypeSc
+   **/
+  public Integer getExaminationTypeSc() {
+    return examinationTypeSc;
+  }
+
+  public void setExaminationTypeSc(Integer examinationTypeSc) {
+    this.examinationTypeSc = examinationTypeSc;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination unit(String unit) {
+    this.unit = unit;
+    return this;
+  }
+
+  /**
+   * Unit name
+   *
+   * @return unit
+   **/
+  public String getUnit() {
+    return unit;
+  }
+
+  public void setUnit(String unit) {
+    this.unit = unit;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination unitSc(Integer unitSc) {
+    this.unitSc = unitSc;
+    return this;
+  }
+
+  /**
+   * Unit stancode
+   *
+   * @return unitSc
+   **/
+  public Integer getUnitSc() {
+    return unitSc;
+  }
+
+  public void setUnitSc(Integer unitSc) {
+    this.unitSc = unitSc;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination firstResult(
+      OffsetDateTime firstResult) {
+    this.firstResult = firstResult;
+    return this;
+  }
+
+  /**
+   * A time when the first result was measured
+   *
+   * @return firstResult
+   **/
+  public OffsetDateTime getFirstResult() {
+    return firstResult;
+  }
+
+  public void setFirstResult(OffsetDateTime firstResult) {
+    this.firstResult = firstResult;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPointExamination latestResult(
+      OffsetDateTime latestResult) {
+    this.latestResult = latestResult;
+    return this;
+  }
+
+  /**
+   * A time when the last result was measured
+   *
+   * @return latestResult
+   **/
+  public OffsetDateTime getLatestResult() {
+    return latestResult;
+  }
+
+  public void setLatestResult(OffsetDateTime latestResult) {
+    this.latestResult = latestResult;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
     }
-
-    /**
-     * Parameter name
-     *
-     * @return parameter
-     **/
-    public String getParameter() {
-        return parameter;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    DmpHydroApiResponsesStationResponseMeasurementPointExamination
+        dmpHydroApiResponsesStationResponseMeasurementPointExamination =
+        (DmpHydroApiResponsesStationResponseMeasurementPointExamination) o;
+    return Objects.equals(this.parameter,
+        dmpHydroApiResponsesStationResponseMeasurementPointExamination.parameter) &&
+        Objects.equals(this.parameterSc,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.parameterSc) &&
+        Objects.equals(this.examinationType,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.examinationType) &&
+        Objects.equals(this.examinationTypeSc,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.examinationTypeSc) &&
+        Objects.equals(this.unit,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.unit) &&
+        Objects.equals(this.unitSc,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.unitSc) &&
+        Objects.equals(this.firstResult,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.firstResult) &&
+        Objects.equals(this.latestResult,
+            dmpHydroApiResponsesStationResponseMeasurementPointExamination.latestResult);
+  }
 
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
+  @Override
+  public int hashCode() {
+    return Objects.hash(parameter, parameterSc, examinationType, examinationTypeSc, unit, unitSc,
+        firstResult, latestResult);
+  }
+
+
+  @Override
+  public String toString() {
+
+    String sb = "class DmpHydroApiResponsesStationResponseMeasurementPointExamination {\n" +
+        "    parameter: " + toIndentedString(parameter) + "\n" +
+        "    parameterSc: " + toIndentedString(parameterSc) + "\n" +
+        "    examinationType: " + toIndentedString(examinationType) + "\n" +
+        "    examinationTypeSc: " + toIndentedString(examinationTypeSc) + "\n" +
+        "    unit: " + toIndentedString(unit) + "\n" +
+        "    unitSc: " + toIndentedString(unitSc) + "\n" +
+        "    firstResult: " + toIndentedString(firstResult) + "\n" +
+        "    latestResult: " + toIndentedString(latestResult) + "\n" +
+        "}";
+    return sb;
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
     }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination parameterSc(Integer parameterSc) {
-        this.parameterSc = parameterSc;
-        return this;
-    }
-
-    /**
-     * Parameter stancode
-     *
-     * @return parameterSc
-     **/
-    public Integer getParameterSc() {
-        return parameterSc;
-    }
-
-    public void setParameterSc(Integer parameterSc) {
-        this.parameterSc = parameterSc;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationType(String examinationType) {
-        this.examinationType = examinationType;
-        return this;
-    }
-
-    /**
-     * Examination type name
-     *
-     * @return examinationType
-     **/
-    public String getExaminationType() {
-        return examinationType;
-    }
-
-    public void setExaminationType(String examinationType) {
-        this.examinationType = examinationType;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationTypeSc(Integer examinationTypeSc) {
-        this.examinationTypeSc = examinationTypeSc;
-        return this;
-    }
-
-    /**
-     * Examination type stancode
-     *
-     * @return examinationTypeSc
-     **/
-    public Integer getExaminationTypeSc() {
-        return examinationTypeSc;
-    }
-
-    public void setExaminationTypeSc(Integer examinationTypeSc) {
-        this.examinationTypeSc = examinationTypeSc;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination unit(String unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
-     * Unit name
-     *
-     * @return unit
-     **/
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination unitSc(Integer unitSc) {
-        this.unitSc = unitSc;
-        return this;
-    }
-
-    /**
-     * Unit stancode
-     *
-     * @return unitSc
-     **/
-    public Integer getUnitSc() {
-        return unitSc;
-    }
-
-    public void setUnitSc(Integer unitSc) {
-        this.unitSc = unitSc;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination firstResult(OffsetDateTime firstResult) {
-        this.firstResult = firstResult;
-        return this;
-    }
-
-    /**
-     * A time when the first result was measured
-     *
-     * @return firstResult
-     **/
-    public OffsetDateTime getFirstResult() {
-        return firstResult;
-    }
-
-    public void setFirstResult(OffsetDateTime firstResult) {
-        this.firstResult = firstResult;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPointExamination latestResult(OffsetDateTime latestResult) {
-        this.latestResult = latestResult;
-        return this;
-    }
-
-    /**
-     * A time when the last result was measured
-     *
-     * @return latestResult
-     **/
-    public OffsetDateTime getLatestResult() {
-        return latestResult;
-    }
-
-    public void setLatestResult(OffsetDateTime latestResult) {
-        this.latestResult = latestResult;
-    }
-
-
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DmpHydroApiResponsesStationResponseMeasurementPointExamination dmpHydroApiResponsesStationResponseMeasurementPointExamination = (DmpHydroApiResponsesStationResponseMeasurementPointExamination) o;
-        return Objects.equals(this.parameter, dmpHydroApiResponsesStationResponseMeasurementPointExamination.parameter) &&
-                Objects.equals(this.parameterSc, dmpHydroApiResponsesStationResponseMeasurementPointExamination.parameterSc) &&
-                Objects.equals(this.examinationType, dmpHydroApiResponsesStationResponseMeasurementPointExamination.examinationType) &&
-                Objects.equals(this.examinationTypeSc, dmpHydroApiResponsesStationResponseMeasurementPointExamination.examinationTypeSc) &&
-                Objects.equals(this.unit, dmpHydroApiResponsesStationResponseMeasurementPointExamination.unit) &&
-                Objects.equals(this.unitSc, dmpHydroApiResponsesStationResponseMeasurementPointExamination.unitSc) &&
-                Objects.equals(this.firstResult, dmpHydroApiResponsesStationResponseMeasurementPointExamination.firstResult) &&
-                Objects.equals(this.latestResult, dmpHydroApiResponsesStationResponseMeasurementPointExamination.latestResult);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(parameter, parameterSc, examinationType, examinationTypeSc, unit, unitSc, firstResult, latestResult);
-    }
-
-
-    @Override
-    public String toString() {
-
-        String sb = "class DmpHydroApiResponsesStationResponseMeasurementPointExamination {\n" +
-                "    parameter: " + toIndentedString(parameter) + "\n" +
-                "    parameterSc: " + toIndentedString(parameterSc) + "\n" +
-                "    examinationType: " + toIndentedString(examinationType) + "\n" +
-                "    examinationTypeSc: " + toIndentedString(examinationTypeSc) + "\n" +
-                "    unit: " + toIndentedString(unit) + "\n" +
-                "    unitSc: " + toIndentedString(unitSc) + "\n" +
-                "    firstResult: " + toIndentedString(firstResult) + "\n" +
-                "    latestResult: " + toIndentedString(latestResult) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
+    return o.toString().replace("\n", "\n    ");
+  }
 
 }

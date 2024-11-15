@@ -13,7 +13,6 @@
 package dk.miljoeportal.vandah.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,233 +21,250 @@ import java.util.Objects;
  * DmpHydroApiResponsesStationResponseMeasurementPoint
  */
 public class DmpHydroApiResponsesStationResponseMeasurementPoint {
-    @JsonProperty("number")
-    private Integer number = null;
+  @JsonProperty("number")
+  private Integer number = null;
 
-    @JsonProperty("name")
-    private String name = null;
+  @JsonProperty("name")
+  private String name = null;
 
-    @JsonProperty("measurementPointType")
-    private String measurementPointType = null;
+  @JsonProperty("measurementPointType")
+  private String measurementPointType = null;
 
-    @JsonProperty("measurementPointTypeSc")
-    private Integer measurementPointTypeSc = null;
+  @JsonProperty("measurementPointTypeSc")
+  private Integer measurementPointTypeSc = null;
 
-    @JsonProperty("description")
-    private String description = null;
+  @JsonProperty("description")
+  private String description = null;
 
-    @JsonProperty("location")
-    private DmpHydroApiResponsesLocationResponse location = null;
+  @JsonProperty("location")
+  private DmpHydroApiResponsesLocationResponse location = null;
 
-    @JsonProperty("intakeNumber")
-    private Integer intakeNumber = null;
+  @JsonProperty("intakeNumber")
+  private Integer intakeNumber = null;
 
-    @JsonProperty("examinations")
-    private List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations = null;
+  @JsonProperty("examinations")
+  private List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations = null;
 
-    public DmpHydroApiResponsesStationResponseMeasurementPoint number(Integer number) {
-        this.number = number;
-        return this;
+  public DmpHydroApiResponsesStationResponseMeasurementPoint number(Integer number) {
+    this.number = number;
+    return this;
+  }
+
+  /**
+   * Measurement point number in a station
+   *
+   * @return number
+   **/
+  public Integer getNumber() {
+    return number;
+  }
+
+  public void setNumber(Integer number) {
+    this.number = number;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint name(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
+   * Measurement point name
+   *
+   * @return name
+   **/
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint measurementPointType(
+      String measurementPointType) {
+    this.measurementPointType = measurementPointType;
+    return this;
+  }
+
+  /**
+   * Measurement point type name
+   *
+   * @return measurementPointType
+   **/
+  public String getMeasurementPointType() {
+    return measurementPointType;
+  }
+
+  public void setMeasurementPointType(String measurementPointType) {
+    this.measurementPointType = measurementPointType;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint measurementPointTypeSc(
+      Integer measurementPointTypeSc) {
+    this.measurementPointTypeSc = measurementPointTypeSc;
+    return this;
+  }
+
+  /**
+   * Measurement point type stancode
+   *
+   * @return measurementPointTypeSc
+   **/
+  public Integer getMeasurementPointTypeSc() {
+    return measurementPointTypeSc;
+  }
+
+  public void setMeasurementPointTypeSc(Integer measurementPointTypeSc) {
+    this.measurementPointTypeSc = measurementPointTypeSc;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint description(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Measurement point description
+   *
+   * @return description
+   **/
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint location(
+      DmpHydroApiResponsesLocationResponse location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   *
+   * @return location
+   **/
+  public DmpHydroApiResponsesLocationResponse getLocation() {
+    return location;
+  }
+
+  public void setLocation(DmpHydroApiResponsesLocationResponse location) {
+    this.location = location;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint intakeNumber(Integer intakeNumber) {
+    this.intakeNumber = intakeNumber;
+    return this;
+  }
+
+  /**
+   * Intake number of Grundvand station
+   *
+   * @return intakeNumber
+   **/
+  public Integer getIntakeNumber() {
+    return intakeNumber;
+  }
+
+  public void setIntakeNumber(Integer intakeNumber) {
+    this.intakeNumber = intakeNumber;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint examinations(
+      List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations) {
+    this.examinations = examinations;
+    return this;
+  }
+
+  public DmpHydroApiResponsesStationResponseMeasurementPoint addExaminationsItem(
+      DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationsItem) {
+    if (this.examinations == null) {
+      this.examinations =
+          new ArrayList<DmpHydroApiResponsesStationResponseMeasurementPointExamination>();
     }
+    this.examinations.add(examinationsItem);
+    return this;
+  }
 
-    /**
-     * Measurement point number in a station
-     *
-     * @return number
-     **/
-    public Integer getNumber() {
-        return number;
+  /**
+   * A list of examination performed on the measurement point
+   *
+   * @return examinations
+   **/
+  public List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> getExaminations() {
+    return examinations;
+  }
+
+  public void setExaminations(
+      List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations) {
+    this.examinations = examinations;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public void setNumber(Integer number) {
-        this.number = number;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    DmpHydroApiResponsesStationResponseMeasurementPoint
+        dmpHydroApiResponsesStationResponseMeasurementPoint =
+        (DmpHydroApiResponsesStationResponseMeasurementPoint) o;
+    return
+        Objects.equals(this.number, dmpHydroApiResponsesStationResponseMeasurementPoint.number) &&
+            Objects.equals(this.name, dmpHydroApiResponsesStationResponseMeasurementPoint.name) &&
+            Objects.equals(this.measurementPointType,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.measurementPointType) &&
+            Objects.equals(this.measurementPointTypeSc,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.measurementPointTypeSc) &&
+            Objects.equals(this.description,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.description) &&
+            Objects.equals(this.location,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.location) &&
+            Objects.equals(this.intakeNumber,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.intakeNumber) &&
+            Objects.equals(this.examinations,
+                dmpHydroApiResponsesStationResponseMeasurementPoint.examinations);
+  }
 
-    public DmpHydroApiResponsesStationResponseMeasurementPoint name(String name) {
-        this.name = name;
-        return this;
+  @Override
+  public int hashCode() {
+    return Objects.hash(number, name, measurementPointType, measurementPointTypeSc, description,
+        location, intakeNumber, examinations);
+  }
+
+
+  @Override
+  public String toString() {
+
+    String sb = "class DmpHydroApiResponsesStationResponseMeasurementPoint {\n" +
+        "    number: " + toIndentedString(number) + "\n" +
+        "    name: " + toIndentedString(name) + "\n" +
+        "    measurementPointType: " + toIndentedString(measurementPointType) + "\n" +
+        "    measurementPointTypeSc: " + toIndentedString(measurementPointTypeSc) + "\n" +
+        "    description: " + toIndentedString(description) + "\n" +
+        "    location: " + toIndentedString(location) + "\n" +
+        "    intakeNumber: " + toIndentedString(intakeNumber) + "\n" +
+        "    examinations: " + toIndentedString(examinations) + "\n" +
+        "}";
+    return sb;
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
     }
-
-    /**
-     * Measurement point name
-     *
-     * @return name
-     **/
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint measurementPointType(String measurementPointType) {
-        this.measurementPointType = measurementPointType;
-        return this;
-    }
-
-    /**
-     * Measurement point type name
-     *
-     * @return measurementPointType
-     **/
-    public String getMeasurementPointType() {
-        return measurementPointType;
-    }
-
-    public void setMeasurementPointType(String measurementPointType) {
-        this.measurementPointType = measurementPointType;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint measurementPointTypeSc(Integer measurementPointTypeSc) {
-        this.measurementPointTypeSc = measurementPointTypeSc;
-        return this;
-    }
-
-    /**
-     * Measurement point type stancode
-     *
-     * @return measurementPointTypeSc
-     **/
-    public Integer getMeasurementPointTypeSc() {
-        return measurementPointTypeSc;
-    }
-
-    public void setMeasurementPointTypeSc(Integer measurementPointTypeSc) {
-        this.measurementPointTypeSc = measurementPointTypeSc;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint description(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Measurement point description
-     *
-     * @return description
-     **/
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint location(DmpHydroApiResponsesLocationResponse location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get location
-     *
-     * @return location
-     **/
-    public DmpHydroApiResponsesLocationResponse getLocation() {
-        return location;
-    }
-
-    public void setLocation(DmpHydroApiResponsesLocationResponse location) {
-        this.location = location;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint intakeNumber(Integer intakeNumber) {
-        this.intakeNumber = intakeNumber;
-        return this;
-    }
-
-    /**
-     * Intake number of Grundvand station
-     *
-     * @return intakeNumber
-     **/
-    public Integer getIntakeNumber() {
-        return intakeNumber;
-    }
-
-    public void setIntakeNumber(Integer intakeNumber) {
-        this.intakeNumber = intakeNumber;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint examinations(List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations) {
-        this.examinations = examinations;
-        return this;
-    }
-
-    public DmpHydroApiResponsesStationResponseMeasurementPoint addExaminationsItem(DmpHydroApiResponsesStationResponseMeasurementPointExamination examinationsItem) {
-        if (this.examinations == null) {
-            this.examinations = new ArrayList<DmpHydroApiResponsesStationResponseMeasurementPointExamination>();
-        }
-        this.examinations.add(examinationsItem);
-        return this;
-    }
-
-    /**
-     * A list of examination performed on the measurement point
-     *
-     * @return examinations
-     **/
-    public List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> getExaminations() {
-        return examinations;
-    }
-
-    public void setExaminations(List<DmpHydroApiResponsesStationResponseMeasurementPointExamination> examinations) {
-        this.examinations = examinations;
-    }
-
-
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DmpHydroApiResponsesStationResponseMeasurementPoint dmpHydroApiResponsesStationResponseMeasurementPoint = (DmpHydroApiResponsesStationResponseMeasurementPoint) o;
-        return Objects.equals(this.number, dmpHydroApiResponsesStationResponseMeasurementPoint.number) &&
-                Objects.equals(this.name, dmpHydroApiResponsesStationResponseMeasurementPoint.name) &&
-                Objects.equals(this.measurementPointType, dmpHydroApiResponsesStationResponseMeasurementPoint.measurementPointType) &&
-                Objects.equals(this.measurementPointTypeSc, dmpHydroApiResponsesStationResponseMeasurementPoint.measurementPointTypeSc) &&
-                Objects.equals(this.description, dmpHydroApiResponsesStationResponseMeasurementPoint.description) &&
-                Objects.equals(this.location, dmpHydroApiResponsesStationResponseMeasurementPoint.location) &&
-                Objects.equals(this.intakeNumber, dmpHydroApiResponsesStationResponseMeasurementPoint.intakeNumber) &&
-                Objects.equals(this.examinations, dmpHydroApiResponsesStationResponseMeasurementPoint.examinations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(number, name, measurementPointType, measurementPointTypeSc, description, location, intakeNumber, examinations);
-    }
-
-
-    @Override
-    public String toString() {
-
-        String sb = "class DmpHydroApiResponsesStationResponseMeasurementPoint {\n" +
-                "    number: " + toIndentedString(number) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    measurementPointType: " + toIndentedString(measurementPointType) + "\n" +
-                "    measurementPointTypeSc: " + toIndentedString(measurementPointTypeSc) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    location: " + toIndentedString(location) + "\n" +
-                "    intakeNumber: " + toIndentedString(intakeNumber) + "\n" +
-                "    examinations: " + toIndentedString(examinations) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
+    return o.toString().replace("\n", "\n    ");
+  }
 
 }

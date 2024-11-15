@@ -1,11 +1,24 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import dk.dataforsyningen.vanda_hydrometry_data.command.StationsCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandController;
 import dk.dataforsyningen.vanda_hydrometry_data.components.CommandLineArgsParser;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Station;
 import dk.dataforsyningen.vanda_hydrometry_data.service.CommandService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,163 +30,154 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-
 @SpringBootTest
 public class VandaHydrometryDataRunnerTest {
 
-    @Mock
-    private StationsCommand stationsCommand;
+  @Mock
+  private StationsCommand stationsCommand;
 
-    @MockBean
-    private CommandService commandService;
+  @MockBean
+  private CommandService commandService;
 
-    @SpyBean
-    private CommandController commandController;
+  @SpyBean
+  private CommandController commandController;
 
-    @MockBean
-    private DatabaseService databaseService;
+  @MockBean
+  private DatabaseService databaseService;
 
-    @Autowired
-    private CommandLineArgsParser commandLineArgsParser;
+  @Autowired
+  private CommandLineArgsParser commandLineArgsParser;
 
-    @Autowired
-    private VandaHydrometryDataConfig config;
+  @Autowired
+  private VandaHydrometryDataConfig config;
 
-    @Autowired
-    @InjectMocks
-    private VandaHydrometryDataRunner runner;
+  @Autowired
+  @InjectMocks
+  private VandaHydrometryDataRunner runner;
 
-    @BeforeEach
-    public void reset() {
-        commandLineArgsParser.clear();
-    }
+  @BeforeEach
+  public void reset() {
+    commandLineArgsParser.clear();
+  }
 
-    @Test
-    public void runTestNoParams() throws Exception {
+  @Test
+  public void runTestNoParams() throws Exception {
 
-        String[] args = new String[0];
+    String[] args = new String[0];
 
-        final PrintStream oldStdout = System.out;
-        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(bo));
+    final PrintStream oldStdout = System.out;
+    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(bo));
 
-        runner.run(args);
+    runner.run(args);
 
-        bo.flush();
-        System.setOut(oldStdout);
-        String allWrittenLines = bo.toString();
-        assertTrue(allWrittenLines.contains("Commands:\n"));
+    bo.flush();
+    System.setOut(oldStdout);
+    String allWrittenLines = bo.toString();
+    assertTrue(allWrittenLines.contains("Commands:\n"));
 
-    }
+  }
 
-    @Test
-    public void runTestTooManyParams() throws Exception {
+  @Test
+  public void runTestTooManyParams() throws Exception {
 
-        String[] args = new String[2];
-        args[0] = "command1";
-        args[1] = "command2";
+    String[] args = new String[2];
+    args[0] = "command1";
+    args[1] = "command2";
 
-        Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
-        Field loggerField = runnerClass.getDeclaredField("logger");
-        loggerField.setAccessible(true);
-        loggerField.set(runner, mock(Logger.class));
-        Logger log = (Logger) loggerField.get(runner);
+    Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+    Field loggerField = runnerClass.getDeclaredField("logger");
+    loggerField.setAccessible(true);
+    loggerField.set(runner, mock(Logger.class));
+    Logger log = (Logger) loggerField.get(runner);
 
-        runner.run(args);
+    runner.run(args);
 
-        verify(log, times(1)).warn(eq("Too many commands requested."));
-    }
+    verify(log, times(1)).warn(eq("Too many commands requested."));
+  }
 
-    @Test
-    public void runTestUnknownCommand() throws Exception {
+  @Test
+  public void runTestUnknownCommand() throws Exception {
 
-        String[] args = new String[1];
-        args[0] = "command1";
+    String[] args = new String[1];
+    args[0] = "command1";
 
-        when(commandService.getCommandBean(args[0])).thenReturn(null);
+    when(commandService.getCommandBean(args[0])).thenReturn(null);
 
-        Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
-        Field loggerField = runnerClass.getDeclaredField("logger");
-        loggerField.setAccessible(true);
-        loggerField.set(runner, mock(Logger.class));
-        Logger log = (Logger) loggerField.get(runner);
+    Class<?> runnerClass = AopProxyUtils.ultimateTargetClass(runner);
+    Field loggerField = runnerClass.getDeclaredField("logger");
+    loggerField.setAccessible(true);
+    loggerField.set(runner, mock(Logger.class));
+    Logger log = (Logger) loggerField.get(runner);
 
-        runner.run(args);
+    runner.run(args);
 
-        verify(log, times(1)).error(eq("No execution bean was regsitered for the given command: command1"));
-    }
+    verify(log, times(1)).error(
+        eq("No execution bean was regsitered for the given command: command1"));
+  }
 
-    @Test
-    public void runTestKnownCommand() throws Exception {
+  @Test
+  public void runTestKnownCommand() throws Exception {
 
-        String[] args = new String[1];
-        args[0] = "stations";
+    String[] args = new String[1];
+    args[0] = "stations";
 
-        doNothing().when(commandController).execute(any());
-        when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
+    doNothing().when(commandController).execute(any());
+    when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 
-        runner.run(args);
-        verify(commandController, times(1)).execute(eq(stationsCommand));
-    }
+    runner.run(args);
+    verify(commandController, times(1)).execute(eq(stationsCommand));
+  }
 
-    @Test
-    public void runTestAllStations() throws Exception {
+  @Test
+  public void runTestAllStations() throws Exception {
 
-        String[] args = new String[1];
-        args[0] = "stations";
+    String[] args = new String[1];
+    args[0] = "stations";
 
-        Station st1 = new Station();
-        st1.setStationId("10000001");
+    Station st1 = new Station();
+    st1.setStationId("10000001");
 
-        Station st2 = new Station();
-        st2.setStationId("10000002");
+    Station st2 = new Station();
+    st2.setStationId("10000002");
 
-        ArrayList<Station> ids = new ArrayList<>();
-        ids.add(st1);
-        ids.add(st2);
+    ArrayList<Station> ids = new ArrayList<>();
+    ids.add(st1);
+    ids.add(st2);
 
-        config.setStationId("all");
+    config.setStationId("all");
 
-        when(databaseService.getAllStations()).thenReturn(ids);
-        doNothing().when(commandController).execute(any());
-        when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
+    when(databaseService.getAllStations()).thenReturn(ids);
+    doNothing().when(commandController).execute(any());
+    when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 
-        runner.run(args);
-        verify(commandController, times(2)).execute(eq(stationsCommand));
-    }
+    runner.run(args);
+    verify(commandController, times(2)).execute(eq(stationsCommand));
+  }
 
-    @Test
-    public void runTestMultipleStations() throws Exception {
+  @Test
+  public void runTestMultipleStations() throws Exception {
 
-        String[] args = new String[1];
-        args[0] = "stations";
+    String[] args = new String[1];
+    args[0] = "stations";
 
-        Station st1 = new Station();
-        st1.setStationId("10000001");
+    Station st1 = new Station();
+    st1.setStationId("10000001");
 
-        Station st2 = new Station();
-        st2.setStationId("10000002");
+    Station st2 = new Station();
+    st2.setStationId("10000002");
 
-        ArrayList<Station> ids = new ArrayList<>();
-        ids.add(st1);
-        ids.add(st2);
+    ArrayList<Station> ids = new ArrayList<>();
+    ids.add(st1);
+    ids.add(st2);
 
-        config.setStationId("10000001,10000002");
-        doNothing().when(commandController).execute(any());
-        when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
+    config.setStationId("10000001,10000002");
+    doNothing().when(commandController).execute(any());
+    when(commandService.getCommandBean(args[0])).thenReturn(stationsCommand);
 
-        runner.run(args);
-        verify(commandController, times(2)).execute(eq(stationsCommand));
-    }
+    runner.run(args);
+    verify(commandController, times(2)).execute(eq(stationsCommand));
+  }
 
 
 }
