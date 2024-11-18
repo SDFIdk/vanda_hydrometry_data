@@ -68,12 +68,12 @@ CREATE INDEX ON station_measurement_type
 
 CREATE TABLE measurement
 (
- "result"              double precision NOT NULL,
- result_elevation_corrected double precision NULL,
+ "value"              double precision NULL,
+ value_elevation_corrected double precision NULL,
  measurement_date_time timestamp(3) with time zone NOT NULL,
  is_current            bool NOT NULL,
  created               timestamp(3) with time zone NOT NULL,
- vanda_event_timestamp timestamp(3) with time zone,
+ vanda_event_timestamp timestamp(3) with time zone NULL,
  station_id            char(8) NOT NULL,
  examination_type_sc      int NOT NULL,
  measurement_point_number int NOT NULL,
@@ -99,10 +99,10 @@ CREATE INDEX measurement_station_IDX ON measurement
 );
 
 COMMENT ON TABLE measurement IS 'Contains the measurements of the stations';
-COMMENT ON COLUMN measurement.result IS 'The result of the measurement, for example 4203';
+COMMENT ON COLUMN measurement.value IS 'The value of the measurement, for example 4203';
 COMMENT ON COLUMN measurement.measurement_date_time IS 'The measurement date time';
 COMMENT ON COLUMN measurement.vanda_event_timestamp IS 'The timestamp when the record was created in the source system (vanda)';
-COMMENT ON COLUMN measurement.is_current IS 'Is the result current, ie. the latest result';
+COMMENT ON COLUMN measurement.is_current IS 'Is the current value, ie. the latest value';
 
 CREATE TABLE calculated
 (
@@ -158,7 +158,7 @@ BEGIN
   RETURN QUERY
   SELECT
       DATE(measurement_date_time) as date,
-      AVG(result) as daily_mean
+      AVG(value) as daily_mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
@@ -189,7 +189,7 @@ BEGIN
   SELECT
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
       EXTRACT(MONTH FROM measurement_date_time)::int as month,
-      AVG(result) as monthly_mean
+      AVG(value) as monthly_mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
@@ -218,7 +218,7 @@ BEGIN
   RETURN QUERY
   SELECT
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
-      AVG(result) as mean
+      AVG(value) as mean
   FROM hydrometry.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
@@ -267,7 +267,7 @@ BEGIN
   SELECT
     season_year::int as year,
     season,
-    AVG(result) as mean
+    AVG(value) as mean
   FROM seasons
   WHERE p_season IS NULL OR season = p_season
   GROUP BY season_year, season
