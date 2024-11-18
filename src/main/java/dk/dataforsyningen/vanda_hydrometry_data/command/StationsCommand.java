@@ -116,10 +116,10 @@ public class StationsCommand implements CommandInterface {
             " : retrieve the stations that provides the requested examination types. Can be a comma separated values (no spaces).");
     System.out.println(
         "\t" + VandaHUtility.ITALIC_ON + "withResultsAfter" + VandaHUtility.FORMAT_OFF +
-            " : only return stations with examinations that got results measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
+            " : only return stations with examinations that got values (results) measured after a point in time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
     System.out.println(
         "\t" + VandaHUtility.ITALIC_ON + "withResultsCreatedAfter" + VandaHUtility.FORMAT_OFF +
-            " : only return stations with examination that contains results created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
+            " : only return stations with examination that contains values (results) created after a point in time. This is the point in time there where created/updated in the system and not the actual measurement time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
   }
 
   public ArrayList<Station> getStations() {

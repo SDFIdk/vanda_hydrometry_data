@@ -200,22 +200,22 @@ public class StreamDischargeCommandTest {
     assertEquals(mp1, m1.getMeasurementPointNumber());
     assertEquals(id1, m1.getStationId());
     assertEquals(date1, "" + m1.getMeasurementDateTime());
-    assertEquals(res1, m1.getResult());
+    assertEquals(res1, m1.getValue());
 
     assertEquals(mp2, m2.getMeasurementPointNumber());
     assertEquals(id1, m2.getStationId());
     assertEquals(date2, "" + m2.getMeasurementDateTime());
-    assertEquals(res2, m2.getResult());
+    assertEquals(res2, m2.getValue());
 
     assertEquals(mp1, m3.getMeasurementPointNumber());
     assertEquals(id2, m3.getStationId());
     assertEquals(date3, "" + m3.getMeasurementDateTime());
-    assertEquals(res3, m3.getResult());
+    assertEquals(res3, m3.getValue());
 
     assertEquals(mp2, m4.getMeasurementPointNumber());
     assertEquals(id2, m4.getStationId());
     assertEquals(date4, "" + m4.getMeasurementDateTime());
-    assertEquals(res4, m4.getResult());
+    assertEquals(res4, m4.getValue());
 
     ArrayList<MeasurementType> measurementTypes = cmd.getMeasurementTypes();
 

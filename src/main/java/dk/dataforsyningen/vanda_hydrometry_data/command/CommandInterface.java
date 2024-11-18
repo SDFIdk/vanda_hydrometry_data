@@ -41,7 +41,7 @@ public interface CommandInterface {
   /**
    * Display data on the console
    *
-   * @param raw if true the retrieved aPI results are displayed otherwise the mapped data
+   * @param raw if true the retrieved API values are displayed otherwise the mapped data
    */
   public void displayData(boolean raw);
 
