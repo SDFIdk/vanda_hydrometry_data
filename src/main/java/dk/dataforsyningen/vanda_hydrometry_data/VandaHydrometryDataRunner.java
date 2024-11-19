@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 /**
  * Command line runner class that handles the input commands and delegates the execution.
@@ -71,9 +70,9 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
       }
 
       System.out.println(
-          "Use the option --displayRawData to display the API results at the console.");
+          "Use the option --displayRawData to display the API values at the console.");
       System.out.println("Use the option --displayData to display the mapped data at the console.");
-      System.out.println("Use the option --saveDb to save the results in the defined database.");
+      System.out.println("Use the option --saveDb to save the values in the defined database.");
 
       // Too many commands
     } else if (cmds.size() > 1) {

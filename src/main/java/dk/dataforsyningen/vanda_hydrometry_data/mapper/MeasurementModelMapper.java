@@ -16,8 +16,8 @@ public class MeasurementModelMapper {
 
     Measurement measurement = new Measurement();
     measurement.setMeasurementPointNumber(response.getMeasurementPointNumber());
-    measurement.setResult(response.getResult());
-    measurement.setResultElevationCorrected(response.getResultElevationCorrected());
+    measurement.setValue(response.getResult());
+    measurement.setValueElevationCorrected(response.getResultElevationCorrected());
     measurement.setMeasurementDateTime(response.getMeasurementDateTime());
     measurement.setExaminationTypeSc(response.getExaminationTypeSc());
     measurement.setIsCurrent(true); //the measurements coming from API are always the current
