@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -144,7 +145,7 @@ public class VandahDmpApiService {
             .body(DmpHydroApiResponsesMeasurementResultResponse[].class);
         // Stop the while loop
         running = 0;
-      } catch (ResourceAccessException | InternalException exception) {
+      } catch (RestClientException | InternalException exception) {
         logger.warn("Exception received: " + exception + "Try again..." + exception.getMessage());
         running--;
         if (running > 0) {
