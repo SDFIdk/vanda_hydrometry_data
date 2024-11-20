@@ -97,7 +97,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
                 commandController.execute(commandBean);
               }
             } else {
-              logger.warn("No saved station can provide examinatnion_type_sc=" +
+              logger.warn("No saved station can provide examination_type_sc=" +
                   commandBean.getExaminationTypeSc());
             }
           } else if (config.getStationId() != null &&
