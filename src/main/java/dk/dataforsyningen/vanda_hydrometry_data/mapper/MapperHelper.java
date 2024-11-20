@@ -14,7 +14,7 @@ public class MapperHelper {
    * @return validated string
    */
   public static String validateString(String s) {
-    if (s == null || s.isEmpty() || s.isBlank()) {
+    if (s == null || s.isBlank()) {
       return null;
     } else {
       return s;
