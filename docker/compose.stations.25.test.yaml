@@ -13,7 +13,6 @@ services:
         command:
           - "stations"
           - "--examinationTypeSc=25"
-          - "--verbose"
           - "--saveDb"
 
 networks:

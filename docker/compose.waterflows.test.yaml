@@ -13,7 +13,6 @@ services:
         command:
           - "waterflows"
           - "--stationId=all"
-          - "--verbose"
           - "--saveDb"
 
 networks:
