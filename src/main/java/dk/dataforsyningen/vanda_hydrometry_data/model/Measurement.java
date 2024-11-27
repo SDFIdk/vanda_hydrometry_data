@@ -15,8 +15,6 @@ public class Measurement {
 
   OffsetDateTime created = null;
 
-  OffsetDateTime updated = null;
-
   OffsetDateTime vandaEventTimestamp = null;
 
   Boolean isCurrent = null;
@@ -83,14 +81,6 @@ public class Measurement {
     this.valueElevationCorrected = valueElevationCorrected;
   }
 
-  public OffsetDateTime getUpdated() {
-    return updated;
-  }
-
-  public void setUpdated(OffsetDateTime updated) {
-    this.updated = updated;
-  }
-
   public OffsetDateTime getVandaEventTimestamp() {
     return vandaEventTimestamp;
   }
@@ -114,7 +104,6 @@ public class Measurement {
         + ", valueElevationCorrected=" + valueElevationCorrected
         + ", value=" + value
         + ", created=" + created
-        + ", updated=" + updated
         + ", vandaEventTimestamp=" + vandaEventTimestamp
         + ", isCurrent=" + isCurrent
         + ", stationId=" + stationId
@@ -126,7 +115,7 @@ public class Measurement {
   public int hashCode() {
     return Objects.hash(created, examinationTypeSc, isCurrent, measurementDateTime,
         measurementPointNumber, value,
-        valueElevationCorrected, stationId, updated, vandaEventTimestamp);
+        valueElevationCorrected, stationId, vandaEventTimestamp);
   }
 
   @Override
@@ -148,7 +137,7 @@ public class Measurement {
         && Objects.equals(measurementPointNumber, other.measurementPointNumber)
         && Objects.equals(value, other.value)
         && Objects.equals(valueElevationCorrected, other.valueElevationCorrected)
-        && Objects.equals(stationId, other.stationId) && Objects.equals(updated, other.updated)
+        && Objects.equals(stationId, other.stationId) 
         && Objects.equals(vandaEventTimestamp, other.vandaEventTimestamp);
   }
 

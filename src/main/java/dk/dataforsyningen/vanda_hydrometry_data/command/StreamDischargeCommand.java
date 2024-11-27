@@ -161,7 +161,7 @@ public class StreamDischargeCommand implements CommandInterface {
     System.out.println("\t" + VandaHUtility.ITALIC_ON + "to" + VandaHUtility.FORMAT_OFF +
         " :  to measurement date time to include in the response. Return values on the specified date time and ealier. Both From and To must be specified if one of them presents. If -from/-to is not specified, it returns data for the last 24 hours. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
     System.out.println("\t" + VandaHUtility.ITALIC_ON + "createdAfter" + VandaHUtility.FORMAT_OFF +
-        " :  return values that are created or updated after the specified date time. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
+        " :  return values that are created or updated after the specified date time. Should be used together with 'from' and 'to' parameters. Must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'. If the time zone component \"Z\" (Zulu) is not provided, the system's time zone is considered.");
   }
 
   public ArrayList<Measurement> getMeasurements() {
