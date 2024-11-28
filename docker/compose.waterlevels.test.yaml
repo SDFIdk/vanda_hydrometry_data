@@ -13,7 +13,6 @@ services:
         command:
           - "waterlevels"
           - "--stationId=all"
-          - "--verbose"
           - "--saveDb"
 
 networks:
