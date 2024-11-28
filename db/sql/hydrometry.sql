@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
-CREATE SCHEMA IF NOT EXISTS hydrometry;
-SET search_path TO hydrometry, public;
+CREATE SCHEMA IF NOT EXISTS vanda;
+SET search_path TO vanda, public;
 
 CREATE TABLE station
 (
@@ -139,18 +139,18 @@ COMMENT ON COLUMN calculated.slice IS 'The slice type (size): Y(ear), S(eason), 
 COMMENT ON COLUMN calculated.date_start IS 'The start date of the slice';
 COMMENT ON COLUMN calculated.mean IS 'The mean of the measurements in the slice';
 
-CREATE TABLE hydrometry.calculated_daily (
+CREATE TABLE vanda.calculated_daily (
   date date,
   mean double precision
 );
 
-CREATE OR REPLACE FUNCTION hydrometry.get_daily_means(
+CREATE OR REPLACE FUNCTION vanda.get_daily_means(
     p_station_id char(8),
     p_examination_type_sc int,
     p_start_date date,
     p_end_date date
 )
-RETURNS SETOF hydrometry.calculated_daily
+RETURNS SETOF vanda.calculated_daily
 STABLE
 LANGUAGE plpgsql
 AS $$
@@ -159,7 +159,7 @@ BEGIN
   SELECT
       DATE(measurement_date_time) as date,
       AVG(value) as daily_mean
-  FROM hydrometry.measurement
+  FROM vanda.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
@@ -168,19 +168,19 @@ BEGIN
 END;
 $$;
 
-CREATE TABLE hydrometry.calculated_monthly (
+CREATE TABLE vanda.calculated_monthly (
   year int,
   month int,
   mean double precision
 );
 
-CREATE OR REPLACE FUNCTION hydrometry.get_monthly_means(
+CREATE OR REPLACE FUNCTION vanda.get_monthly_means(
   p_station_id char(8),
   p_examination_type_sc int,
   p_start_date date,
   p_end_date date
 )
-RETURNS SETOF hydrometry.calculated_monthly
+RETURNS SETOF vanda.calculated_monthly
 STABLE
 LANGUAGE plpgsql
 AS $$
@@ -190,7 +190,7 @@ BEGIN
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
       EXTRACT(MONTH FROM measurement_date_time)::int as month,
       AVG(value) as monthly_mean
-  FROM hydrometry.measurement
+  FROM vanda.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
@@ -199,18 +199,18 @@ BEGIN
 END;
 $$;
 
-CREATE TABLE hydrometry.calculated_yearly (
+CREATE TABLE vanda.calculated_yearly (
   year int,
   mean double precision
 );
 
-CREATE OR REPLACE FUNCTION hydrometry.get_yearly_means(
+CREATE OR REPLACE FUNCTION vanda.get_yearly_means(
   p_station_id char(8),
   p_examination_type_sc int,
   p_start_date date,
   p_end_date date
 )
-RETURNS SETOF hydrometry.calculated_yearly
+RETURNS SETOF vanda.calculated_yearly
 STABLE
 LANGUAGE plpgsql
 AS $$
@@ -219,7 +219,7 @@ BEGIN
   SELECT
       EXTRACT(YEAR FROM measurement_date_time)::int as year,
       AVG(value) as mean
-  FROM hydrometry.measurement
+  FROM vanda.measurement
   WHERE station_id = p_station_id
     AND examination_type_sc = p_examination_type_sc
     AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
@@ -228,20 +228,20 @@ BEGIN
 END;
 $$;
 
-CREATE TABLE hydrometry.calculated_seasonal (
+CREATE TABLE vanda.calculated_seasonal (
   season_year int,
   season text,
   mean double precision
 );
 
-CREATE OR REPLACE FUNCTION hydrometry.get_seasonal_means(
+CREATE OR REPLACE FUNCTION vanda.get_seasonal_means(
   p_station_id char(8),
   p_examination_type_sc int,
   p_start_date date,
   p_end_date date,
   p_season text DEFAULT NULL
 )
-RETURNS SETOF hydrometry.calculated_seasonal
+RETURNS SETOF vanda.calculated_seasonal
 STABLE
 LANGUAGE plpgsql
 AS $$
@@ -259,7 +259,7 @@ BEGIN
               WHEN EXTRACT(MONTH FROM measurement_date_time) = 12 THEN EXTRACT(YEAR FROM measurement_date_time) + 1
               ELSE EXTRACT(YEAR FROM measurement_date_time)
           END AS season_year
-    FROM hydrometry.measurement
+    FROM vanda.measurement
     WHERE station_id = p_station_id
       AND examination_type_sc = p_examination_type_sc
       AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
@@ -281,4 +281,4 @@ BEGIN
 END;
 $$;
 
-SET search_path TO public, hydrometry;
+SET search_path TO public, vanda;

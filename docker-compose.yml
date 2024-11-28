@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # Local development postgres instance with postgis extension
-  hydrometry:
+  hip-data:
     image: postgis/postgis:16-3.4
     ports:
       - 5433:5433

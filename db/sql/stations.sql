@@ -1,9 +1,9 @@
-INSERT INTO "hydrometry"."measurement_type" ("measurement_type_id", "unit", "unit_sc", "parameter", "parameter_sc", "examination_type_sc", "examination_type") VALUES
-('1155-27-55', 'l/s', 55, 'Vandføring', 1155, 27, 'Vandføring'),
-('1233-25-19', 'cm', 19, 'Vandstand', 1233, 25, 'Vandstand'),
-('1233-31-63', 'm', 63, 'Vandstand', 1233, 31, 'Grundvandstand');
+INSERT INTO "vanda"."measurement_type" ("unit", "unit_sc", "parameter", "parameter_sc", "examination_type_sc", "examination_type") VALUES
+('l/s', 55, 'Vandføring', 1155, 27, 'Vandføring'),
+('cm', 19, 'Vandstand', 1233, 25, 'Vandstand'),
+('m', 63, 'Vandstand', 1233, 31, 'Grundvandstand');
 
-INSERT INTO "hydrometry"."station" ("station_id", "old_station_number", "name", "station_owner_name", "location", "description", "created", "updated") VALUES
+INSERT INTO "vanda"."station" ("station_id", "old_station_number", "name", "station_owner_name", "location", "description", "created", "updated") VALUES
 ('01000690', '1000102', 'Klostergrøften, Munkebro', 'Miljøstyrelsen', 'SRID=25832;POINT(547033.2252 6357744.3064)', 'Opland = 28,2 km2', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
 ('01000691', '1000315', 'Klostergrøften, Klostergrøften.', 'Miljøstyrelsen', 'SRID=25832;POINT(543710 6359307)', 'Opland = 35,43 km2', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
 ('02001038', '2000005', 'Elling Å, Elling Kirke', 'Miljøstyrelsen', 'SRID=25832;POINT(589149.0797 6370965.2691)', 'Syd For Elling Kirke | Opland = 123,36 km2', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
@@ -505,7 +505,7 @@ INSERT INTO "hydrometry"."station" ("station_id", "old_station_number", "name", 
 ('70000256', NULL, 'Hinnerup Å, Gl. Åstedvej', 'Skive kommune', 'SRID=25832;POINT(499170 6294318)', 'Skive Kommune', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
 ('70000257', NULL, 'Trævel Å, Håsum Enge', 'Skive kommune', 'SRID=25832;POINT(489804 6269237)', 'Skive', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00');
 
-INSERT INTO "hydrometry"."station" ("station_id", "old_station_number", "name", "station_owner_name", "location", "description", "created", "updated") VALUES
+INSERT INTO "vanda"."station" ("station_id", "old_station_number", "name", "station_owner_name", "location", "description", "created", "updated") VALUES
 ('70000258', NULL, 'Grynderup Sø, Afløb', 'Skive kommune', 'SRID=25832;POINT(497080 6294624)', 'Skive', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
 ('70000259', NULL, 'Hinnerup Å, Østergård', 'Skive kommune', 'SRID=25832;POINT(499350 6291295)', 'Skive', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
 ('70000260', NULL, 'Felding Bæk Havnevej', 'Skive kommune', 'SRID=25832;POINT(502588.002 6269480.367)', 'Skive Kommune', '2024-10-06 17:27:24.4+00', '2024-10-06 17:27:24.4+00'),
