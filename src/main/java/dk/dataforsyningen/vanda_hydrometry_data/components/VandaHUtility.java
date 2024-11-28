@@ -18,9 +18,7 @@ import java.util.regex.Pattern;
  */
 public class VandaHUtility {
 
-  public static String BOLD_ON = "\033[1m";
-  public static String ITALIC_ON = "\033[3m";
-  public static String FORMAT_OFF = "\033[0m";
+  
 
 
 

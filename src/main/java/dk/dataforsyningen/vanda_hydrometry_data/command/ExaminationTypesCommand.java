@@ -60,7 +60,7 @@ public class ExaminationTypesCommand implements CommandInterface {
 
   @Override
   public void showShortHelp() {
-    System.out.println(VandaHUtility.BOLD_ON + "examinationTypes" + VandaHUtility.FORMAT_OFF +
+    System.out.println(BOLD_ON + "examinationTypes" + FORMAT_OFF +
         " : retrieves the examination types with mapping and constraints.");
 
   }
