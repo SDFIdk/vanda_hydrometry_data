@@ -1,7 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.mapper.MeasurementModelMapper;
 import dk.dataforsyningen.vanda_hydrometry_data.mapper.MeasurementTypeModelMapper;
 import dk.dataforsyningen.vanda_hydrometry_data.model.Measurement;

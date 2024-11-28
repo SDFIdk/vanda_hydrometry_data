@@ -1,9 +1,18 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import java.security.InvalidParameterException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +29,23 @@ public class VandaHydrometryDataConfig {
 
   private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataConfig.class);
 
+  private static final DateTimeFormatter FLEXIBLE_FORMATTER =
+	        new DateTimeFormatterBuilder()
+	            .append(DateTimeFormatter.ISO_LOCAL_DATE) // Date part
+	            .optionalStart()
+	            .appendLiteral('T')
+	            .appendPattern("HH:mm") // Hours and minutes
+	            .optionalStart()
+	            .appendLiteral(':')
+	            .appendPattern("ss") // Seconds are optional
+	            .optionalStart()
+	            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true) // Fractional seconds optional
+	            .optionalEnd()
+	            .optionalEnd()
+	            .optionalEnd()
+	            .appendOffsetId() // Time zone is mandatory if present
+	            .toFormatter();
+  
   /* Values from the properties file */
   //enables DAO and database service testing - needs a DB connection
   @Value("${vanda-hydrometry-data.database.test:#{false}}")
@@ -127,7 +153,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return VandaHUtility.parseForAPI(withResultsAfter);
+      return parseForAPI(withResultsAfter, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException(
           "Invalid date format found in 'withResultsAfter' parameter.");
@@ -139,7 +165,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return VandaHUtility.parseForAPI(withResultsCreatedAfter);
+      return parseForAPI(withResultsCreatedAfter, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException(
           "Invalid date format found in 'withResultsCreatedAfter' parameter.");
@@ -151,7 +177,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return VandaHUtility.parseForAPI(from);
+      return parseForAPI(from, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'from' parameter.");
     }
@@ -162,7 +188,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return VandaHUtility.parseForAPI(to);
+      return parseForAPI(to, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'to' parameter.");
     }
@@ -173,7 +199,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return VandaHUtility.parseForAPI(createdAfter);
+      return parseForAPI(createdAfter, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'createdAfter' parameter.");
     }
@@ -308,5 +334,59 @@ public class VandaHydrometryDataConfig {
     return enableTest;
   }
 
+  /**
+   * Parses the date/time string given by the user into an OffsetDateTime.
+   * If required the output can be in UTC time zone as accepted by the API.
+   *
+   * @param string date/time with or without TZ
+   * @param boolean inUTC if true the result will be converted and returned in UTC no matter the input TZ
+   * @return OffsetDateTime
+   */
+  public static OffsetDateTime parseForAPI(String dateStr, boolean inUTC) throws DateTimeParseException {
+    if (dateStr == null) {
+      return null;
+    }
+    dateStr = dateStr.toUpperCase();
+    OffsetDateTime output = null;
+    try {
+        // Attempt to parse with ISO_OFFSET_DATE_TIME format (includes time zone)
+        output = OffsetDateTime.parse(dateStr, FLEXIBLE_FORMATTER);
+    } catch (DateTimeParseException e) {
+        try {
+        	
+        	// Handle cases where only date and time zone are present (e.g., "2023-11-28+01:00")
+        	Matcher matcher = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2})(Z|[+-]\\d{2}:\\d{2})$").matcher(dateStr);
+            if (matcher.matches()) {
+                String datePart = matcher.group(1);
+                String zonePart = matcher.group(2);
+                output = OffsetDateTime.parse(datePart + "T00:00:00" + zonePart, FLEXIBLE_FORMATTER);
+                
+            } else {
+	            // Attempt to parse as LocalDateTime (no time zone provided)
+	            LocalDateTime localDateTime;
+	            if (dateStr.contains("T")) {
+	                // If the time component is present
+	                localDateTime = LocalDateTime.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+	            } else {
+	                // If only the date is provided, assume 00:00:00
+	                LocalDate localDate = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE);
+	                localDateTime = localDate.atStartOfDay();
+	            }
+	            // Apply the system's default time zone
+	            ZoneId systemZone = ZoneId.systemDefault();
+	            ZoneOffset systemOffset = systemZone.getRules().getOffset(localDateTime);
+	            output = localDateTime.atOffset(systemOffset);
+            }
+        } catch (DateTimeParseException e2) {
+            throw new InvalidParameterException("Invalid date/time format. Expected ISO-8601 format, with or without time zone.", e2);
+        }
+    }
+    
+    if (inUTC && !ZoneOffset.UTC.equals(output.getOffset())) {
+    	output = output.withOffsetSameInstant(ZoneOffset.UTC);
+    }
+    
+    return output;
+  }
 
 }

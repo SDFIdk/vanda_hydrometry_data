@@ -104,8 +104,8 @@ public class VandaHydrometryDataConfigTest {
       properties = {"withResultsAfter=2024-09-01z",
           "withResultsCreatedAfter=2024-09-01T23:24:02.000Z",
           "from=2024-09-01T23:24Z",
-          "to=2024-09-01 23:24Z",
-          "createdAfter=2024-09-01 12:34:56z"
+          "to=2024-09-01T23:24Z",
+          "createdAfter=2024-09-01T12:34:56z"
       }
   )
   public class VandaHydrometryDataConfigTest4 {
@@ -119,7 +119,7 @@ public class VandaHydrometryDataConfigTest {
       assertEquals("2024-09-01T00:00Z", "" + config.getWithResultsAfter());
 
       assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
-      assertEquals("2024-09-01T23:24Z", "" + config.getWithResultsCreatedAfter());
+      assertEquals("2024-09-01T23:24:02Z", "" + config.getWithResultsCreatedAfter());
 
       assertDoesNotThrow(() -> config.getFrom());
       assertEquals("2024-09-01T23:24Z", "" + config.getFrom());
@@ -128,7 +128,7 @@ public class VandaHydrometryDataConfigTest {
       assertEquals("2024-09-01T23:24Z", "" + config.getTo());
 
       assertDoesNotThrow(() -> config.getCreatedAfter());
-      assertEquals("2024-09-01T12:34Z", "" + config.getCreatedAfter());
+      assertEquals("2024-09-01T12:34:56Z", "" + config.getCreatedAfter());
     }
   }
 
@@ -142,8 +142,8 @@ public class VandaHydrometryDataConfigTest {
       properties = {"withResultsAfter=2024-09-01",
           "withResultsCreatedAfter=2024-09-01T23:24:02.001",
           "from=2024-09-01T23:24",
-          "to=2024-09-01 23:24",
-          "createdAfter=2024-09-01 12:34:56.123"
+          "to=2024-09-01T23:24",
+          "createdAfter=2024-09-01T12:34:56.123"
       }
   )
   public class VandaHydrometryDataConfigTest5 {
@@ -159,7 +159,7 @@ public class VandaHydrometryDataConfigTest {
       assertDoesNotThrow(() -> config.getWithResultsAfter());
       assertEquals("" + odt, "" + config.getWithResultsAfter());
 
-      ldt = LocalDateTime.of(2024, 9, 1, 23, 24, 0, 0);
+      ldt = LocalDateTime.of(2024, 9, 1, 23, 24, 2, 1000000);
       odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
           .withOffsetSameInstant(ZoneOffset.UTC);
       assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
@@ -177,7 +177,7 @@ public class VandaHydrometryDataConfigTest {
       assertDoesNotThrow(() -> config.getTo());
       assertEquals("" + odt, "" + config.getTo());
 
-      ldt = LocalDateTime.of(2024, 9, 1, 12, 34, 0, 0);
+      ldt = LocalDateTime.of(2024, 9, 1, 12, 34, 56, 123000000);
       odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
           .withOffsetSameInstant(ZoneOffset.UTC);
       assertDoesNotThrow(() -> config.getCreatedAfter());
