@@ -1,6 +1,5 @@
 package dk.dataforsyningen.vanda_hydrometry_data.components;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -11,8 +10,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.json.JSONObject;
-import org.springframework.http.client.ClientHttpResponse;
 
 /**
  * Utility class
@@ -25,47 +22,6 @@ public class VandaHUtility {
   public static String ITALIC_ON = "\033[3m";
   public static String FORMAT_OFF = "\033[0m";
 
-
-  /**
-   * Returns the value for the given key from a json given as string
-   *
-   * @param key
-   * @return value as string
-   */
-  public static String valueFromJson(String json, String key) {
-    String message = null;
-    if (json == null || key == null) {
-      return null;
-    }
-    try {
-      JSONObject bodyObj = new JSONObject(json);
-      message = bodyObj.has(key) ? "" + bodyObj.get(key) : null;
-    } catch (Exception ex) {
-    }
-    return message;
-  }
-
-  /**
-   * Returns the value for the given key from a json given as string in a Http Response
-   *
-   * @param key
-   * @return value as string
-   */
-  public static String valueFromJson(ClientHttpResponse response, String key) {
-    if (response == null) {
-      return null;
-    }
-
-    String message = null;
-    try {
-      if (response.getBody() != null) {
-        message = valueFromJson(new String(response.getBody().readAllBytes()), key);
-      }
-    } catch (IOException ex) {
-      //Do nothing
-    }
-    return message;
-  }
 
 
   /**

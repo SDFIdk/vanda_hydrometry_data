@@ -34,12 +34,6 @@ public class VandaHUtilityTest {
 
 
   @Test
-  public void testValueFromJson() {
-    String stationId = VandaHUtility.valueFromJson(jsonData, "stationId");
-    assertEquals("53000012", stationId);
-  }
-
-  @Test
   public void testParseForApi() {
     OffsetDateTime date = VandaHUtility.parseForAPI("2024-10-23T23:30:13.562469701+02:00");
     assertEquals(2024, date.getYear());

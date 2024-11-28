@@ -1,9 +1,10 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+
+import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
@@ -13,11 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Service class providing API access to DMP's VandaH.
@@ -61,7 +65,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = VandaHUtility.valueFromJson(response, "message");
+          String message = valueFromJson(response, "message");
           throw new InternalException("Error retrieving stations: " + message);
         })
         .body(DmpHydroApiResponsesStationResponse[].class);
@@ -79,7 +83,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving examination types: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = VandaHUtility.valueFromJson(response, "message");
+          String message = valueFromJson(response, "message");
           throw new InternalException("Error retrieving examination types: " + message);
         })
         .body(DmpHydroApiResponsesExaminationTypeResponse[].class);
@@ -139,14 +143,14 @@ public class VandahDmpApiService {
             .onStatus(status -> status.value() >= 400, (request, response) -> {
               logger.error("Error response from " + uri + ": [" + response.getStatusCode() + "] " +
                   response.getStatusText());
-              String message = VandaHUtility.valueFromJson(response, "message");
+              String message = valueFromJson(response, "message");
               throw new InternalException("Error retrieving data: " + message);
             })
             .body(DmpHydroApiResponsesMeasurementResultResponse[].class);
         // Stop the while loop
         running = 0;
       } catch (RestClientException | InternalException exception) {
-        logger.warn("Exception received: " + exception + "Try again..." + exception.getMessage());
+        logger.warn("Exception received: " + exception + ". Try again..." + exception.getMessage());
         running--;
         if (running > 0) {
           try {
@@ -159,6 +163,32 @@ public class VandahDmpApiService {
     }
 
     return results;
+  }
+  
+  /**
+   * Returns the value for the given key from the json body from the the Http Response
+   *
+   * @param ClientHttpResponse response
+   * @param string key
+   * @return value as string
+   */
+  private String valueFromJson(ClientHttpResponse response, String key) {
+	  String value = "";
+	  try {
+		  if (response.getBody() != null) {
+			  ObjectMapper objectMapper = new ObjectMapper();
+			  JsonNode rootNode = objectMapper.readTree(new String(response.getBody().readAllBytes()));
+			  if (rootNode != null) {
+				  JsonNode node = rootNode.get(key);
+				  if (node != null) {
+					  value = node.asText(); 
+				  }
+			  }
+		  }
+	  } catch (IOException e) {
+		  //do nothing
+	  }
+	  return value;
   }
 
   private boolean isEmpty(String validate) {
