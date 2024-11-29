@@ -9,6 +9,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,12 +35,16 @@ public class VandaHydrometryDataConfig {
 	            .append(DateTimeFormatter.ISO_LOCAL_DATE) // Date part
 	            .optionalStart()
 	            .appendLiteral('T')
-	            .appendPattern("HH:mm") // Hours and minutes
+	            .appendValue(ChronoField.HOUR_OF_DAY, 1, 2, SignStyle.NOT_NEGATIVE) // 1-2 digits for hours
 	            .optionalStart()
 	            .appendLiteral(':')
-	            .appendPattern("ss") // Seconds are optional
+	            .appendValue(ChronoField.MINUTE_OF_HOUR, 1, 2, SignStyle.NOT_NEGATIVE) // 1-2 digits for minutes
+	            .optionalStart()
+	            .appendLiteral(':')
+	            .appendValue(ChronoField.SECOND_OF_MINUTE, 1, 2, SignStyle.NOT_NEGATIVE) // 1-2 digits for seconds
 	            .optionalStart()
 	            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true) // Fractional seconds optional
+	            .optionalEnd()
 	            .optionalEnd()
 	            .optionalEnd()
 	            .optionalEnd()
@@ -153,7 +158,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return parseForAPI(withResultsAfter, true);
+      return parseForAPI(withResultsAfter, true, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException(
           "Invalid date format found in 'withResultsAfter' parameter.");
@@ -165,7 +170,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return parseForAPI(withResultsCreatedAfter, true);
+      return parseForAPI(withResultsCreatedAfter, true, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException(
           "Invalid date format found in 'withResultsCreatedAfter' parameter.");
@@ -177,7 +182,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return parseForAPI(from, true);
+      return parseForAPI(from, true, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'from' parameter.");
     }
@@ -188,7 +193,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return parseForAPI(to, true);
+      return parseForAPI(to, true, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'to' parameter.");
     }
@@ -199,7 +204,7 @@ public class VandaHydrometryDataConfig {
           return null;
       }
     try {
-      return parseForAPI(createdAfter, true);
+      return parseForAPI(createdAfter, true, true);
     } catch (DateTimeParseException | NullPointerException ex) {
       throw new InvalidParameterException("Invalid date format found in 'createdAfter' parameter.");
     }
@@ -336,13 +341,14 @@ public class VandaHydrometryDataConfig {
 
   /**
    * Parses the date/time string given by the user into an OffsetDateTime.
-   * If required the output can be in UTC time zone as accepted by the API.
+   * If required the output can be in UTC time zone with seconds/nano removed as accepted by the API.
    *
    * @param string date/time with or without TZ
    * @param boolean inUTC if true the result will be converted and returned in UTC no matter the input TZ
+   * @param boolean withoutSeconds if true the seconds and milliseconds will be set to 0
    * @return OffsetDateTime
    */
-  public static OffsetDateTime parseForAPI(String dateStr, boolean inUTC) throws DateTimeParseException {
+  public static OffsetDateTime parseForAPI(String dateStr, boolean inUTC, boolean withoutSeconds) throws DateTimeParseException {
     if (dateStr == null) {
       return null;
     }
@@ -384,6 +390,12 @@ public class VandaHydrometryDataConfig {
     
     if (inUTC && !ZoneOffset.UTC.equals(output.getOffset())) {
     	output = output.withOffsetSameInstant(ZoneOffset.UTC);
+    }
+    
+    if (withoutSeconds) {
+    	output = output
+    			.with(ChronoField.SECOND_OF_MINUTE, 0)  // Set seconds to 0
+                .with(ChronoField.NANO_OF_SECOND, 0);   // Set nanoseconds to 0
     }
     
     return output;
