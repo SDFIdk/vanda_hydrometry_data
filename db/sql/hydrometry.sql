@@ -93,7 +93,6 @@ CREATE INDEX measurement_station_IDX ON measurement
 (
   station_id,
   examination_type_sc,
-  measurement_point_number,
   is_current,
   measurement_date_time
 );
@@ -161,8 +160,9 @@ BEGIN
       AVG(value) as daily_mean
   FROM vanda.measurement
   WHERE station_id = p_station_id
+    AND is_current = true
     AND examination_type_sc = p_examination_type_sc
-    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+    AND measurement_date_time BETWEEN p_start_date AND p_end_date
   GROUP BY DATE(measurement_date_time)
   ORDER BY DATE(measurement_date_time);
 END;
@@ -192,8 +192,9 @@ BEGIN
       AVG(value) as monthly_mean
   FROM vanda.measurement
   WHERE station_id = p_station_id
+    AND is_current = true
     AND examination_type_sc = p_examination_type_sc
-    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+    AND measurement_date_time BETWEEN p_start_date AND p_end_date
   GROUP BY EXTRACT(YEAR FROM measurement_date_time), EXTRACT(MONTH FROM measurement_date_time)
   ORDER BY year, month;
 END;
@@ -221,8 +222,9 @@ BEGIN
       AVG(value) as mean
   FROM vanda.measurement
   WHERE station_id = p_station_id
+    AND is_current = true
     AND examination_type_sc = p_examination_type_sc
-    AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+    AND measurement_date_time BETWEEN p_start_date AND p_end_date
   GROUP BY EXTRACT(YEAR FROM measurement_date_time)
   ORDER BY year;
 END;
@@ -261,8 +263,9 @@ BEGIN
           END AS season_year
     FROM vanda.measurement
     WHERE station_id = p_station_id
+      AND is_current = true
       AND examination_type_sc = p_examination_type_sc
-      AND DATE(measurement_date_time) BETWEEN p_start_date AND p_end_date
+      AND measurement_date_time BETWEEN p_start_date AND p_end_date
   )
   SELECT
     season_year::int as year,
