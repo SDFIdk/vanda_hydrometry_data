@@ -68,11 +68,12 @@ public class StreamDischargeCommand implements CommandInterface {
   public void mapData() {
     if (data != null) {
       measurementTypes = new ArrayList<>();
+      //map the response for each station into a Stream<Measurement>.
       measurements = Stream.of(
               data) //make the array of responses into a Stream<DmpHydroApiResponsesMeasurementResultResponse>
           .filter(response -> response != null &&
               response.getResults() != null) //disconsider null elements if any
-          .map(
+          .flatMap(
               response -> response.getResults()
                   .stream() //make the results for each station into a Stream<DmpHydroApiResponsesResultResponse>
                   .map(result -> {
@@ -85,9 +86,7 @@ public class StreamDischargeCommand implements CommandInterface {
 
                     return MeasurementModelMapper.from(result, response.getStationId());
                   }) //map the array of Results into Stream<Measurements>
-          ) //map the response for each station into a Stream<Measurement>. the results is Stream<Stream<Measurements>>
-          .flatMap(
-              Function.identity()) //flatten the streams of streams into a single stream of measurements
+          ) //Flatmap flattens the streams of streams into a single stream of measurements Stream<Measurements>
           .collect(Collectors.toCollection(ArrayList::new)); //collect all into a List<Measurements>
     }
   }
