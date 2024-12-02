@@ -65,7 +65,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = valueFromJson(response, "message");
+          String message = errorMessageFromJson(response);
           throw new InternalException("Error retrieving stations: " + message);
         })
         .body(DmpHydroApiResponsesStationResponse[].class);
@@ -83,7 +83,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving examination types: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = valueFromJson(response, "message");
+          String message = errorMessageFromJson(response);
           throw new InternalException("Error retrieving examination types: " + message);
         })
         .body(DmpHydroApiResponsesExaminationTypeResponse[].class);
@@ -143,7 +143,7 @@ public class VandahDmpApiService {
             .onStatus(status -> status.value() >= 400, (request, response) -> {
               logger.error("Error response from " + uri + ": [" + response.getStatusCode() + "] " +
                   response.getStatusText());
-              String message = valueFromJson(response, "message");
+              String message = errorMessageFromJson(response);
               throw new InternalException("Error retrieving data: " + message);
             })
             .body(DmpHydroApiResponsesMeasurementResultResponse[].class);
@@ -166,27 +166,22 @@ public class VandahDmpApiService {
   }
   
   /**
-   * Returns the value for the given key from the json body from the the Http Response
+   * Returns the error message for the given key from the json body from the ClientHttpResponse
    *
-   * @param ClientHttpResponse response
-   * @param string key
+   * @param response ClientHttpResponse
    * @return value as string
    */
-  private String valueFromJson(ClientHttpResponse response, String key) {
+  private String errorMessageFromJson(ClientHttpResponse response) {
 	  String value = "";
 	  try {
-		  if (response.getBody() != null) {
-			  ObjectMapper objectMapper = new ObjectMapper();
-			  JsonNode rootNode = objectMapper.readTree(new String(response.getBody().readAllBytes()));
-			  if (rootNode != null) {
-				  JsonNode node = rootNode.get(key);
-				  if (node != null) {
-					  value = node.asText(); 
-				  }
-			  }
-		  }
-	  } catch (IOException e) {
-		  //do nothing
+      JsonNode rootNode = new ObjectMapper().readTree(response.getBody());
+      // error message from the API belongs to the key "message"
+      JsonNode node = rootNode.get("message");
+      if (node != null) {
+        value = node.asText();
+      }
+	  } catch (IOException exception) {
+      logger.error("Exception received trying reading error message from API: " + exception + ". Exception message is: " + exception.getMessage());
 	  }
 	  return value;
   }
