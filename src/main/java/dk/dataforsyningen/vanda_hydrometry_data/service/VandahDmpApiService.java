@@ -181,7 +181,7 @@ public class VandahDmpApiService {
         value = node.asText();
       }
 	  } catch (IOException exception) {
-      logger.error("Exception received trying reading error message from API: " + exception + ". Exception message is: " + exception.getMessage());
+        logger.error("Exception received trying reading error message from API: " + exception + ". Exception message is: " + exception.getMessage());
 	  }
 	  return value;
   }
