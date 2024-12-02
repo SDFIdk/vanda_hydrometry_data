@@ -1,9 +1,10 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
-
 import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidParameterException;
@@ -19,9 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Service class providing API access to DMP's VandaH.
@@ -156,7 +154,8 @@ public class VandahDmpApiService {
           try {
             Thread.sleep(5000);
           } catch (InterruptedException exception1) {
-            logger.warn("Exception received during sleep: " + exception1 + ". Error message is: " + exception1.getMessage());
+            logger.warn("Exception received during sleep: " + exception1 + ". Error message is: " +
+                exception1.getMessage());
           }
         }
       }
@@ -164,7 +163,7 @@ public class VandahDmpApiService {
 
     return results;
   }
-  
+
   /**
    * Returns the error message for the given key from the json body from the ClientHttpResponse
    *
@@ -172,18 +171,19 @@ public class VandahDmpApiService {
    * @return value as string
    */
   private String errorMessageFromJson(ClientHttpResponse response) {
-	  String value = "";
-	  try {
+    String value = "";
+    try {
       JsonNode rootNode = new ObjectMapper().readTree(response.getBody());
       // error message from the API belongs to the key "message"
       JsonNode node = rootNode.get("message");
       if (node != null) {
         value = node.asText();
       }
-	  } catch (IOException exception) {
-        logger.error("Exception received trying reading error message from API: " + exception + ". Exception message is: " + exception.getMessage());
-	  }
-	  return value;
+    } catch (IOException exception) {
+      logger.error("Exception received trying reading error message from API: " + exception +
+          ". Exception message is: " + exception.getMessage());
+    }
+    return value;
   }
 
   private boolean isEmpty(String validate) {

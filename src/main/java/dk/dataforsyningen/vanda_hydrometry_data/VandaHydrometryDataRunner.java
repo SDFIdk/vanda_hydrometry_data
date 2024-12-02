@@ -94,7 +94,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
             if (!stations.isEmpty()) {
               int i = 0;
               for (Station station : stations) {
-            	logger.info("" + (++i) + "/" + stations.size());
+                logger.info((++i) + "/" + stations.size());
                 config.setStationId(station.getStationId());
                 commandController.execute(commandBean);
               }
@@ -108,7 +108,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
             boolean executed = false;
             int i = 0;
             for (String stationId : stationIds) {
-              logger.info("" + (++i) + "/" + stationIds.length);	
+              logger.info((++i) + "/" + stationIds.length);
               if (commandBean.getExaminationTypeSc() == 0 ||
                   databaseService.isMeasurementSupported(stationId,
                       commandBean.getExaminationTypeSc())) {
@@ -116,7 +116,8 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
                 commandController.execute(commandBean);
                 executed = true;
               } else {
-            	  logger.warn("Measurement " + commandBean.getExaminationTypeSc() + " not supported by station " + stationId);
+                logger.warn("Measurement " + commandBean.getExaminationTypeSc() +
+                    " not supported by station " + stationId);
               }
             }
             if (!executed) {

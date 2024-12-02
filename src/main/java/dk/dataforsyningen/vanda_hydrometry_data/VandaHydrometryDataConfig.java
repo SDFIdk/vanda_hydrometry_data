@@ -86,7 +86,7 @@ public class VandaHydrometryDataConfig {
 
   public Integer getExaminationTypeSc() {
     if (examinationTypeSc == null) {
-        return null;
+      return null;
     }
     try {
       return Integer.parseInt(examinationTypeSc);
@@ -97,7 +97,7 @@ public class VandaHydrometryDataConfig {
 
   public Integer getParameterSc() {
     if (parameterSc == null) {
-        return null;
+      return null;
     }
     try {
       return Integer.parseInt(parameterSc);
@@ -108,7 +108,7 @@ public class VandaHydrometryDataConfig {
 
   public Integer getMeasurementPointNumber() {
     if (measurementPointNumber == null) {
-        return null;
+      return null;
     }
     try {
       return Integer.parseInt(measurementPointNumber);
@@ -119,61 +119,67 @@ public class VandaHydrometryDataConfig {
 
   public OffsetDateTime getWithResultsAfter() {
     if (withResultsAfter == null) {
-        return null;
+      return null;
     }
     try {
       return OffsetDateTime.parse(withResultsAfter);
     } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'withResultsAfter' parameter: " + exception.getMessage() + ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+          "Invalid date format found in 'withResultsAfter' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getWithResultsCreatedAfter() {
     if (withResultsCreatedAfter == null) {
-        return null;
+      return null;
     }
     try {
       return OffsetDateTime.parse(withResultsCreatedAfter);
     } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'withResultsCreatedAfter' parameter: " + exception.getMessage() + ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+          "Invalid date format found in 'withResultsCreatedAfter' parameter: " +
+              exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getFrom() {
     if (from == null) {
-        return null;
+      return null;
     }
     try {
       return OffsetDateTime.parse(from);
     } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'from' parameter: " + exception.getMessage() + ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+          "Invalid date format found in 'from' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getTo() {
     if (to == null) {
-        return null;
+      return null;
     }
     try {
       return OffsetDateTime.parse(to);
     } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'to' parameter: " + exception.getMessage() + ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+          "Invalid date format found in 'to' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getCreatedAfter() {
     if (createdAfter == null) {
-        return null;
+      return null;
     }
     try {
       return OffsetDateTime.parse(createdAfter);
     } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'to' parameter: " + exception.getMessage() + ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
+          "Invalid date format found in 'to' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
