@@ -156,7 +156,7 @@ public class VandahDmpApiService {
           try {
             Thread.sleep(5000);
           } catch (InterruptedException exception1) {
-            // do nothing
+            logger.warn("Exception received during sleep: " + exception1 + ". Error message is: " + exception1.getMessage());
           }
         }
       }
