@@ -18,10 +18,14 @@ import org.springframework.stereotype.Component;
 public class ExaminationTypesCommand implements CommandInterface {
 
   private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
+
   private final String ENDPOINT = "config/examination-types";
+
   @Autowired
   VandahDmpApiService vandahService;
+
   private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
+
   @Autowired
   private VandaHydrometryDataConfig config;
 
@@ -61,7 +65,6 @@ public class ExaminationTypesCommand implements CommandInterface {
   public void showShortHelp() {
     System.out.println(BOLD_ON + "examinationTypes" + FORMAT_OFF +
         " : retrieves the examination types with mapping and constraints.");
-
   }
 
   @Override

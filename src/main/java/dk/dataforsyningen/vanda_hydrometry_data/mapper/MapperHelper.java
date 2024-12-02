@@ -1,11 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.mapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class MapperHelper {
-
-  private static final Logger log = LoggerFactory.getLogger(MapperHelper.class);
 
   /**
    * Checks for null, is empty "" or is blank " "

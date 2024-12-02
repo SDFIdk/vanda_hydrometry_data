@@ -24,11 +24,16 @@ import org.springframework.stereotype.Component;
 public class StationsCommand implements CommandInterface {
 
   private static final Logger logger = LoggerFactory.getLogger(StationsCommand.class);
+
   private final String ENDPOINT = "stations";
+
   @Autowired
   VandahDmpApiService vandahService;
+
   private DmpHydroApiResponsesStationResponse[] data;
+
   private ArrayList<Station> stations = new ArrayList<>();
+
   @Autowired
   private VandaHydrometryDataConfig config;
 
@@ -124,5 +129,4 @@ public class StationsCommand implements CommandInterface {
   public ArrayList<Station> getStations() {
     return stations;
   }
-
 }

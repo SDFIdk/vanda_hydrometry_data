@@ -9,7 +9,6 @@ import dk.dataforsyningen.vanda_hydrometry_data.service.DatabaseService;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import java.util.ArrayList;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -27,13 +26,20 @@ import org.springframework.stereotype.Component;
 public class WaterLevelsCommand implements CommandInterface {
 
   public static final int EXAMINATION_TYPE_SC = 25;
+
   private static final Logger logger = LoggerFactory.getLogger(WaterLevelsCommand.class);
+
   private final String ENDPOINT = "water-levels";
+
   @Autowired
   VandahDmpApiService vandahService;
+
   private DmpHydroApiResponsesMeasurementResultResponse[] data;
+
   private ArrayList<Measurement> measurements;
+
   private ArrayList<MeasurementType> measurementTypes;
+
   @Autowired
   private VandaHydrometryDataConfig config;
 
@@ -174,5 +180,4 @@ public class WaterLevelsCommand implements CommandInterface {
   public int getExaminationTypeSc() {
     return EXAMINATION_TYPE_SC;
   }
-
 }
