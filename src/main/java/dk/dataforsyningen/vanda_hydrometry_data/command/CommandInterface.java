@@ -8,6 +8,10 @@ package dk.dataforsyningen.vanda_hydrometry_data.command;
  */
 public interface CommandInterface {
 
+  public static String BOLD_ON = "\033[1m";
+  public static String ITALIC_ON = "\033[3m";
+  public static String FORMAT_OFF = "\033[0m";
+
   /**
    * Read data from API
    *

@@ -1,7 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.command;
 
 import dk.dataforsyningen.vanda_hydrometry_data.VandaHydrometryDataConfig;
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import dk.dataforsyningen.vanda_hydrometry_data.service.VandahDmpApiService;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import org.slf4j.Logger;
@@ -19,10 +18,14 @@ import org.springframework.stereotype.Component;
 public class ExaminationTypesCommand implements CommandInterface {
 
   private static final Logger logger = LoggerFactory.getLogger(ExaminationTypesCommand.class);
+
   private final String ENDPOINT = "config/examination-types";
+
   @Autowired
   VandahDmpApiService vandahService;
+
   private DmpHydroApiResponsesExaminationTypeResponse[] data = null;
+
   @Autowired
   private VandaHydrometryDataConfig config;
 
@@ -60,9 +63,8 @@ public class ExaminationTypesCommand implements CommandInterface {
 
   @Override
   public void showShortHelp() {
-    System.out.println(VandaHUtility.BOLD_ON + "examinationTypes" + VandaHUtility.FORMAT_OFF +
+    System.out.println(BOLD_ON + "examinationTypes" + FORMAT_OFF +
         " : retrieves the examination types with mapping and constraints.");
-
   }
 
   @Override

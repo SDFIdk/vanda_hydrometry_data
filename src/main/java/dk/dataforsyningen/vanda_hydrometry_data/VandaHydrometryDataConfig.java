@@ -1,11 +1,8 @@
 package dk.dataforsyningen.vanda_hydrometry_data;
 
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class VandaHydrometryDataConfig {
-
-  private static final Logger log = LoggerFactory.getLogger(VandaHydrometryDataConfig.class);
 
   /* Values from the properties file */
   //enables DAO and database service testing - needs a DB connection
@@ -90,9 +85,9 @@ public class VandaHydrometryDataConfig {
   }
 
   public Integer getExaminationTypeSc() {
-      if (examinationTypeSc == null) {
-          return null;
-      }
+    if (examinationTypeSc == null) {
+      return null;
+    }
     try {
       return Integer.parseInt(examinationTypeSc);
     } catch (NumberFormatException ex) {
@@ -101,9 +96,9 @@ public class VandaHydrometryDataConfig {
   }
 
   public Integer getParameterSc() {
-      if (parameterSc == null) {
-          return null;
-      }
+    if (parameterSc == null) {
+      return null;
+    }
     try {
       return Integer.parseInt(parameterSc);
     } catch (NumberFormatException ex) {
@@ -112,9 +107,9 @@ public class VandaHydrometryDataConfig {
   }
 
   public Integer getMeasurementPointNumber() {
-      if (measurementPointNumber == null) {
-          return null;
-      }
+    if (measurementPointNumber == null) {
+      return null;
+    }
     try {
       return Integer.parseInt(measurementPointNumber);
     } catch (NumberFormatException ex) {
@@ -123,62 +118,70 @@ public class VandaHydrometryDataConfig {
   }
 
   public OffsetDateTime getWithResultsAfter() {
-      if (withResultsAfter == null) {
-          return null;
-      }
+    if (withResultsAfter == null) {
+      return null;
+    }
     try {
-      return VandaHUtility.parseForAPI(withResultsAfter);
-    } catch (DateTimeParseException | NullPointerException ex) {
+      return OffsetDateTime.parse(withResultsAfter);
+    } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'withResultsAfter' parameter.");
+          "Invalid date format found in 'withResultsAfter' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getWithResultsCreatedAfter() {
-      if (withResultsCreatedAfter == null) {
-          return null;
-      }
+    if (withResultsCreatedAfter == null) {
+      return null;
+    }
     try {
-      return VandaHUtility.parseForAPI(withResultsCreatedAfter);
-    } catch (DateTimeParseException | NullPointerException ex) {
+      return OffsetDateTime.parse(withResultsCreatedAfter);
+    } catch (DateTimeParseException | NullPointerException exception) {
       throw new InvalidParameterException(
-          "Invalid date format found in 'withResultsCreatedAfter' parameter.");
+          "Invalid date format found in 'withResultsCreatedAfter' parameter: " +
+              exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getFrom() {
-      if (from == null) {
-          return null;
-      }
+    if (from == null) {
+      return null;
+    }
     try {
-      return VandaHUtility.parseForAPI(from);
-    } catch (DateTimeParseException | NullPointerException ex) {
-      throw new InvalidParameterException("Invalid date format found in 'from' parameter.");
+      return OffsetDateTime.parse(from);
+    } catch (DateTimeParseException | NullPointerException exception) {
+      throw new InvalidParameterException(
+          "Invalid date format found in 'from' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getTo() {
-      if (to == null) {
-          return null;
-      }
+    if (to == null) {
+      return null;
+    }
     try {
-      return VandaHUtility.parseForAPI(to);
-    } catch (DateTimeParseException | NullPointerException ex) {
-      throw new InvalidParameterException("Invalid date format found in 'to' parameter.");
+      return OffsetDateTime.parse(to);
+    } catch (DateTimeParseException | NullPointerException exception) {
+      throw new InvalidParameterException(
+          "Invalid date format found in 'to' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
 
   public OffsetDateTime getCreatedAfter() {
-      if (createdAfter == null) {
-          return null;
-      }
+    if (createdAfter == null) {
+      return null;
+    }
     try {
-      return VandaHUtility.parseForAPI(createdAfter);
-    } catch (DateTimeParseException | NullPointerException ex) {
-      throw new InvalidParameterException("Invalid date format found in 'createdAfter' parameter.");
+      return OffsetDateTime.parse(createdAfter);
+    } catch (DateTimeParseException | NullPointerException exception) {
+      throw new InvalidParameterException(
+          "Invalid date format found in 'to' parameter: " + exception.getMessage() +
+              ". Remember that it must be defined without second component as an UTC timestamp in the RFC 3339 date+time format. For example '2023-09-21T14:34Z'.");
     }
   }
-
 
   @Override
   public String toString() {
@@ -307,6 +310,4 @@ public class VandaHydrometryDataConfig {
   public boolean isEnableTest() {
     return enableTest;
   }
-
-
 }

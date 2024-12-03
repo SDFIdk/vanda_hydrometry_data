@@ -8,9 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -96,16 +94,16 @@ public class VandaHydrometryDataConfigTest {
   }
 
   /**
-   * Test date parsing with different formats in UTC (Zulu)
+   * Test date time parsing in UTC (Zulu)
    */
   @Nested
   @ContextConfiguration
   @TestPropertySource(
-      properties = {"withResultsAfter=2024-09-01z",
-          "withResultsCreatedAfter=2024-09-01T23:24:02.000Z",
+      properties = {"withResultsAfter=2024-09-01T00:00Z",
+          "withResultsCreatedAfter=2024-09-01T23:24Z",
           "from=2024-09-01T23:24Z",
-          "to=2024-09-01 23:24Z",
-          "createdAfter=2024-09-01 12:34:56z"
+          "to=2024-09-01T23:24Z",
+          "createdAfter=2024-09-01T12:34Z"
       }
   )
   public class VandaHydrometryDataConfigTest4 {
@@ -117,74 +115,30 @@ public class VandaHydrometryDataConfigTest {
     public void testDatesUTC() {
       assertDoesNotThrow(() -> config.getWithResultsAfter());
       assertEquals("2024-09-01T00:00Z", "" + config.getWithResultsAfter());
+      OffsetDateTime offsetDateTime = OffsetDateTime.of(2024, 9, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+      assertEquals(offsetDateTime, config.getWithResultsAfter());
 
       assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
-      assertEquals("2024-09-01T23:24Z", "" + config.getWithResultsCreatedAfter());
+      assertEquals("2024-09-01T23:24Z", config.getWithResultsCreatedAfter().toString());
+      OffsetDateTime offsetDateTime1 = OffsetDateTime.of(2024, 9, 1, 23, 24, 0, 0, ZoneOffset.UTC);
+      assertEquals(offsetDateTime1, config.getWithResultsCreatedAfter());
 
       assertDoesNotThrow(() -> config.getFrom());
-      assertEquals("2024-09-01T23:24Z", "" + config.getFrom());
+      assertEquals("2024-09-01T23:24Z", config.getFrom().toString());
+      OffsetDateTime offsetDateTime2 = OffsetDateTime.of(2024, 9, 1, 23, 24, 0, 0, ZoneOffset.UTC);
+      assertEquals(offsetDateTime2, config.getFrom());
 
       assertDoesNotThrow(() -> config.getTo());
-      assertEquals("2024-09-01T23:24Z", "" + config.getTo());
+      assertEquals("2024-09-01T23:24Z", config.getTo().toString());
+      OffsetDateTime offsetDateTime3 = OffsetDateTime.of(2024, 9, 1, 23, 24, 0, 0, ZoneOffset.UTC);
+      assertEquals(offsetDateTime3, config.getTo());
 
       assertDoesNotThrow(() -> config.getCreatedAfter());
-      assertEquals("2024-09-01T12:34Z", "" + config.getCreatedAfter());
+      assertEquals("2024-09-01T12:34Z", config.getCreatedAfter().toString());
+      OffsetDateTime offsetDateTime4 = OffsetDateTime.of(2024, 9, 1, 12, 34, 0, 0, ZoneOffset.UTC);
+      assertEquals(offsetDateTime4, config.getCreatedAfter());
     }
   }
-
-
-  /**
-   * Test date parsing with different formats in local time zone
-   */
-  @Nested
-  @ContextConfiguration
-  @TestPropertySource(
-      properties = {"withResultsAfter=2024-09-01",
-          "withResultsCreatedAfter=2024-09-01T23:24:02.001",
-          "from=2024-09-01T23:24",
-          "to=2024-09-01 23:24",
-          "createdAfter=2024-09-01 12:34:56.123"
-      }
-  )
-  public class VandaHydrometryDataConfigTest5 {
-
-    @Autowired
-    private VandaHydrometryDataConfig config;
-
-    @Test
-    public void testDatesLocalTimeZone() {
-      LocalDateTime ldt = LocalDateTime.of(2024, 9, 01, 0, 0, 0, 0);
-      OffsetDateTime odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
-          .withOffsetSameInstant(ZoneOffset.UTC);
-      assertDoesNotThrow(() -> config.getWithResultsAfter());
-      assertEquals("" + odt, "" + config.getWithResultsAfter());
-
-      ldt = LocalDateTime.of(2024, 9, 1, 23, 24, 0, 0);
-      odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
-          .withOffsetSameInstant(ZoneOffset.UTC);
-      assertDoesNotThrow(() -> config.getWithResultsCreatedAfter());
-      assertEquals("" + odt, "" + config.getWithResultsCreatedAfter());
-
-      ldt = LocalDateTime.of(2024, 9, 1, 23, 24, 0, 0);
-      odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
-          .withOffsetSameInstant(ZoneOffset.UTC);
-      assertDoesNotThrow(() -> config.getFrom());
-      assertEquals("" + odt, "" + config.getFrom());
-
-      ldt = LocalDateTime.of(2024, 9, 1, 23, 24, 0, 0);
-      odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
-          .withOffsetSameInstant(ZoneOffset.UTC);
-      assertDoesNotThrow(() -> config.getTo());
-      assertEquals("" + odt, "" + config.getTo());
-
-      ldt = LocalDateTime.of(2024, 9, 1, 12, 34, 0, 0);
-      odt = ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime()
-          .withOffsetSameInstant(ZoneOffset.UTC);
-      assertDoesNotThrow(() -> config.getCreatedAfter());
-      assertEquals("" + odt, "" + config.getCreatedAfter());
-    }
-  }
-
 
   /**
    * Test invalid date parsing

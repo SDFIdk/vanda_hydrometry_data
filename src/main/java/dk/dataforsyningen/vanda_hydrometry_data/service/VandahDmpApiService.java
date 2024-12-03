@@ -1,9 +1,11 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
-import dk.dataforsyningen.vanda_hydrometry_data.components.VandaHUtility;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesExaminationTypeResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesMeasurementResultResponse;
 import dk.miljoeportal.vandah.model.DmpHydroApiResponsesStationResponse;
+import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.time.OffsetDateTime;
@@ -13,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -61,7 +63,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving stations: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = VandaHUtility.valueFromJson(response, "message");
+          String message = errorMessageFromJson(response);
           throw new InternalException("Error retrieving stations: " + message);
         })
         .body(DmpHydroApiResponsesStationResponse[].class);
@@ -79,7 +81,7 @@ public class VandahDmpApiService {
         .onStatus(status -> status.value() >= 400, (request, response) -> {
           logger.error("Error retrieving examination types: [" + response.getStatusCode() + "] " +
               response.getStatusText());
-          String message = VandaHUtility.valueFromJson(response, "message");
+          String message = errorMessageFromJson(response);
           throw new InternalException("Error retrieving examination types: " + message);
         })
         .body(DmpHydroApiResponsesExaminationTypeResponse[].class);
@@ -139,26 +141,49 @@ public class VandahDmpApiService {
             .onStatus(status -> status.value() >= 400, (request, response) -> {
               logger.error("Error response from " + uri + ": [" + response.getStatusCode() + "] " +
                   response.getStatusText());
-              String message = VandaHUtility.valueFromJson(response, "message");
+              String message = errorMessageFromJson(response);
               throw new InternalException("Error retrieving data: " + message);
             })
             .body(DmpHydroApiResponsesMeasurementResultResponse[].class);
         // Stop the while loop
         running = 0;
       } catch (RestClientException | InternalException exception) {
-        logger.warn("Exception received: " + exception + "Try again..." + exception.getMessage());
+        logger.warn("Exception received: " + exception + ". Try again..." + exception.getMessage());
         running--;
         if (running > 0) {
           try {
             Thread.sleep(5000);
           } catch (InterruptedException exception1) {
-            // do nothing
+            logger.warn("Exception received during sleep: " + exception1 + ". Error message is: " +
+                exception1.getMessage());
           }
         }
       }
     }
 
     return results;
+  }
+
+  /**
+   * Returns the error message for the given key from the json body from the ClientHttpResponse
+   *
+   * @param response ClientHttpResponse
+   * @return value as string
+   */
+  private String errorMessageFromJson(ClientHttpResponse response) {
+    String value = "";
+    try {
+      JsonNode rootNode = new ObjectMapper().readTree(response.getBody());
+      // error message from the API belongs to the key "message"
+      JsonNode node = rootNode.get("message");
+      if (node != null) {
+        value = node.asText();
+      }
+    } catch (IOException exception) {
+      logger.error("Exception received trying reading error message from API: " + exception +
+          ". Exception message is: " + exception.getMessage());
+    }
+    return value;
   }
 
   private boolean isEmpty(String validate) {

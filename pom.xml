@@ -70,11 +70,6 @@
 	        <artifactId>jdbi3-postgis</artifactId>
 	        <version>${org.jdbi.version}</version>
 	    </dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20240303</version>
-		</dependency>
     	<dependency>
     		<groupId>org.mockito</groupId>
     		<artifactId>mockito-core</artifactId>

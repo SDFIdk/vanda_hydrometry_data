@@ -137,7 +137,7 @@ public class Measurement {
         && Objects.equals(measurementPointNumber, other.measurementPointNumber)
         && Objects.equals(value, other.value)
         && Objects.equals(valueElevationCorrected, other.valueElevationCorrected)
-        && Objects.equals(stationId, other.stationId) 
+        && Objects.equals(stationId, other.stationId)
         && Objects.equals(vandaEventTimestamp, other.vandaEventTimestamp);
   }
 
