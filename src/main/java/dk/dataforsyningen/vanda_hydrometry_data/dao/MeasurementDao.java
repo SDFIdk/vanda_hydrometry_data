@@ -26,7 +26,7 @@ public interface MeasurementDao {
       	value_elevation_corrected,
       	is_current,
       	created
-      from hydrometry.measurement
+      from vanda.measurement
       where
       	station_id = :stationId
       	and examination_type_sc = :examinationTypeSc
@@ -52,7 +52,7 @@ public interface MeasurementDao {
       	value_elevation_corrected,
       	is_current,
       	created
-      from hydrometry.measurement
+      from vanda.measurement
       where
       	station_id = :stationId
       	and examination_type_sc = :examinationTypeSc
@@ -73,7 +73,7 @@ public interface MeasurementDao {
    * @param measurement
    */
   @SqlQuery("""
-      insert into hydrometry.measurement (station_id, measurement_date_time, vanda_event_timestamp, measurement_point_number, examination_type_sc, value, value_elevation_corrected, is_current, created)
+      insert into vanda.measurement (station_id, measurement_date_time, vanda_event_timestamp, measurement_point_number, examination_type_sc, value, value_elevation_corrected, is_current, created)
       values (:stationId, :measurementDateTime, :vandaEventTimestamp, :measurementPointNumber, :examinationTypeSc, :value, :valueElevationCorrected, :isCurrent, now())
       returning *
       """)
@@ -81,7 +81,7 @@ public interface MeasurementDao {
   Measurement insertMeasurement(@BindBean Measurement measurement);
 
   @SqlBatch("""
-      insert into hydrometry.measurement (station_id, measurement_date_time, vanda_event_timestamp, measurement_point_number, examination_type_sc, value, value_elevation_corrected, is_current, created)
+      insert into vanda.measurement (station_id, measurement_date_time, vanda_event_timestamp, measurement_point_number, examination_type_sc, value, value_elevation_corrected, is_current, created)
       values (:stationId, :measurementDateTime, :vandaEventTimestamp, :measurementPointNumber, :examinationTypeSc, :value, :valueElevationCorrected, :isCurrent, now())
       """)
   void insertMeasurements(@BindBean List<Measurement> measurements);
@@ -94,7 +94,7 @@ public interface MeasurementDao {
    * @param measurement
    */
   @SqlUpdate("""
-      update hydrometry.measurement set is_current = false
+      update vanda.measurement set is_current = false
       where
       	station_id = :stationId
       	and measurement_date_time = :measurementDateTime
@@ -110,7 +110,7 @@ public interface MeasurementDao {
    * @param list of measurements
    */
   @SqlBatch("""
-      update hydrometry.measurement set is_current = false
+      update vanda.measurement set is_current = false
       where
       	station_id = :stationId
       	and measurement_date_time = :measurementDateTime
@@ -128,7 +128,7 @@ public interface MeasurementDao {
    * @param measurementDateTime
    */
   @SqlUpdate("""
-      delete from hydrometry.measurement
+      delete from vanda.measurement
       where
       	station_id = :stationId
       	and measurement_date_time = :measurementDateTime
@@ -147,7 +147,7 @@ public interface MeasurementDao {
    */
   @SqlUpdate("""
       delete
-      from hydrometry.measurement
+      from vanda.measurement
       where
       	station_id = :stationId
       """)
@@ -163,7 +163,7 @@ public interface MeasurementDao {
    * @return number of records
    */
   @SqlQuery("""
-      select count(*) from hydrometry.measurement
+      select count(*) from vanda.measurement
       where
       	station_id = :stationId
       	and measurement_date_time = :measurementDateTime
@@ -179,7 +179,7 @@ public interface MeasurementDao {
    *
    * @return number of records
    */
-  @SqlQuery("select count(*) from hydrometry.measurement")
+  @SqlQuery("select count(*) from vanda.measurement")
   int countAll();
 
 }
