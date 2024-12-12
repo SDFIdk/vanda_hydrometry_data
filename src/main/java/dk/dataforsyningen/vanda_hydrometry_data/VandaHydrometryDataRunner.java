@@ -125,7 +125,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
             }
             if (!executed) {
               logger.warn(
-                  "The requested stations do not exist or they cannot provide examinatnion_type_sc=" +
+                  "The requested stations do not exist or they cannot provide examination_type_sc=" +
                       commandBean.getExaminationTypeSc());
             }
           } else { //execute command once
@@ -136,11 +136,9 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
           System.exit(1);
         }
       } else {
-        logger.error("No execution bean was regsitered for the given command: " + cmd);
+        logger.error("No execution bean was registered for the given command: " + cmd);
       }
     }
-
     logger.debug("Application ended.");
   }
-
 }
