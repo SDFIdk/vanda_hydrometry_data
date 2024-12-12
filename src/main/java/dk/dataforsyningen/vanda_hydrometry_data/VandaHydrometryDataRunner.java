@@ -83,14 +83,17 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
       CommandInterface commandBean = commandService.getCommandBean(cmd);
       if (commandBean != null) {
         try {
-          //handle special case when more stations are required
-          //however, filter the station by the requested examinationTypeSc if necessary
-          if ("all".equalsIgnoreCase(
-              config.getStationId())) { //execute command for all relevant stations
-            List<Station> stations = commandBean.getExaminationTypeSc() == 0 ?
-                databaseService.getAllStations()
-                :
-                databaseService.getAllStationsByExaminationType(commandBean.getExaminationTypeSc());
+          // Handle special case when more stations are required
+          if ("all".equalsIgnoreCase(config.getStationId())) { //execute command for all relevant stations
+            List<Station> stations;
+
+            // Filter the station by the requested examinationTypeSc if necessary
+            if (commandBean.getExaminationTypeSc() == 0) {
+              stations = databaseService.getAllStations();
+            } else {
+              stations = databaseService.getAllStationsByExaminationType(commandBean.getExaminationTypeSc());
+            }
+
             if (!stations.isEmpty()) {
               int i = 0;
               for (Station station : stations) {
