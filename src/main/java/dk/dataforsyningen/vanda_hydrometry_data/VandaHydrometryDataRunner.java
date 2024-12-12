@@ -97,7 +97,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
             if (!stations.isEmpty()) {
               int i = 0;
               for (Station station : stations) {
-                logger.info((++i) + "/" + stations.size() + "stations");
+                logger.info((++i) + "/" + stations.size() + " stations");
                 config.setStationId(station.getStationId());
                 commandController.execute(commandBean);
               }
@@ -111,7 +111,7 @@ public class VandaHydrometryDataRunner implements CommandLineRunner {
             boolean executed = false;
             int i = 0;
             for (String stationId : stationIds) {
-              logger.info((++i) + "/" + stationIds.length + "stations");
+              logger.info((++i) + "/" + stationIds.length + " stations");
               if (commandBean.getExaminationTypeSc() == 0 ||
                   databaseService.isMeasurementSupported(stationId,
                       commandBean.getExaminationTypeSc())) {
