@@ -113,7 +113,7 @@ public class VandaHydrometryDataRunnerTest {
     runner.run(args);
 
     verify(log, times(1)).error(
-        eq("No execution bean was regsitered for the given command: command1"));
+        eq("No execution bean was registered for the given command: command1"));
   }
 
   @Test
