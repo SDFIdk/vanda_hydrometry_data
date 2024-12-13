@@ -170,7 +170,7 @@ public class StationsCommandTest {
 
     assertEquals(uuid1.toString(), station1.getStationUid());
     assertEquals(id1, station1.getStationId());
-    assertEquals(oldNr1, station1.getOldStationNumber());
+    assertEquals(oldNr1, station1.getStationIdSav());
     assertEquals(opId1, station1.getOperatorStationId());
     assertEquals(owner1, station1.getStationOwnerName());
     assertEquals(name1, station1.getName());
@@ -179,7 +179,7 @@ public class StationsCommandTest {
     assertEquals(y1, station1.getLocationY());
 
     assertEquals(id2, station2.getStationId());
-    assertEquals(oldNr2, station2.getOldStationNumber());
+    assertEquals(oldNr2, station2.getStationIdSav());
     assertEquals(opId2, station2.getOperatorStationId());
     assertEquals(owner2, station2.getStationOwnerName());
     assertEquals(name2, station2.getName());

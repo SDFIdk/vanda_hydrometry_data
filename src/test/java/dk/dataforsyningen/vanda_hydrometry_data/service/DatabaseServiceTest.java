@@ -34,7 +34,7 @@ public class DatabaseServiceTest {
   private final String stationName2 = "Kbh water station";
   private final String stationOwner2 = "Kbh mun.";
   private final String stationDescription2 = "water station in Kbh";
-  private final String stationOldNumber = "12345678";
+  private final String stationIdSav = "12345678";
   private final double locationX = 12.34;
   private final double locationY = 56.78;
   private final int locationSrid = 25832;
@@ -110,7 +110,7 @@ public class DatabaseServiceTest {
     station1.setName(stationName);
     station1.setStationOwnerName(stationOwner);
     station1.setDescription(stationDescription);
-    station1.setOldStationNumber(stationOldNumber);
+    station1.setStationIdSav(stationIdSav);
     station1.setLocationX(locationX);
     station1.setLocationY(locationY);
     station1.setLocationSrid(locationSrid);
@@ -122,7 +122,7 @@ public class DatabaseServiceTest {
     station2.setName(stationName);
     station2.setStationOwnerName(stationOwner);
     station2.setDescription(stationDescription);
-    station2.setOldStationNumber(stationOldNumber);
+    station2.setStationIdSav(stationIdSav);
     station2.setLocationX(locationX);
     station2.setLocationY(locationY);
     station2.setLocationSrid(locationSrid);
@@ -231,7 +231,7 @@ public class DatabaseServiceTest {
     assertEquals(stationId, station.getStationId());
     assertEquals(stationName, station.getName());
     assertEquals(stationOwner, station.getStationOwnerName());
-    assertEquals(stationOldNumber, station.getOldStationNumber());
+    assertEquals(stationIdSav, station.getStationIdSav());
     assertEquals(stationDescription, station.getDescription());
     assertEquals(locationX, station.getLocationX());
     assertEquals(locationY, station.getLocationY());
@@ -466,7 +466,7 @@ public class DatabaseServiceTest {
     assertEquals(stationId, station.getStationId());
     assertEquals(stationName, station.getName());
     assertEquals(stationOwner, station.getStationOwnerName());
-    assertEquals(stationOldNumber, station.getOldStationNumber());
+    assertEquals(stationIdSav, station.getStationIdSav());
     assertEquals(stationDescription, station.getDescription());
     assertEquals(locationX, station.getLocationX());
     assertEquals(locationY, station.getLocationY());

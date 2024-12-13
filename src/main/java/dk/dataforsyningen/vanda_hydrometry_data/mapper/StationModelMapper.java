@@ -23,7 +23,7 @@ public class StationModelMapper {
     station.setStationId(response.getStationId());
     station.setStationUid(MapperHelper.validateString(response.getStationUid().toString()));
     station.setOperatorStationId(MapperHelper.validateString(response.getOperatorStationId()));
-    station.setOldStationNumber(MapperHelper.validateString(response.getOldStationNumber()));
+    station.setStationIdSav(MapperHelper.validateString(response.getOldStationNumber()));
     station.setName(MapperHelper.validateString(response.getName()));
     station.setStationOwnerName(MapperHelper.validateString(response.getStationOwnerName()));
 
