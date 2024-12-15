@@ -1,5 +1,6 @@
 package dk.dataforsyningen.vanda_hydrometry_data.service;
 
+import dk.dataforsyningen.vanda_hydrometry_data.command.StreamDischargeCommand;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.MeasurementTypeDao;
 import dk.dataforsyningen.vanda_hydrometry_data.dao.StationDao;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class DatabaseService {
+
+  private static final Logger logger = LoggerFactory.getLogger(DatabaseService.class);
 
   private final StationDao stationDao;
   private final MeasurementDao measurementDao;
@@ -206,9 +211,12 @@ public class DatabaseService {
    */
   @Transactional
   public void saveMeasurements(List<Measurement> measurements) {
+
+    logger.debug("Deactivate older records of measurements:" + measurements.size() + " measurements");
     //deactivate their history
     measurementDao.inactivateMeasurementsHistory(measurements);
 
+    logger.debug("Insert/add active records of measurements:" + measurements.size() + " measurements");
     //add the active record for the list of measurements
     measurementDao.insertMeasurements(measurements);
   }
@@ -222,9 +230,12 @@ public class DatabaseService {
    */
   @Transactional
   public Measurement saveMeasurement(Measurement measurement) {
+
+    logger.debug("Deactivate older records of measurement:" + measurement + " measurements");
     //deactivate its history
     measurementDao.inactivateMeasurementHistory(measurement);
 
+    logger.debug("Insert/add active records of measurement:" + measurement + " measurement");
     //add the active record for the measurement
     return measurementDao.insertMeasurement(measurement);
   }
@@ -261,15 +272,17 @@ public class DatabaseService {
    * @param measurementType
    */
   public void addMeasurementType(MeasurementType measurementType) {
+    logger.debug("Inserting or updating measurementTypes from:" + measurementType + " measurement");
     measurementTypeDao.insertMeasurementType(measurementType);
   }
 
   /**
-   * Inserts (if it does not exist) or update the measurement from the given list.
+   * Inserts (if it does not exist) or update the measurementTypes from the given list.
    *
    * @param measurementTypes list
    */
   public void addMeasurementTypes(List<MeasurementType> measurementTypes) {
+    logger.debug("Inserting or updating measurementTypes from:" + measurementTypes.size() + " measurements");
     measurementTypeDao.insertMeasurementTypes(measurementTypes);
   }
 
