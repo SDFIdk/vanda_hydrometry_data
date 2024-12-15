@@ -97,6 +97,15 @@ CREATE INDEX measurement_station_IDX ON measurement
   measurement_date_time
 );
 
+CREATE INDEX ON measurement
+(
+ station_id,
+ examination_type_sc,
+ is_current,
+ measurement_date_time,
+ measurement_point_number
+);
+
 COMMENT ON TABLE measurement IS 'Contains the measurements of the stations';
 COMMENT ON COLUMN measurement.value IS 'The value of the measurement, for example 4203';
 COMMENT ON COLUMN measurement.measurement_date_time IS 'The measurement date time';
