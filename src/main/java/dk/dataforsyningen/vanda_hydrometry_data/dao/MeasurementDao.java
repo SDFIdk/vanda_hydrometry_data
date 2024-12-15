@@ -100,6 +100,7 @@ public interface MeasurementDao {
       	and measurement_date_time = :measurementDateTime
       	and measurement_point_number = :measurementPointNumber
       	and examination_type_sc = :examinationTypeSc
+      	and is_current = true
       """)
   int inactivateMeasurementHistory(@BindBean Measurement measurement);
 
@@ -116,6 +117,7 @@ public interface MeasurementDao {
       	and measurement_date_time = :measurementDateTime
       	and measurement_point_number = :measurementPointNumber
       	and examination_type_sc = :examinationTypeSc
+      	and is_current = true
       """)
   void inactivateMeasurementsHistory(@BindBean List<Measurement> measurements);
 
