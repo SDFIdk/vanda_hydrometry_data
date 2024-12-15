@@ -11,8 +11,10 @@ services:
         volumes:
           - ../log/vandah.log:/log/vandah.log
         command:
-          - "waterflows"
+          - "streamdischarge"
           - "--stationId=all"
+          - "--from=1900-01-01T00:00Z"
+          - "--to=2024-12-13T11:24Z"
           - "--saveDb"
 
 networks:
