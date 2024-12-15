@@ -54,9 +54,9 @@ public class ExaminationTypesCommand implements CommandInterface {
   @Override
   public void displayData(boolean raw) {
     if (raw && data != null) {
-      logger.info("Number of items: " + data.length);
-      for (DmpHydroApiResponsesExaminationTypeResponse item : data) {
-        System.out.println(item);
+      logger.info("Number of examinationTypes: " + data.length);
+      for (DmpHydroApiResponsesExaminationTypeResponse examinationType : data) {
+        System.out.println(examinationType);
       }
     }
   }
