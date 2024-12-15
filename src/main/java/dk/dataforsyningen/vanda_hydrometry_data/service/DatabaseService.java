@@ -212,11 +212,11 @@ public class DatabaseService {
   @Transactional
   public void saveMeasurements(List<Measurement> measurements) {
 
-    logger.info("Deactivate older records of measurements:" + measurements.size() + " measurements");
+    logger.info("Deactivate older records of " + measurements.size() + " measurements");
     //deactivate their history
     measurementDao.inactivateMeasurementsHistory(measurements);
 
-    logger.info("Insert/add active records of measurements:" + measurements.size() + " measurements");
+    logger.info("Insert/add active records of " + measurements.size() + " measurements");
     //add the active record for the list of measurements
     measurementDao.insertMeasurements(measurements);
   }
@@ -231,11 +231,11 @@ public class DatabaseService {
   @Transactional
   public Measurement saveMeasurement(Measurement measurement) {
 
-    logger.info("Deactivate older record of measurement:" + measurement + " measurements");
+    logger.info("Deactivate older record of " + measurement + " measurement");
     //deactivate its history
     measurementDao.inactivateMeasurementHistory(measurement);
 
-    logger.info("Insert/add active record of measurement:" + measurement + " measurement");
+    logger.info("Insert/add active record of " + measurement + " measurement");
     //add the active record for the measurement
     return measurementDao.insertMeasurement(measurement);
   }
