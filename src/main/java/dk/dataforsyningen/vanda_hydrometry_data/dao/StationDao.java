@@ -26,10 +26,10 @@ public interface StationDao {
       	s.name,
       	s.station_id_sav,
       	s.station_owner_name,
-      	s.location,
-      	ST_X(location) as location_x,
-      	ST_Y(location) as location_y,
-      	ST_SRID(location) as location_srid,
+      	s.geometry,
+      	ST_X(geometry) as geometry_x,
+      	ST_Y(geometry) as geometry_y,
+      	ST_SRID(geometry) as geometry_srid,
       	s.location_type,
       	s.description,
       	s.created,
@@ -60,10 +60,10 @@ public interface StationDao {
       	s.name,
       	s.station_id_sav,
       	s.station_owner_name,
-      	s.location,
-      	ST_X(location) as location_x,
-      	ST_Y(location) as location_y,
-      	ST_SRID(location) as location_srid,
+      	s.geometry,
+      	ST_X(geometry) as geometry_x,
+      	ST_Y(geometry) as geometry_y,
+      	ST_SRID(geometry) as geometry_srid,
       	s.location_type,
       	s.description,
       	s.created,
@@ -95,10 +95,10 @@ public interface StationDao {
       	s.name,
       	s.station_id_sav,
       	s.station_owner_name,
-      	s.location,
-      	ST_X(location) as location_x,
-      	ST_Y(location) as location_y,
-      	ST_SRID(location) as location_srid,
+      	s.geometry,
+      	ST_X(geometry) as geometry_x,
+      	ST_Y(geometry) as geometry_y,
+      	ST_SRID(geometry) as geometry_srid,
       	s.location_type,
       	s.description,
       	s.created,
@@ -142,13 +142,13 @@ public interface StationDao {
    */
   @SqlUpdate("""
       insert into vanda.station
-      (station_id, station_id_sav, name, station_owner_name, location, location_type, description, created, updated)
-      values ( :stationId, :stationIdSav, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:locationX, :locationY), :locationSrid::int)), :locationType, :description, now(), now())
+      (station_id, station_id_sav, name, station_owner_name, geometry, location_type, description, created, updated)
+      values ( :stationId, :stationIdSav, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:geometryX, :geometryY), :geometrySrid::int)), :locationType, :description, now(), now())
       on conflict (station_id) do update
       	set station_id_sav = :stationIdSav,
       	name = :name,
       	station_owner_name = :stationOwnerName,
-      	location = (ST_SetSRID(ST_MakePoint(:locationX, :locationY), :locationSrid::int)),
+      	geometry = (ST_SetSRID(ST_MakePoint(:geometryX, :geometryY), :geometrySrid::int)),
       	location_type = :locationType,
       	description = :description,
       	updated = now()
@@ -162,13 +162,13 @@ public interface StationDao {
    */
   @SqlBatch("""
       insert into vanda.station
-      (station_id, station_id_sav, name, station_owner_name, location, location_type, description, created, updated)
-      values ( :stationId, :stationIdSav, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:locationX, :locationY), :locationSrid::int)), :locationType, :description, now(), now())
+      (station_id, station_id_sav, name, station_owner_name, geometry, location_type, description, created, updated)
+      values ( :stationId, :stationIdSav, :name, :stationOwnerName, (ST_SetSRID(ST_MakePoint(:geometryX, :geometryY), :geometrySrid::int)), :locationType, :description, now(), now())
       on conflict (station_id) do update
       	set station_id_sav = :stationIdSav,
       	name = :name,
       	station_owner_name = :stationOwnerName,
-      	location = (ST_SetSRID(ST_MakePoint(:locationX, :locationY), :locationSrid::int)),
+      	geometry = (ST_SetSRID(ST_MakePoint(:geometryX, :geometryY), :geometrySrid::int)),
       	location_type = :locationType,
       	description = :description,
       	updated = now()

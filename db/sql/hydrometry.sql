@@ -8,15 +8,15 @@ CREATE TABLE station
  station_id_sav varchar(100) NULL,
  name               varchar(150) NULL,
  station_owner_name varchar(150) NULL,
- location           geometry(POINT,25832) NOT NULL,
+ geometry           geometry(POINT,25832) NOT NULL,
  location_type      varchar(100) NULL,
  description        varchar(1000) NULL,
  created            timestamp(3) with time zone NOT NULL,
  updated            timestamp(3) with time zone NOT NULL,
  CONSTRAINT PK_1 PRIMARY KEY ( station_id )
 );
-CREATE INDEX station_IDX_location ON station USING GIST (
-  location
+CREATE INDEX station_IDX_geometry ON station USING GIST (
+  geometry
 );
 
 COMMENT ON TABLE station IS 'Contains information about the station';
@@ -24,7 +24,7 @@ COMMENT ON COLUMN station.station_id IS 'ID of the station, 8 characters';
 COMMENT ON COLUMN station.station_id_sav IS 'ID of the station from SAV (old station number)';
 COMMENT ON COLUMN station.name IS 'Name of the station';
 COMMENT ON COLUMN station.station_owner_name IS 'Name of the station owner';
-COMMENT ON COLUMN station.location IS 'The geo location of the station';
+COMMENT ON COLUMN station.geometry IS 'The geometry of the station';
 COMMENT ON COLUMN station.description IS 'Description of the station that can contain catchment information, for example "Opland = 426,7 km2"';
 
 CREATE TABLE measurement_type

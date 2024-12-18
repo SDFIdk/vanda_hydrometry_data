@@ -34,10 +34,10 @@ public class StationModelMapper {
         Integer convertedSrid = MapperHelper.convertSrid(validatedSrid);
 
         if (convertedSrid == 25832) {
-          station.setLocationSrid(convertedSrid);
+          station.setGeometrySrid(convertedSrid);
 
           if (response.getLocation().getX() != null) {
-            station.setLocationX(response.getLocation().getX());
+            station.setGeometryX(response.getLocation().getX());
           } else {
             logger.error("X coordinate is null for stationId: " + station.getStationId());
             throw new NullPointerException(
@@ -45,7 +45,7 @@ public class StationModelMapper {
           }
 
           if (response.getLocation().getY() != null) {
-            station.setLocationY(response.getLocation().getY());
+            station.setGeometryY(response.getLocation().getY());
           } else {
             logger.error("Y coordinate is null for stationId: " + station.getStationId());
             throw new NullPointerException(
