@@ -6,7 +6,6 @@ services:
             dockerfile: docker/Dockerfile_dev
         environment:
             - "TZ=Europe/Copenhagen"
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://dbprimo.cuddlefish.intern:11186/vanda_hydrometry_test?user=vanda_hydrometry_test&password=26THroobbing67swingiNgArOmaa10?Tuumble
         networks:
             - "default"
         volumes:
